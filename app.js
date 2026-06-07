@@ -117,3 +117,4 @@ function loadDemoFrame(frame) {
 demoFrames.forEach((frame) => {
   loadDemoFrame(frame);
 });
+

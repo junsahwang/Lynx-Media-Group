@@ -5,23 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lynx Media Group | Social Media Marketing Agency</title>
   <meta name="description" content="Lynx Media Group is a social media marketing agency helping brands grow through creator partnerships, UGC content, social media strategy, and promotional campaigns.">
-  <meta name="keywords" content="Lynx Media Group, Lynx Media, Lynx Marketing, social media marketing agency, UGC agency, creator marketing agency, brand promotion, social media content strategy">
   <link rel="canonical" href="https://lynxmediagroup.org/">
   <meta name="robots" content="index, follow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="imgs/lynx-link-logo.png">
+  <link rel="icon" type="image/png" href="imgs/lynx-link-logo.png">
   <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
   <header class="site-header">
-    <a class="brand" href="index.html" aria-label="Lynx Media Group home">
+    <a class="brand" href="index.html">
       <img class="brand-logo" src="imgs/lynx-link-logo.png" alt="Lynx Media Group">
       <span>Lynx Media Group</span>
     </a>
-    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
-    <nav class="site-nav" aria-label="Primary navigation">
+
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav">
       <a href="index.html">Home</a>
       <a href="#about">About</a>
       <a href="#demos">Demos</a>
@@ -32,12 +36,29 @@
 
   <main>
     <section class="hero">
-      <img src="imgs/lynx-hero.jpg" fetchpriority="high" decoding="async" alt="Modern content studio with social media analytics equipment" class="hero-image">
+      <div class="hero-video-wall" aria-hidden="true">
+        <div class="hero-video-row hero-video-row-left">
+          <div class="hero-video-tile"><video src="videos/video-1.mp4" autoplay muted loop playsinline preload="auto"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-2.mp4" autoplay muted loop playsinline preload="auto"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-3.mp4" autoplay muted loop playsinline preload="auto"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-4.mp4" autoplay muted loop playsinline preload="auto"></video></div>
+        </div>
+
+        <div class="hero-video-row hero-video-row-right">
+          <div class="hero-video-tile"><video src="videos/video-5.mp4" autoplay muted loop playsinline preload="auto"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-6.mp4" autoplay muted loop playsinline preload="auto"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-7.mp4" autoplay muted loop playsinline preload="auto"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-8.mp4" autoplay muted loop playsinline preload="auto"></video></div>
+        </div>
+      </div>
+
       <div class="hero-overlay"></div>
+
       <div class="hero-copy">
         <p class="eyebrow">Social media marketing agency</p>
         <h1>Lynx Media Group</h1>
         <p>At Lynx, our mission is to "lynx" brands with creators to scale their reach, influence, and cultural impact through authentic content that actually connects with modern audiences.</p>
+
         <div class="hero-actions">
           <a class="button primary" href="business-apply.html" target="_blank" rel="noopener noreferrer">Apply as a business</a>
           <a class="button secondary" href="creator-apply.html" target="_blank" rel="noopener noreferrer">Join as a creator</a>
@@ -45,7 +66,7 @@
       </div>
     </section>
 
-    <section class="stats-band reveal" aria-label="Agency highlights">
+    <section class="stats-band reveal">
       <div><strong>Understand</strong><span>We learn your brand, audience, and goals to understand what you need.</span></div>
       <div><strong>Strategize</strong><span>We build a creator-led package designed around your campaign goals.</span></div>
       <div><strong>Deliver</strong><span>We bring the campaign to life through planned, posted, and optimized content.</span></div>
@@ -59,7 +80,7 @@
       </div>
 
       <div class="founder-grid">
-        <a class="about-card founder-card-link" href="https://www.instagram.com/gawinhsu/" target="_blank" rel="noopener noreferrer" aria-label="Open Gawin Hsu on Instagram">
+        <a class="about-card founder-card-link" href="https://www.instagram.com/gawinhsu/" target="_blank" rel="noopener noreferrer">
           <div class="photo-slot founder-photo gawin-photo">
             <img src="imgs/gawin-hsu.jpg" loading="lazy" decoding="async" alt="Gawin Hsu portrait">
           </div>
@@ -68,7 +89,7 @@
           <p>He is a senior mechanical engineering student at Boston University with a passion for content, strategy, and creator-led marketing. With nearly two years in the UGC space, he has worked with multiple brands, managed creators, and helped build content plans that feel organic, intentional, and made for social platforms.</p>
         </a>
 
-        <a class="about-card founder-card-link" href="https://www.instagram.com/junsahwang/" target="_blank" rel="noopener noreferrer" aria-label="Open Junsa Hwang on Instagram">
+        <a class="about-card founder-card-link" href="https://www.instagram.com/junsahwang/" target="_blank" rel="noopener noreferrer">
           <div class="photo-slot founder-photo junsa-photo">
             <img src="imgs/junsa-hwang.jpg" loading="lazy" decoding="async" alt="Junsa Hwang portrait">
           </div>
@@ -88,43 +109,19 @@
 
       <div class="video-grid">
         <article class="video-card">
-          <div class="video-frame has-embed">
-            <iframe
-              data-src="https://www.youtube-nocookie.com/embed/oYroN6KecJo?playsinline=1&rel=0"
-              title="Lynx Media Group YouTube Shorts demo"
-              allow="encrypted-media; fullscreen; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen>
-            </iframe>
-          </div>
+          <div class="video-frame"><video src="videos/video-1.mp4" controls playsinline></video></div>
           <h3>Business Spotlight</h3>
           <p>A short feature that introduces the brand, shows the space or product, and gives viewers a reason to visit or buy.</p>
         </article>
 
         <article class="video-card">
-          <div class="video-frame has-embed">
-            <iframe
-              data-src="https://www.tiktok.com/player/v1/7624911594023161119?controls=1"
-              title="Lynx Media Group TikTok demo"
-              allow="encrypted-media; fullscreen; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen>
-            </iframe>
-          </div>
+          <div class="video-frame"><video src="videos/video-2.mp4" controls playsinline></video></div>
           <h3>Creator Promo</h3>
           <p>A creator-led video that feels natural while still directing attention toward the business goal.</p>
         </article>
 
         <article class="video-card">
-          <div class="video-frame has-embed">
-            <iframe
-              data-src="https://www.tiktok.com/player/v1/7531959111680937247?controls=1"
-              title="Lynx Media Group TikTok creator demo"
-              allow="encrypted-media; fullscreen; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen>
-            </iframe>
-          </div>
+          <div class="video-frame"><video src="videos/video-3.mp4" controls playsinline></video></div>
           <h3>Trend Campaign</h3>
           <p>A fast, platform-native concept built around hooks, timing, and a clear call to action.</p>
         </article>
@@ -138,23 +135,9 @@
       </div>
 
       <div class="service-list">
-        <article>
-          <span>01</span>
-          <h3>Market Research</h3>
-          <p>We use your brand’s strongest qualities to shape content that feels authentic, strategic, and engaging.</p>
-        </article>
-
-        <article>
-          <span>02</span>
-          <h3>Creator Matching</h3>
-          <p>Connect your business with creators who can promote your product, service, or location with a natural fit.</p>
-        </article>
-
-        <article>
-          <span>03</span>
-          <h3>Conversion Path</h3>
-          <p>We create content that guides interested viewers from discovery to your brand’s product or service.</p>
-        </article>
+        <article><span>01</span><h3>Market Research</h3><p>We use your brand’s strongest qualities to shape content that feels authentic, strategic, and engaging.</p></article>
+        <article><span>02</span><h3>Creator Matching</h3><p>Connect your business with creators who can promote your product, service, or location with a natural fit.</p></article>
+        <article><span>03</span><h3>Conversion Path</h3><p>We create content that guides interested viewers from discovery to your brand’s product or service.</p></article>
       </div>
     </section>
 
@@ -167,29 +150,14 @@
     </section>
   </main>
 
-<footer>
-  <span>Lynx Media Group</span>
-
-  <div class="footer-links">
-  <a href="https://www.instagram.com/lynxmediagroup/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor">
-      <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9S160.5 370.8 224.1 370.8 339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.3 0-74.7-33.4-74.7-74.7s33.4-74.7 74.7-74.7 74.7 33.4 74.7 74.7-33.4 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.9-26.9 26.9-14.9 0-26.9-12-26.9-26.9 0-14.9 12-26.9 26.9-26.9 14.9 0 26.9 12 26.9 26.9zm76.1 27.3c-1.7-35.3-9.7-66.7-35.5-92.5S354.9 7.7 319.6 6C283.4 4 164.7 4 128.5 6 93.2 7.7 61.8 15.7 36 41.5S7.7 93.2 6 128.5C4 164.7 4 283.4 6 319.6c1.7 35.3 9.7 66.7 35.5 92.5s57.2 33.8 92.5 35.5c36.2 2 154.9 2 191.1 0 35.3-1.7 66.7-9.7 92.5-35.5s33.8-57.2 35.5-92.5c2-36.2 2-154.9 0-191.1zM398.8 388c-7.8 19.6-22.9 34.7-42.5 42.5-29.4 11.7-99.2 9-132.2 9s-102.9 2.6-132.2-9c-19.6-7.8-34.7-22.9-42.5-42.5-11.7-29.4-9-99.2-9-132.2s-2.6-102.9 9-132.2c7.8-19.6 22.9-34.7 42.5-42.5 29.4-11.7 99.2-9 132.2-9s102.9-2.6 132.2 9c19.6 7.8 34.7 22.9 42.5 42.5 11.7 29.4 9 99.2 9 132.2s2.7 102.9-9 132.2z"/>
-    </svg>
-  </a>
-
-    <a href="https://www.tiktok.com/@lynxmediagroup" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M16.5 3c.37 1.92 1.91 3.46 3.83 3.83v2.52a6.33 6.33 0 01-3.83-1.28v6.43A5.5 5.5 0 1111 9v2.65a2.85 2.85 0 102.85 2.85V3h2.65z"/>
-      </svg>
-    </a>
-
-    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=lynxmedianetwork%40gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Email">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M3 5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25v13.5A2.25 2.25 0 0118.75 21H5.25A2.25 2.25 0 013 18.75V5.25zm2.4-.75L12 10.02 18.6 4.5H5.4zm13.35 15a.75.75 0 00.75-.75V6.08l-7.02 5.87a.75.75 0 01-.96 0L4.5 6.08v12.67c0 .41.34.75.75.75h13.5z"/>
-      </svg>
-    </a>
-  </div>
-</footer>
+  <footer>
+    <span>Lynx Media Group</span>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/lynxmediagroup/" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="https://www.tiktok.com/@lynxmediagroup" target="_blank" rel="noopener noreferrer">TikTok</a>
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=lynxmedianetwork%40gmail.com" target="_blank" rel="noopener noreferrer">Email</a>
+    </div>
+  </footer>
 
   <script src="app.js"></script>
 </body>
