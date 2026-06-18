@@ -3,10 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
   <title>Lynx Media Group | Social Media Marketing Agency</title>
   <meta name="description" content="Lynx Media Group is a social media marketing agency helping brands grow through creator partnerships, UGC content, social media strategy, and promotional campaigns.">
+  <meta name="keywords" content="Lynx Media Group, social media marketing agency, UGC content, creator partnerships, influencer marketing, brand promotion, social media strategy">
   <link rel="canonical" href="https://lynxmediagroup.org/">
   <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Lynx Media Group">
+  <meta property="og:title" content="Lynx Media Group | Social Media Marketing Agency">
+  <meta property="og:description" content="Lynx Media Group is a social media marketing agency helping brands grow through creator partnerships, UGC content, social media strategy, and promotional campaigns.">
+  <meta property="og:url" content="https://lynxmediagroup.org/">
+  <meta property="og:image" content="https://lynxmediagroup.org/imgs/lynx-hero.jpg">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Lynx Media Group | Social Media Marketing Agency">
+  <meta name="twitter:description" content="Lynx Media Group is a social media marketing agency helping brands grow through creator partnerships, UGC content, social media strategy, and promotional campaigns.">
+  <meta name="twitter:image" content="https://lynxmediagroup.org/imgs/lynx-hero.jpg">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Lynx Media Group",
+    "legalName": "Lynx Media Group LLC",
+    "url": "https://lynxmediagroup.org/",
+    "logo": "https://lynxmediagroup.org/imgs/logo.png",
+    "image": "https://lynxmediagroup.org/imgs/lynx-hero.jpg",
+    "description": "Lynx Media Group is a social media marketing agency helping brands grow through creator partnerships, UGC content, social media strategy, and promotional campaigns.",
+    "sameAs": [
+      "https://www.instagram.com/lynxmediagroup/",
+      "https://www.tiktok.com/@lynxmediagroup"
+    ],
+    "founder": [
+      { "@type": "Person", "name": "Gawin Hsu", "sameAs": "https://www.instagram.com/gawinhsu/" },
+      { "@type": "Person", "name": "Junsa Hwang", "sameAs": "https://www.instagram.com/junsahwang/" }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
@@ -16,7 +54,7 @@
 
 <body>
   <header class="site-header">
-    <a class="brand" href="index.html">
+    <a class="brand" href="/">
       <img class="brand-logo" src="imgs/logo.png" alt="Lynx Media Group">
       <span>Lynx Media Group</span>
     </a>
@@ -26,7 +64,7 @@
     </button>
 
     <nav class="site-nav">
-      <a href="index.html">Home</a>
+      <a href="/">Home</a>
       <a href="#about">About</a>
       <a href="#demos">Demos</a>
       <a href="#services">Services</a>
@@ -38,20 +76,20 @@
     <section class="hero">
       <div class="hero-video-wall" aria-hidden="true">
         <div class="hero-video-row hero-video-row-left">
-          <div class="hero-video-tile"><video src="videos/video-1.mp4" autoplay muted loop playsinline preload="auto"></video></div>
-          <div class="hero-video-tile"><video src="videos/video-2.mp4" autoplay muted loop playsinline preload="auto"></video></div>
-          <div class="hero-video-tile"><video src="videos/video-3.mp4" autoplay muted loop playsinline preload="auto"></video></div>
-          <div class="hero-video-tile"><video src="videos/video-4.mp4" autoplay muted loop playsinline preload="auto"></video></div>
-          <div class="hero-video-tile"><video src="videos/video-9.mp4" autoplay muted loop playsinline preload="auto"></video></div>
-          <div class="hero-video-tile"><video src="videos/video-11.mp4" autoplay muted loop playsinline preload="auto"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-1.mp4" autoplay muted loop playsinline preload="none"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-2.mp4" autoplay muted loop playsinline preload="none"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-3.mp4" autoplay muted loop playsinline preload="none"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-4.mp4" autoplay muted loop playsinline preload="none"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-9.mp4" autoplay muted loop playsinline preload="none"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-11.mp4" autoplay muted loop playsinline preload="none"></video></div>
         </div>
 
         <div class="hero-video-row hero-video-row-right">
-          <div class="hero-video-tile"><video src="videos/video-5.mp4" autoplay muted loop playsinline preload="auto"></video></div>
-          <div class="hero-video-tile"><video src="videos/video-6.mp4" autoplay muted loop playsinline preload="auto"></video></div>
-          <div class="hero-video-tile"><video src="videos/video-7.mp4" autoplay muted loop playsinline preload="auto"></video></div>
-          <div class="hero-video-tile"><video src="videos/video-8.mp4" autoplay muted loop playsinline preload="auto"></video></div>
-          <div class="hero-video-tile"><video src="videos/video-10.mp4" autoplay muted loop playsinline preload="auto"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-5.mp4" autoplay muted loop playsinline preload="none"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-6.mp4" autoplay muted loop playsinline preload="none"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-7.mp4" autoplay muted loop playsinline preload="none"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-8.mp4" autoplay muted loop playsinline preload="none"></video></div>
+          <div class="hero-video-tile"><video src="videos/video-10.mp4" autoplay muted loop playsinline preload="none"></video></div>
         </div>
       </div>
 
@@ -86,6 +124,7 @@
         <a class="about-card founder-card-link" href="https://www.instagram.com/gawinhsu/" target="_blank" rel="noopener noreferrer">
           <div class="photo-slot founder-photo gawin-photo">
             <img src="imgs/gawin-hsu.jpg" loading="lazy" decoding="async" alt="Gawin Hsu portrait">
+            <span class="ig-cue">Visit Instagram<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 16 16 8M9 8h7v7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </div>
           <p class="role-label">Co-founder</p>
           <h3>Gawin Hsu</h3>
@@ -95,6 +134,7 @@
         <a class="about-card founder-card-link" href="https://www.instagram.com/junsahwang/" target="_blank" rel="noopener noreferrer">
           <div class="photo-slot founder-photo junsa-photo">
             <img src="imgs/junsa-hwang.jpg" loading="lazy" decoding="async" alt="Junsa Hwang portrait">
+            <span class="ig-cue">Visit Instagram<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 16 16 8M9 8h7v7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </div>
           <p class="role-label">Co-founder</p>
           <h3>Junsa Hwang</h3>
@@ -112,19 +152,19 @@
 
       <div class="video-grid">
         <article class="video-card">
-          <div class="video-frame"><video src="videos/video-1.mp4" controls playsinline></video></div>
+          <div class="video-frame"><video src="videos/video-1.mp4" controls playsinline preload="metadata"></video></div>
           <h3>Business Spotlight</h3>
           <p>A short feature that introduces the brand, shows the space or product, and gives viewers a reason to visit or buy.</p>
         </article>
 
         <article class="video-card">
-          <div class="video-frame"><video src="videos/video-2.mp4" controls playsinline></video></div>
+          <div class="video-frame"><video src="videos/video-2.mp4" controls playsinline preload="metadata"></video></div>
           <h3>Creator Promo</h3>
           <p>A creator-led video that feels natural while still directing attention toward the business goal.</p>
         </article>
 
         <article class="video-card">
-          <div class="video-frame"><video src="videos/video-3.mp4" controls playsinline></video></div>
+          <div class="video-frame"><video src="videos/video-3.mp4" controls playsinline preload="metadata"></video></div>
           <h3>Trend Campaign</h3>
           <p>A fast, platform-native concept built around hooks, timing, and a clear call to action.</p>
         </article>
@@ -186,6 +226,6 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>

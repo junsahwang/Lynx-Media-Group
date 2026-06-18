@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Apply | Lynx Media Group</title>
   <meta name="description" content="Apply to work with Lynx Media Group as a business looking for social media marketing or as a creator joining UGC and brand campaigns.">
   <meta name="keywords" content="apply Lynx Media Group, Lynx Media application, social media marketing application, creator marketing application, UGC creator application, brand campaign application">
@@ -16,10 +18,10 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="index.html"><img class="brand-logo" src="imgs/logo.png" alt=""><span>Lynx Media Group</span></a>
+    <a class="brand" href="/"><img class="brand-logo" src="imgs/logo.png" alt=""><span>Lynx Media Group</span></a>
     <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
     <nav class="site-nav" aria-label="Primary navigation">
-      <a href="index.html">Home</a><a href="index.html#about">About</a><a href="index.html#demos">Demos</a><a href="index.html#services">Services</a><a href="apply.html">Apply</a>
+      <a href="/">Home</a><a href="/#about">About</a><a href="/#demos">Demos</a><a href="/#services">Services</a><a href="apply.html">Apply</a>
     </nav>
   </header>
   <main>
@@ -63,6 +65,6 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>

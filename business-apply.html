@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Business Application | Lynx Media Group Social Media Marketing</title>
   <meta name="description" content="Apply as a business to work with Lynx Media Group on social media marketing, creator partnerships, UGC content, brand promotion, and campaign strategy.">
   <meta name="keywords" content="business social media marketing application, Lynx Media Group business application, brand promotion agency, creator marketing for businesses, UGC marketing for businesses">
@@ -12,7 +14,7 @@
   <link rel="icon" type="image/svg+xml" href="imgs/logo.png"><link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <header class="site-header"><a class="brand" href="index.html"><img class="brand-logo" src="imgs/logo.png" alt=""><span>Lynx Media Group</span></a><button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button><nav class="site-nav"><a href="index.html">Home</a><a href="index.html#about">About</a><a href="index.html#demos">Demos</a><a href="index.html#services">Services</a><a href="apply.html">Apply</a></nav></header>
+  <header class="site-header"><a class="brand" href="/"><img class="brand-logo" src="imgs/logo.png" alt=""><span>Lynx Media Group</span></a><button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button><nav class="site-nav"><a href="/">Home</a><a href="/#about">About</a><a href="/#demos">Demos</a><a href="/#services">Services</a><a href="apply.html">Apply</a></nav></header>
 
   <main>
     <section class="form-split reveal">
@@ -67,6 +69,6 @@
       </a>
     </div>
   </footer>
-<script src="app.js"></script>
+<script src="app.js" defer></script>
 </body>
 </html>
