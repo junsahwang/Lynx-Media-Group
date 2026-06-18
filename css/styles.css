@@ -63,8 +63,23 @@ body:before{
 
 a{color:inherit}
 img{display:block}
+
+/* no grey tap-flash on mobile — our own press states handle it */
+a,button,.button,input,textarea,[role="button"],.footer-links a,.site-nav a{
+  -webkit-tap-highlight-color:transparent;
+}
+
 ::selection{color:#fff;background:var(--ink)}
-:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:4px}
+::-moz-selection{color:#fff;background:var(--ink)}
+
+:focus-visible{
+  outline:2px solid var(--ink);
+  outline-offset:3px;
+  border-radius:6px;
+  transition:outline-offset .22s var(--ease);
+}
+.button:focus-visible,.footer-links a:focus-visible{outline-offset:4px}
+.apply-form input:focus-visible,.apply-form textarea:focus-visible{outline:none}
 
 h1,h2,h3,p{margin-top:0}
 
@@ -380,7 +395,15 @@ h1,h2,h3,p{margin-top:0}
 }
 .button:hover{transform:translateY(-3px)}
 .button:hover:before{transform:translateX(130%)}
-.button:active{transform:translateY(-1px) scale(.98)}
+
+/* press feedback when selecting (tap / click) — JS adds the same
+   for magnetic buttons and tilt cards so it works on desktop too */
+.button:active{transform:scale(.96)}
+.about-card:active,.video-card:active,.service-list article:active,.apply-choice:active,.application-panel:active{
+  transform:translateY(-3px) scale(.99);
+}
+.footer-links a:active{transform:scale(.9)}
+.site-nav a:active{opacity:.55}
 
 .button.primary{
   color:#fff;
@@ -745,11 +768,32 @@ h1,h2,h3,p{margin-top:0}
 .business-choice,.creator-choice,.creator-panel{background:var(--surface)}
 
 .choice-number{
-  margin-bottom:30px;
+  margin-bottom:22px;
   color:var(--muted);
   font-size:.86rem;
   font-weight:900;
   letter-spacing:.12em;
+}
+
+/* apply.html — keep both option cards and their buttons on one screen */
+.apply-hero{
+  min-height:auto;
+  padding-top:clamp(88px,12vh,118px);
+  padding-bottom:clamp(16px,2.4vh,28px);
+}
+.apply-hero h1{font-size:clamp(2rem,4.4vw,3.2rem)}
+.apply-choice-grid{
+  padding-top:clamp(14px,2.6vh,30px);
+  padding-bottom:clamp(24px,4vh,52px);
+  gap:20px;
+}
+.apply-choice{
+  min-height:0;
+  padding:clamp(22px,3vw,38px);
+}
+.apply-choice h2{
+  margin-bottom:12px;
+  font-size:clamp(1.8rem,3.2vw,2.9rem);
 }
 
 .single-form-section{

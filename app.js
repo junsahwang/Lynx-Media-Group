@@ -219,36 +219,66 @@ if ("IntersectionObserver" in window && heroVideos.length) {
    Magnetic buttons + subtle card tilt (fine pointer only)
    ========================================================= */
 if (finePointer && !reduceMotion) {
-  // magnetic buttons
+  // magnetic buttons with a smooth spring press on select
   document.querySelectorAll(".button").forEach((btn) => {
+    let tx = 0;
+    let ty = -3;
+    let pressed = false;
+    const apply = () => {
+      btn.style.transform = `translate(${tx}px, ${ty}px) scale(${pressed ? 0.95 : 1})`;
+    };
     btn.addEventListener("pointermove", (e) => {
       const r = btn.getBoundingClientRect();
-      const x = e.clientX - r.left - r.width / 2;
-      const y = e.clientY - r.top - r.height / 2;
-      btn.style.transform = `translate(${x * 0.18}px, ${y * 0.28 - 3}px)`;
+      tx = (e.clientX - r.left - r.width / 2) * 0.18;
+      ty = (e.clientY - r.top - r.height / 2) * 0.28 - 3;
+      apply();
+    });
+    btn.addEventListener("pointerdown", () => {
+      pressed = true;
+      apply();
+    });
+    btn.addEventListener("pointerup", () => {
+      pressed = false;
+      apply();
     });
     btn.addEventListener("pointerleave", () => {
+      pressed = false;
+      tx = 0;
+      ty = -3;
       btn.style.transform = "";
     });
   });
 
-  // gentle 3D tilt on cards
+  // gentle 3D tilt on cards, with a soft press on select
   const tiltCards = document.querySelectorAll(
     ".about-card, .video-card, .service-list article"
   );
   tiltCards.forEach((card) => {
     let raf = null;
+    let px = 0;
+    let py = 0;
+    let pressed = false;
+    const apply = () => {
+      card.style.transform = `translateY(-8px) perspective(900px) rotateX(${(-py * 4).toFixed(2)}deg) rotateY(${(px * 5).toFixed(2)}deg) scale(${pressed ? 0.985 : 1})`;
+    };
     card.addEventListener("pointermove", (e) => {
       const r = card.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width - 0.5;
-      const py = (e.clientY - r.top) / r.height - 0.5;
+      px = (e.clientX - r.left) / r.width - 0.5;
+      py = (e.clientY - r.top) / r.height - 0.5;
       if (raf) cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        card.style.transform = `translateY(-8px) perspective(900px) rotateX(${(-py * 4).toFixed(2)}deg) rotateY(${(px * 5).toFixed(2)}deg)`;
-      });
+      raf = requestAnimationFrame(apply);
+    });
+    card.addEventListener("pointerdown", () => {
+      pressed = true;
+      apply();
+    });
+    card.addEventListener("pointerup", () => {
+      pressed = false;
+      apply();
     });
     card.addEventListener("pointerleave", () => {
       if (raf) cancelAnimationFrame(raf);
+      pressed = false;
       card.style.transform = "";
     });
   });
