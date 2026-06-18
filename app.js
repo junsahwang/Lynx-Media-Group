@@ -180,20 +180,40 @@ if ("IntersectionObserver" in window) {
    Seamless hero marquee (duplicate tiles for a clean loop)
    ========================================================= */
 document.querySelectorAll(".hero-video-row").forEach((row) => {
-  const tiles = Array.from(row.children);
-  tiles.forEach((tile) => {
+  Array.from(row.children).forEach((tile) => {
     const clone = tile.cloneNode(true);
     clone.setAttribute("aria-hidden", "true");
-    const video = clone.querySelector("video");
-    if (video) {
-      video.muted = true;
-      const playClone = () => video.play().catch(() => {});
-      if (video.readyState >= 2) playClone();
-      else video.addEventListener("loadeddata", playClone, { once: true });
-    }
     row.appendChild(clone);
   });
 });
+
+/* Only play hero clips whose tile is on-screen. Browsers can only decode
+   a limited number of videos at once, so playing all ~20 tiles together
+   makes the extras freeze a few seconds in. Pausing the off-screen ones
+   keeps the active count low while the marquee still looks continuous. */
+const heroVideos = document.querySelectorAll(".hero-video-tile video");
+if ("IntersectionObserver" in window && heroVideos.length) {
+  const heroPlayObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          video.muted = true;
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    },
+    { root: null, rootMargin: "0px 120px", threshold: 0 }
+  );
+  heroVideos.forEach((video) => {
+    video.muted = true;
+    heroPlayObserver.observe(video);
+  });
+} else {
+  heroVideos.forEach((video) => video.play().catch(() => {}));
+}
 
 /* =========================================================
    Magnetic buttons + subtle card tilt (fine pointer only)
@@ -232,77 +252,4 @@ if (finePointer && !reduceMotion) {
       card.style.transform = "";
     });
   });
-}
-
-/* =========================================================
-   Cursor follower — a lagging ring that adds a little
-   character. Mouse only; native cursor stays visible.
-   ========================================================= */
-if (finePointer && !reduceMotion) {
-  const ring = document.createElement("div");
-  ring.className = "cursor-ring";
-  ring.setAttribute("aria-hidden", "true");
-  document.body.appendChild(ring);
-
-  const interactiveSel =
-    'a, button, .button, input, textarea, [role="button"], .about-card, .video-card, .service-list article, .apply-choice, .footer-links a, .nav-toggle';
-
-  let mx = window.innerWidth / 2;
-  let my = window.innerHeight / 2;
-  let rx = mx;
-  let ry = my;
-  let scale = 1;
-  let hover = false;
-  let down = false;
-  let shown = false;
-
-  const targetScale = () => (hover ? 1.7 : 1) * (down ? 0.82 : 1);
-
-  window.addEventListener(
-    "pointermove",
-    (e) => {
-      if (e.pointerType && e.pointerType !== "mouse") return;
-      mx = e.clientX;
-      my = e.clientY;
-      if (!shown) {
-        shown = true;
-        ring.classList.add("is-visible");
-      }
-    },
-    { passive: true }
-  );
-
-  document.addEventListener("pointerover", (e) => {
-    if (e.target.closest && e.target.closest(interactiveSel)) {
-      hover = true;
-      ring.classList.add("is-hover");
-    }
-  });
-  document.addEventListener("pointerout", (e) => {
-    if (e.target.closest && e.target.closest(interactiveSel)) {
-      hover = false;
-      ring.classList.remove("is-hover");
-    }
-  });
-
-  window.addEventListener("pointerdown", () => (down = true));
-  window.addEventListener("pointerup", () => (down = false));
-
-  document.addEventListener("mouseleave", () => {
-    shown = false;
-    ring.classList.remove("is-visible");
-  });
-  document.addEventListener("mouseenter", () => {
-    shown = true;
-    ring.classList.add("is-visible");
-  });
-
-  const renderCursor = () => {
-    rx += (mx - rx) * 0.18;
-    ry += (my - ry) * 0.18;
-    scale += (targetScale() - scale) * 0.2;
-    ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) scale(${scale.toFixed(3)})`;
-    requestAnimationFrame(renderCursor);
-  };
-  renderCursor();
 }
