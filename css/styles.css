@@ -542,8 +542,6 @@ h1,h2,h3,p{margin-top:0}
   width:100%;height:100%;
   object-fit:cover;
   transition:transform var(--t-slow) var(--ease);
-  will-change:transform;
-  backface-visibility:hidden;
 }
 
 .founder-photo{aspect-ratio:1/1}

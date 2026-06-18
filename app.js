@@ -249,22 +249,36 @@ if (finePointer && !reduceMotion) {
     });
   });
 
-  // gentle 3D tilt on cards, with a soft press on select
+  // gentle 3D tilt on cards. The card AND its photo are transformed
+  // together in the same frame so the image zoom can never drift out of
+  // sync with the box (both start on pointerenter, same transition).
   const tiltCards = document.querySelectorAll(
     ".about-card, .video-card, .service-list article"
   );
   tiltCards.forEach((card) => {
+    const img = card.querySelector(".photo-slot img");
     let raf = null;
     let px = 0;
     let py = 0;
     let pressed = false;
+    let hovered = false;
+
     const apply = () => {
-      card.style.transform = `translateY(-8px) perspective(900px) rotateX(${(-py * 4).toFixed(2)}deg) rotateY(${(px * 5).toFixed(2)}deg) scale(${pressed ? 0.985 : 1})`;
+      card.style.transform = hovered
+        ? `translateY(-8px) perspective(900px) rotateX(${(-py * 4).toFixed(2)}deg) rotateY(${(px * 5).toFixed(2)}deg) scale(${pressed ? 0.985 : 1})`
+        : "";
+      if (img) img.style.transform = hovered ? `scale(${pressed ? 1.04 : 1.06})` : "";
     };
+
+    card.addEventListener("pointerenter", () => {
+      hovered = true;
+      apply();
+    });
     card.addEventListener("pointermove", (e) => {
       const r = card.getBoundingClientRect();
       px = (e.clientX - r.left) / r.width - 0.5;
       py = (e.clientY - r.top) / r.height - 0.5;
+      hovered = true;
       if (raf) cancelAnimationFrame(raf);
       raf = requestAnimationFrame(apply);
     });
@@ -279,7 +293,8 @@ if (finePointer && !reduceMotion) {
     card.addEventListener("pointerleave", () => {
       if (raf) cancelAnimationFrame(raf);
       pressed = false;
-      card.style.transform = "";
+      hovered = false;
+      apply();
     });
   });
 }
