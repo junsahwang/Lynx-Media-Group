@@ -235,7 +235,7 @@ h1,h2,h3,p{margin-top:0}
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:clamp(16px,2.2vw,44px);
+  gap:clamp(15%,2.2vw,44px);
 }
 .path-figure{
   display:flex;
