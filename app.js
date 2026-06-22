@@ -313,13 +313,28 @@ if (finePointer && !reduceMotion) {
 }
 
 /* =========================================================
-   Randomize each hero figure as a man or a woman on load
-   (hair is the differentiator)
+   Give each hero figure a random look on load — man/woman,
+   skin tone, and hair colour — for variety and inclusivity
    ========================================================= */
-const FIGURE_HAIR = {
-  man: "M39 39C38 22 48 15 60 15C72 15 82 22 81 39C80 31 75 26 69 25C64 20 56 20 51 25C45 27 40 31 39 39Z",
-  woman: "M36 52C34 24 47 13 60 13C73 13 86 24 84 52C83 60 81 67 79 72L72 72C75 60 75 47 72 39C74 32 67 27 60 27C53 27 46 32 48 39C45 47 45 60 48 72L41 72C39 67 37 60 36 52Z"
+const SKIN_TONES = ["#f7d7ba", "#efc6a3", "#e2ad84", "#cf9a6e", "#b27c54", "#925f3f", "#6f4628"];
+const HAIR_COLORS = ["#1b1916", "#2e2620", "#4a3526", "#6e4a2c", "#9a6334", "#c98a3a", "#9aa0a8", "#a6402b"];
+const HAIR_SHAPES = {
+  manTop: "M40 38C39 22 48 15 60 15C72 15 81 22 80 38C79 30 74 26 68 25C63 20 55 20 50 25C45 27 41 31 40 38Z",
+  womanTop: "M40 42C39 24 48 14 60 14C72 14 81 24 80 42C78 34 73 30 68 30C66 24 62 22 60 22C58 22 54 24 52 30C47 30 42 34 40 42Z",
+  womanBack: "M37 44C36 22 47 11 60 11C73 11 84 22 83 44C83 60 81 78 79 92L70 92C72 74 72 58 70 48C72 38 67 32 60 32C53 32 48 38 50 48C48 58 48 74 50 92L41 92C39 78 37 60 37 44Z"
 };
-document.querySelectorAll(".path-figure .hair").forEach((hair) => {
-  hair.setAttribute("d", Math.random() < 0.5 ? FIGURE_HAIR.man : FIGURE_HAIR.woman);
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+document.querySelectorAll(".path-figure").forEach((fig) => {
+  const isWoman = Math.random() < 0.5;
+  const skin = pick(SKIN_TONES);
+  const hairColor = pick(HAIR_COLORS);
+
+  fig.querySelectorAll(".skin").forEach((el) => el.setAttribute("fill", skin));
+  fig.querySelectorAll(".hair, .hair-back").forEach((el) => el.setAttribute("fill", hairColor));
+
+  const top = fig.querySelector(".hair");
+  const back = fig.querySelector(".hair-back");
+  if (top) top.setAttribute("d", isWoman ? HAIR_SHAPES.womanTop : HAIR_SHAPES.manTop);
+  if (back) back.setAttribute("d", isWoman ? HAIR_SHAPES.womanBack : "");
 });
