@@ -3,7 +3,6 @@
    ========================================================= */
 :root{
   /* surfaces */
-  --bg:#f7f7f8;
   --bg:#ffffff;
   --surface:#ffffff;
   --surface-2:#f1f1f3;
@@ -111,19 +110,14 @@ h1,h2,h3,p{margin-top:0}
   justify-content:space-between;
   gap:24px;
   padding:18px clamp(18px,4vw,56px);
-  background:rgba(247,247,248,.72);
+  background:#fff;
   border-bottom:1px solid transparent;
-  backdrop-filter:blur(16px) saturate(160%);
-  -webkit-backdrop-filter:blur(16px) saturate(160%);
-  transition:padding var(--t) var(--ease),background var(--t) var(--ease),
-             border-color var(--t) var(--ease),box-shadow var(--t) var(--ease);
+  transition:padding var(--t) var(--ease),box-shadow var(--t) var(--ease);
 }
 
 .site-header.is-scrolled{
   padding:11px clamp(18px,4vw,56px);
-  background:rgba(255,255,255,.82);
-  border-bottom-color:var(--line);
-  box-shadow:0 8px 30px rgba(9,9,11,.07);
+  box-shadow:0 6px 22px rgba(9,9,11,.05);
 }
 
 .brand{
@@ -217,22 +211,22 @@ h1,h2,h3,p{margin-top:0}
   background:#fff;
 }
 
-/* intro copy fills the upper screen; the video scroll sits just below it */
+/* intro copy sits in the upper screen; the video scroll follows below it */
 .hero-copy{
   order:1;
   position:relative;
   width:100%;
   display:flex;
   flex-direction:column;
-  justify-content:flex-start;
-  padding:clamp(104px,14vh,140px) clamp(20px,5vw,72px) clamp(16px,2.2vh,28px);
+  justify-content:center;
+  padding:clamp(112px,15vh,152px) clamp(20px,5vw,72px) clamp(46px,6.5vh,76px);
   color:var(--ink);
 }
-/* eyebrow pinned to the top, then a clear space before the big title */
-.hero-copy .eyebrow{margin:0 0 clamp(36px,10vh,112px)}
-.hero-copy h1{margin:0 0 clamp(18px,2.6vh,30px)}
+/* eyebrow grouped with the title; clean, balanced rhythm */
+.hero-copy .eyebrow{margin:0 0 clamp(16px,2vh,24px)}
+.hero-copy h1{margin:0 0 clamp(20px,2.6vh,32px)}
 .hero-copy>p:not(.eyebrow){margin:0}
-.hero-copy .hero-actions{margin:clamp(28px,4vh,46px) 0 0}
+.hero-copy .hero-actions{margin:clamp(32px,4.5vh,52px) 0 0}
 
 .eyebrow{
   display:inline-flex;
@@ -1049,7 +1043,7 @@ footer span:first-child{color:var(--ink);font-weight:900;letter-spacing:-.01em}
   .form-split-reverse .form-intro{order:0}
 
   /* mobile: tighter top spacing, single row of scroll tiles */
-  .hero-copy{padding:92px clamp(18px,5.5vw,28px) clamp(14px,2vh,24px)}
+  .hero-copy{padding:100px clamp(18px,5.5vw,28px) clamp(38px,5vh,52px)}
   .hero-video-wall{padding: 30px 0 30px}
   .hero-video-row{gap:14px}
   .hero-video-tile{height:clamp(240px,34vh,310px)}
