@@ -48,18 +48,6 @@ body{
   -moz-osx-font-smoothing:grayscale;
 }
 
-/* faint grid texture fading from the top */
-body:before{
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  pointer-events:none;
-  background-image:linear-gradient(rgba(9,9,11,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(9,9,11,.03) 1px,transparent 1px);
-  background-size:58px 58px;
-  mask-image:linear-gradient(to bottom,rgba(0,0,0,.5),transparent 70%);
-  -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.5),transparent 70%);
-}
 
 a{color:inherit}
 img{display:block}
@@ -438,18 +426,7 @@ h1,h2,h3,p{margin-top:0}
              border-color var(--t) var(--ease),background var(--t) var(--ease),color var(--t) var(--ease);
 }
 
-/* sheen sweep */
-.button:before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:-1;
-  background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.25),transparent 80%);
-  transform:translateX(-130%);
-  transition:transform .7s var(--ease);
-}
-.button:hover{transform:translateY(-3px)}
-.button:hover:before{transform:translateX(130%)}
+.button:hover{transform:translateY(-2px)}
 
 /* press feedback when selecting (tap / click) — JS adds the same
    for magnetic buttons and tilt cards so it works on desktop too */
@@ -489,20 +466,17 @@ h1,h2,h3,p{margin-top:0}
   counter-reset:step;
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:1px;
-  background:var(--line);
   border-top:1px solid var(--line);
   border-bottom:1px solid var(--line);
 }
 
 .stats-band div{
   position:relative;
-  min-height:170px;
-  padding:clamp(26px,4vw,46px);
-  background:var(--surface);
-  overflow:hidden;
-  transition:background var(--t) var(--ease);
+  min-height:0;
+  padding:clamp(28px,4vw,48px);
+  border-right:1px solid var(--line);
 }
+.stats-band div:last-child{border-right:none}
 
 .stats-band div:before{
   counter-increment:step;
@@ -515,19 +489,6 @@ h1,h2,h3,p{margin-top:0}
   letter-spacing:.2em;
 }
 
-.stats-band div:after{
-  content:"";
-  position:absolute;
-  left:clamp(26px,4vw,46px);
-  bottom:clamp(22px,3vw,34px);
-  height:2px;width:0;
-  background:var(--ink);
-  border-radius:2px;
-  transition:width .5s var(--ease);
-}
-
-.stats-band div:hover{background:#fff}
-.stats-band div:hover:after{width:44px}
 
 .stats-band strong{
   display:block;
@@ -584,9 +545,9 @@ h1,h2,h3,p{margin-top:0}
 .founder-card-link{color:inherit;text-decoration:none;cursor:pointer}
 
 .about-card:hover,.video-card:hover,.service-list article:hover,.apply-choice:hover,.application-panel:hover{
-  transform:translateY(-8px);
+  transform:translateY(-4px);
   border-color:var(--line-strong);
-  box-shadow:var(--shadow-lg);
+  box-shadow:var(--shadow);
 }
 
 .photo-slot{
@@ -694,12 +655,7 @@ h1,h2,h3,p{margin-top:0}
   align-items:center;
   gap:12px;
   white-space:nowrap;
-  text-decoration:none;
-  opacity:.5;
-  filter:grayscale(1);
-  transition:opacity .4s var(--ease),filter .4s var(--ease),transform .35s var(--ease-spring);
 }
-.tlogo:hover{opacity:1;filter:none;transform:translateY(-3px)}
 .tl-full{
   display:block;
   height:clamp(28px,2.6vw,36px);
@@ -720,7 +676,6 @@ h1,h2,h3,p{margin-top:0}
 .tlogo-medceptor .tl-name{letter-spacing:-.01em}
 
 .demo-section{
-  background:var(--surface-2);
   border-top:1px solid var(--line);
   border-bottom:1px solid var(--line);
 }
@@ -770,37 +725,19 @@ h1,h2,h3,p{margin-top:0}
 
 .service-list article{
   position:relative;
-  min-height:288px;
-  padding:clamp(26px,4vw,38px);
-  overflow:hidden;
+  min-height:0;
+  padding:clamp(28px,4vw,42px);
   transition:transform var(--t) var(--ease),border-color var(--t) var(--ease),box-shadow var(--t) var(--ease);
 }
 
-.service-list article:after{
-  content:"";
-  position:absolute;
-  right:-40px;top:-40px;
-  width:160px;height:160px;
-  border-radius:50%;
-  background:radial-gradient(circle at center,rgba(9,9,11,.05),transparent 70%);
-  opacity:0;
-  transform:scale(.6);
-  transition:opacity var(--t) var(--ease),transform .6s var(--ease);
-}
-.service-list article:hover:after{opacity:1;transform:scale(1)}
-
 .service-list span{
-  display:inline-grid;
-  place-items:center;
-  width:46px;height:46px;
-  margin-bottom:32px;
-  color:#fff;
-  background:var(--ink);
-  border-radius:14px;
+  display:block;
+  margin-bottom:20px;
+  color:var(--muted);
+  font-size:.72rem;
   font-weight:900;
-  transition:transform var(--t) var(--ease-spring);
+  letter-spacing:.18em;
 }
-.service-list article:hover span{transform:rotate(-6deg) scale(1.08)}
 
 /* =========================================================
    CTA — dark floating panel
@@ -823,16 +760,9 @@ h1,h2,h3,p{margin-top:0}
 .cta-section:before{
   content:"";
   position:absolute;
-  inset:-2px;
+  inset:0;
   z-index:-1;
-  background:
-    radial-gradient(60% 120% at 100% 0%,rgba(255,255,255,.14),transparent 55%),
-    radial-gradient(70% 120% at 0% 100%,rgba(255,255,255,.08),transparent 55%);
-  animation:ctaGlow 9s var(--ease-smooth) infinite alternate;
-}
-@keyframes ctaGlow{
-  from{transform:translate3d(-2%,-2%,0)}
-  to{transform:translate3d(2%,2%,0)}
+  background:radial-gradient(80% 160% at 100% 0%,rgba(255,255,255,.09),transparent 60%);
 }
 
 .cta-section h2{max-width:880px;margin-bottom:0;color:#fff}
@@ -893,19 +823,6 @@ h1,h2,h3,p{margin-top:0}
   transition:transform var(--t) var(--ease),border-color var(--t) var(--ease),box-shadow var(--t) var(--ease);
 }
 
-.apply-choice:after{
-  content:"";
-  position:absolute;
-  right:-54px;bottom:-74px;
-  width:240px;height:240px;
-  border:1px solid var(--line);
-  border-radius:50%;
-  transition:transform .65s var(--ease),border-color var(--t) var(--ease);
-}
-.apply-choice:hover:after{
-  transform:scale(1.1) translate(-14px,-12px);
-  border-color:var(--line-strong);
-}
 
 .apply-choice h2{
   max-width:560px;
