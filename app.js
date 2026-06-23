@@ -342,16 +342,14 @@ const LONG_BACK =
   "M37 44C36 22 47 11 60 11C73 11 84 22 83 44C83 60 81 78 79 92L70 92C72 74 72 58 70 48C72 38 67 32 60 32C53 32 48 38 50 48C48 58 48 74 50 92L41 92C39 78 37 60 37 44Z";
 
 const HAIRSTYLES = [
-  /* side part — pronounced low hairline with a visible parting */
-  { top: "M40 38C39 20 47 12 60 12C73 12 81 20 80 38C79 29 74 26 67 26C61 26 56 27 51 26C46 27 41 31 40 38Z", part: "M52 26Q52 19 56 13" },
+  /* side part — pronounced, smooth low hairline with an off-centre parting */
+  { top: "M40 38C39 20 47 12 60 12C73 12 81 20 80 38C79 29 73 25 60 25C47 25 41 31 40 38Z", part: "M51 25Q52 20 55 15" },
   /* buzz / fade — close to the scalp */
   { top: "M41 40C40 26 48 18 60 18C72 18 80 26 79 40C78 33 73 29 60 29C47 29 42 33 41 40Z" },
   /* quiff — short sides, a lift at the front */
   { top: "M40 39C40 22 47 14 60 14C73 14 80 23 80 39C79 31 73 27 67 27C66 19 61 17 57 20C54 22 53 24 52 27C46 28 41 32 40 39Z" },
-  /* short curly afro — full and rounded, but wrapped onto the head */
-  { top: "M38 42C35 18 46 10 60 10C74 10 85 18 82 42C81 32 76 28 60 28C44 28 39 32 38 42Z" },
-  /* top bun — pulled-back hair plus a knot that meets the crown */
-  { top: "M41 40C40 25 48 17 60 17C72 17 80 25 79 40C78 32 73 28 60 28C47 28 42 32 41 40Z M53 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0Z" },
+  /* top bun — pulled-back hair, a connecting neck, and a knot (one filled shape) */
+  { top: "M41 40C40 25 48 16 60 16C72 16 80 25 79 40C78 32 73 28 60 28C47 28 42 32 41 40Z M55 16L65 16L64 22L56 22Z M53 13a7 7 0 1 0 14 0a7 7 0 1 0-14 0Z" },
   /* wavy bob — frames the face down past the cheeks */
   { top: "M40 44C38 24 48 14 60 14C72 14 82 24 80 44C79 36 74 31 68 31C66 25 62 23 60 23C58 23 54 25 52 31C46 31 41 36 40 44Z" },
   /* long straight — centre part with hair behind the shoulders */
