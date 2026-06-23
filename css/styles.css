@@ -695,19 +695,29 @@ h1,h2,h3,p{margin-top:0}
   gap:12px;
   white-space:nowrap;
   text-decoration:none;
-  transition:transform .35s var(--ease-spring),opacity .35s var(--ease);
+  opacity:.5;
+  filter:grayscale(1);
+  transition:opacity .4s var(--ease),filter .4s var(--ease),transform .35s var(--ease-spring);
 }
-.tlogo:hover{transform:translateY(-3px)}
-.tl-ico{width:clamp(30px,3vw,40px);height:auto;flex:none}
+.tlogo:hover{opacity:1;filter:none;transform:translateY(-3px)}
+.tl-full{
+  display:block;
+  height:clamp(28px,2.6vw,36px);
+  width:auto;
+}
+.tl-ico{
+  display:block;
+  height:clamp(28px,2.6vw,36px);
+  width:auto;
+  flex:none;
+}
 .tl-name{
-  font-size:clamp(1.3rem,2.4vw,1.85rem);
-  font-weight:900;
+  font-size:clamp(1.25rem,2.2vw,1.7rem);
+  font-weight:700;
   letter-spacing:-.02em;
   color:#141416;
 }
-.tlogo-medceptor .tl-name{font-weight:700;letter-spacing:-.01em}
-.tlogo-cloey .tl-name{letter-spacing:-.03em}
-.tlogo-tldl .tl-name{letter-spacing:-.01em}
+.tlogo-medceptor .tl-name{letter-spacing:-.01em}
 
 .demo-section{
   background:var(--surface-2);
