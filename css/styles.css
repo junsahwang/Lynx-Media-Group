@@ -660,6 +660,55 @@ h1,h2,h3,p{margin-top:0}
 /* =========================================================
    Demos
    ========================================================= */
+/* =========================================================
+   Trusted-by marquee
+   ========================================================= */
+.trusted{
+  padding:clamp(44px,6vw,80px) 0;
+  background:#fff;
+  border-top:1px solid var(--line);
+  overflow:hidden;
+}
+.trusted-label{
+  margin:0 0 clamp(26px,3.5vw,42px);
+  text-align:center;
+  color:var(--muted);
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+.trusted-marquee{
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+}
+.trusted-row{
+  display:flex;
+  align-items:center;
+  width:max-content;
+  gap:clamp(46px,6vw,96px);
+  animation:marquee 30s linear infinite;
+}
+.tlogo{
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  white-space:nowrap;
+  text-decoration:none;
+  transition:transform .35s var(--ease-spring),opacity .35s var(--ease);
+}
+.tlogo:hover{transform:translateY(-3px)}
+.tl-ico{width:clamp(30px,3vw,40px);height:auto;flex:none}
+.tl-name{
+  font-size:clamp(1.3rem,2.4vw,1.85rem);
+  font-weight:900;
+  letter-spacing:-.02em;
+  color:#141416;
+}
+.tlogo-medceptor .tl-name{font-weight:700;letter-spacing:-.01em}
+.tlogo-cloey .tl-name{letter-spacing:-.03em}
+.tlogo-tldl .tl-name{letter-spacing:-.01em}
+
 .demo-section{
   background:var(--surface-2);
   border-top:1px solid var(--line);

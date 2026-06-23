@@ -187,6 +187,20 @@ document.querySelectorAll(".hero-video-row").forEach((row) => {
   });
 });
 
+/* Duplicate the trusted-by logos so the marquee fills the width and loops seamlessly */
+const trustedRow = document.querySelector(".trusted-row");
+if (trustedRow) {
+  const logos = Array.from(trustedRow.children);
+  for (let i = 0; i < 5; i++) {
+    logos.forEach((logo) => {
+      const clone = logo.cloneNode(true);
+      clone.setAttribute("aria-hidden", "true");
+      clone.setAttribute("tabindex", "-1");
+      trustedRow.appendChild(clone);
+    });
+  }
+}
+
 /* Only play hero clips whose tile is on-screen. Browsers can only decode
    a limited number of videos at once, so playing all ~20 tiles together
    makes the extras freeze a few seconds in. Pausing the off-screen ones
