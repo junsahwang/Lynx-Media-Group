@@ -28,6 +28,8 @@ if (navToggle && siteNav) {
    Scroll progress bar + sticky header state
    ========================================================= */
 const header = document.querySelector(".site-header");
+const heroCopy = document.querySelector(".hero-copy");
+const wordmark = document.querySelector(".footer-wordmark .wm");
 const progress = document.createElement("div");
 progress.className = "scroll-progress";
 document.body.appendChild(progress);
@@ -41,6 +43,24 @@ function onScroll() {
   progress.style.transform = `scaleX(${ratio})`;
 
   if (header) header.classList.toggle("is-scrolled", doc.scrollTop > 12);
+
+  // hero copy drifts down and fades slightly as it scrolls away (parallax)
+  if (heroCopy && !reduceMotion) {
+    const y = Math.min(doc.scrollTop, 900);
+    heroCopy.style.transform = `translateY(${(y * 0.16).toFixed(1)}px)`;
+    heroCopy.style.opacity = Math.max(0, 1 - y / 1100).toFixed(3);
+  }
+
+  // footer wordmark fills with ink from the moment it enters the
+  // viewport until the page is scrolled all the way to the bottom
+  if (wordmark) {
+    const r = wordmark.getBoundingClientRect();
+    const start = r.top + doc.scrollTop - doc.clientHeight;
+    const end = doc.scrollHeight - doc.clientHeight;
+    const seen = end > start ? (doc.scrollTop - start) / (end - start) : 1;
+    const fill = Math.min(1, Math.max(0, seen)) * 100;
+    wordmark.style.setProperty("--fill", `${fill.toFixed(1)}%`);
+  }
 
   scrollTicking = false;
 }
@@ -137,6 +157,53 @@ document.querySelectorAll(".apply-form").forEach((form) => {
 });
 
 /* =========================================================
+   Hero headline — split into words that rise in one by one
+   ========================================================= */
+const heroTitle = document.querySelector(".hero h1");
+if (heroTitle && !reduceMotion) {
+  const words = heroTitle.textContent.trim().split(/\s+/);
+  heroTitle.textContent = "";
+  words.forEach((word, i) => {
+    const wrap = document.createElement("span");
+    wrap.className = "w";
+    const inner = document.createElement("span");
+    inner.className = "wi";
+    inner.textContent = word;
+    inner.style.animationDelay = `${0.12 + i * 0.09}s`;
+    wrap.appendChild(inner);
+    heroTitle.appendChild(wrap);
+    if (i < words.length - 1) heroTitle.append(" ");
+  });
+}
+
+/* =========================================================
+   Scrollspy — underline the nav link for the section in view
+   ========================================================= */
+const spyLinks = new Map();
+document.querySelectorAll('.site-nav a[href^="#"]').forEach((link) => {
+  const section = document.querySelector(link.getAttribute("href"));
+  if (section) spyLinks.set(section, link);
+});
+
+if (spyLinks.size && "IntersectionObserver" in window) {
+  const spy = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const link = spyLinks.get(entry.target);
+        spyLinks.forEach((l) => l.classList.remove("active"));
+        if (link) link.classList.add("active");
+      });
+    },
+    { rootMargin: "-45% 0px -45% 0px" }
+  );
+  spyLinks.forEach((_, section) => spy.observe(section));
+  // observing the hero clears the highlight back at the top of the page
+  const heroSection = document.querySelector(".hero");
+  if (heroSection) spy.observe(heroSection);
+}
+
+/* =========================================================
    Reveal on scroll, with per-group stagger
    ========================================================= */
 const revealItems = document.querySelectorAll(
@@ -179,7 +246,7 @@ if ("IntersectionObserver" in window) {
 /* =========================================================
    Seamless hero marquee (duplicate tiles for a clean loop)
    ========================================================= */
-document.querySelectorAll(".hero-video-row").forEach((row) => {
+document.querySelectorAll(".hero-video-row, .type-row").forEach((row) => {
   Array.from(row.children).forEach((tile) => {
     const clone = tile.cloneNode(true);
     clone.setAttribute("aria-hidden", "true");
@@ -323,6 +390,93 @@ if (finePointer && !reduceMotion) {
       hovered = false;
       apply();
     });
+  });
+}
+
+/* =========================================================
+   Pointer-tracked spotlight on cards (fine pointer only)
+   ========================================================= */
+if (finePointer) {
+  const spotEls = document.querySelectorAll(
+    ".about-card, .video-card, .service-list article, .apply-choice, .application-panel, .stats-band > div, .cta-section"
+  );
+  spotEls.forEach((el) => {
+    el.classList.add("spot");
+    const glow = document.createElement("div");
+    glow.className = "spot-glow";
+    glow.setAttribute("aria-hidden", "true");
+    el.appendChild(glow);
+    el.addEventListener("pointermove", (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${(e.clientX - r.left).toFixed(1)}px`);
+      el.style.setProperty("--my", `${(e.clientY - r.top).toFixed(1)}px`);
+    });
+  });
+}
+
+/* =========================================================
+   Custom cursor — a dot with a trailing ring, inverted over
+   dark surfaces via blend mode. Fine pointers only.
+   ========================================================= */
+if (finePointer && !reduceMotion) {
+  const dot = document.createElement("div");
+  dot.className = "cursor-dot";
+  const ring = document.createElement("div");
+  ring.className = "cursor-ring";
+  dot.setAttribute("aria-hidden", "true");
+  ring.setAttribute("aria-hidden", "true");
+  document.body.append(dot, ring);
+  document.body.classList.add("has-cursor");
+
+  let cx = -100;
+  let cy = -100;
+  let ringX = -100;
+  let ringY = -100;
+  let dotScale = 1;
+  let ringBase = 1;
+  let pressed = false;
+
+  window.addEventListener(
+    "pointermove",
+    (e) => {
+      cx = e.clientX;
+      cy = e.clientY;
+    },
+    { passive: true }
+  );
+
+  (function follow() {
+    ringX += (cx - ringX) * 0.16;
+    ringY += (cy - ringY) * 0.16;
+    const ringScale = ringBase * (pressed ? 0.75 : 1);
+    dot.style.transform = `translate(${cx}px, ${cy}px) scale(${dotScale})`;
+    ring.style.transform = `translate(${ringX.toFixed(1)}px, ${ringY.toFixed(1)}px) scale(${ringScale})`;
+    requestAnimationFrame(follow);
+  })();
+
+  // the ring swells over anything interactive; the dot shrinks away
+  document.addEventListener("pointerover", (e) => {
+    const interactive = e.target.closest(
+      "a, button, .button, [role='button'], label, input, textarea, select"
+    );
+    dotScale = interactive ? 0.4 : 1;
+    ringBase = interactive ? 1.7 : 1;
+  });
+  document.addEventListener("pointerdown", () => {
+    pressed = true;
+  });
+  document.addEventListener("pointerup", () => {
+    pressed = false;
+  });
+
+  // hide the cursor when the pointer leaves the window
+  document.documentElement.addEventListener("pointerleave", () => {
+    dot.style.opacity = "0";
+    ring.style.opacity = "0";
+  });
+  document.documentElement.addEventListener("pointerenter", () => {
+    dot.style.opacity = "";
+    ring.style.opacity = "";
   });
 }
 
