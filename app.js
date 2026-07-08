@@ -47,8 +47,8 @@ function onScroll() {
   // hero copy drifts down and fades slightly as it scrolls away (parallax)
   if (heroCopy && !reduceMotion) {
     const y = Math.min(doc.scrollTop, 900);
-    heroCopy.style.transform = `translateY(${(y * 0.16).toFixed(1)}px)`;
-    heroCopy.style.opacity = Math.max(0, 1 - y / 1100).toFixed(3);
+    heroCopy.style.transform = `translateY(${(y * 0.1).toFixed(1)}px)`;
+    heroCopy.style.opacity = Math.max(0, 1 - y / 1600).toFixed(3);
   }
 
   // footer wordmark fills with ink from the moment it enters the
@@ -157,26 +157,6 @@ document.querySelectorAll(".apply-form").forEach((form) => {
 });
 
 /* =========================================================
-   Hero headline — split into words that rise in one by one
-   ========================================================= */
-const heroTitle = document.querySelector(".hero h1");
-if (heroTitle && !reduceMotion) {
-  const words = heroTitle.textContent.trim().split(/\s+/);
-  heroTitle.textContent = "";
-  words.forEach((word, i) => {
-    const wrap = document.createElement("span");
-    wrap.className = "w";
-    const inner = document.createElement("span");
-    inner.className = "wi";
-    inner.textContent = word;
-    inner.style.animationDelay = `${0.12 + i * 0.09}s`;
-    wrap.appendChild(inner);
-    heroTitle.appendChild(wrap);
-    if (i < words.length - 1) heroTitle.append(" ");
-  });
-}
-
-/* =========================================================
    Scrollspy — underline the nav link for the section in view
    ========================================================= */
 const spyLinks = new Map();
@@ -246,7 +226,7 @@ if ("IntersectionObserver" in window) {
 /* =========================================================
    Seamless hero marquee (duplicate tiles for a clean loop)
    ========================================================= */
-document.querySelectorAll(".hero-video-row, .type-row").forEach((row) => {
+document.querySelectorAll(".hero-video-row").forEach((row) => {
   Array.from(row.children).forEach((tile) => {
     const clone = tile.cloneNode(true);
     clone.setAttribute("aria-hidden", "true");
@@ -300,49 +280,6 @@ if ("IntersectionObserver" in window && heroVideos.length) {
    Magnetic buttons + subtle card tilt (fine pointer only)
    ========================================================= */
 if (finePointer && !reduceMotion) {
-  // magnetic buttons with a smooth spring press on select
-  document.querySelectorAll(".button").forEach((btn) => {
-    let tx = 0;
-    let ty = -3;
-    let pressed = false;
-    const apply = () => {
-      btn.style.transform = `translate(${tx}px, ${ty}px) scale(${pressed ? 0.95 : 1})`;
-    };
-    btn.addEventListener("pointermove", (e) => {
-      const r = btn.getBoundingClientRect();
-      tx = (e.clientX - r.left - r.width / 2) * 0.18;
-      ty = (e.clientY - r.top - r.height / 2) * 0.28 - 3;
-      apply();
-    });
-    btn.addEventListener("pointerdown", () => {
-      pressed = true;
-      apply();
-    });
-    btn.addEventListener("pointerup", () => {
-      pressed = false;
-      apply();
-    });
-    btn.addEventListener("pointerleave", () => {
-      pressed = false;
-      tx = 0;
-      ty = -3;
-      btn.style.transform = "";
-    });
-  });
-
-  // the two hero figures drift slightly toward the cursor
-  document.querySelectorAll(".path-figure").forEach((fig) => {
-    fig.addEventListener("pointermove", (e) => {
-      const r = fig.getBoundingClientRect();
-      const x = (e.clientX - r.left - r.width / 2) * 0.16;
-      const y = (e.clientY - r.top - r.height / 2) * 0.16;
-      fig.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
-    });
-    fig.addEventListener("pointerleave", () => {
-      fig.style.transform = "";
-    });
-  });
-
   // gentle 3D tilt on cards. The card AND its photo are transformed
   // together in the same frame so the image zoom can never drift out of
   // sync with the box (both start on pointerenter, same transition).
@@ -414,156 +351,3 @@ if (finePointer) {
   });
 }
 
-/* =========================================================
-   Custom cursor — a dot with a trailing ring, inverted over
-   dark surfaces via blend mode. Fine pointers only.
-   ========================================================= */
-if (finePointer && !reduceMotion) {
-  const dot = document.createElement("div");
-  dot.className = "cursor-dot";
-  const ring = document.createElement("div");
-  ring.className = "cursor-ring";
-  dot.setAttribute("aria-hidden", "true");
-  ring.setAttribute("aria-hidden", "true");
-  document.body.append(dot, ring);
-  document.body.classList.add("has-cursor");
-
-  let cx = -100;
-  let cy = -100;
-  let ringX = -100;
-  let ringY = -100;
-  let dotScale = 1;
-  let ringBase = 1;
-  let pressed = false;
-
-  window.addEventListener(
-    "pointermove",
-    (e) => {
-      cx = e.clientX;
-      cy = e.clientY;
-    },
-    { passive: true }
-  );
-
-  (function follow() {
-    ringX += (cx - ringX) * 0.16;
-    ringY += (cy - ringY) * 0.16;
-    const ringScale = ringBase * (pressed ? 0.75 : 1);
-    dot.style.transform = `translate(${cx}px, ${cy}px) scale(${dotScale})`;
-    ring.style.transform = `translate(${ringX.toFixed(1)}px, ${ringY.toFixed(1)}px) scale(${ringScale})`;
-    requestAnimationFrame(follow);
-  })();
-
-  // the ring swells over anything interactive; the dot shrinks away
-  document.addEventListener("pointerover", (e) => {
-    const interactive = e.target.closest(
-      "a, button, .button, [role='button'], label, input, textarea, select"
-    );
-    dotScale = interactive ? 0.4 : 1;
-    ringBase = interactive ? 1.7 : 1;
-  });
-  document.addEventListener("pointerdown", () => {
-    pressed = true;
-  });
-  document.addEventListener("pointerup", () => {
-    pressed = false;
-  });
-
-  // hide the cursor when the pointer leaves the window
-  document.documentElement.addEventListener("pointerleave", () => {
-    dot.style.opacity = "0";
-    ring.style.opacity = "0";
-  });
-  document.documentElement.addEventListener("pointerenter", () => {
-    dot.style.opacity = "";
-    ring.style.opacity = "";
-  });
-}
-
-/* =========================================================
-   Give each hero figure a random look on load — hairstyle,
-   skin tone, hair colour, and clothing colour — for variety
-   and inclusivity. The character silhouette never changes;
-   only the hair shape and fills are swapped.
-   ========================================================= */
-const SKIN_TONES = ["#f7d7ba", "#efc6a3", "#e2ad84", "#cf9a6e", "#b27c54", "#925f3f", "#6f4628"];
-const HAIR_COLORS = ["#1b1916", "#2e2620", "#4a3526", "#6e4a2c", "#9a6334", "#c98a3a", "#9aa0a8", "#a6402b"];
-
-/* A library of hairstyles. Each has a "top" (drawn over the head) and an
-   optional "back" (drawn behind the head, for longer styles). All shapes
-   stay within the head bounds so the silhouette below is untouched. */
-const LONG_BACK =
-  "M37 44C36 22 47 11 60 11C73 11 84 22 83 44C83 60 81 78 79 92L70 92C72 74 72 58 70 48C72 38 67 32 60 32C53 32 48 38 50 48C48 58 48 74 50 92L41 92C39 78 37 60 37 44Z";
-
-const HAIRSTYLES = [
-  /* side part — pronounced, smooth low hairline with an off-centre parting */
-  { top: "M40 38C39 20 47 12 60 12C73 12 81 20 80 38C79 29 73 25 60 25C47 25 41 31 40 38Z", part: "M51 25Q52 20 55 15" },
-  /* buzz / fade — close to the scalp */
-  { top: "M41 40C40 26 48 18 60 18C72 18 80 26 79 40C78 33 73 29 60 29C47 29 42 33 41 40Z" },
-  /* quiff — short sides, a lift at the front */
-  { top: "M40 39C40 22 47 14 60 14C73 14 80 23 80 39C79 31 73 27 67 27C66 19 61 17 57 20C54 22 53 24 52 27C46 28 41 32 40 39Z" },
-  /* top bun — pulled-back hair, a connecting neck, and a knot (one filled shape) */
-  { top: "M41 40C40 25 48 16 60 16C72 16 80 25 79 40C78 32 73 28 60 28C47 28 42 32 41 40Z M55 16L65 16L64 22L56 22Z M53 13a7 7 0 1 0 14 0a7 7 0 1 0-14 0Z" },
-  /* wavy bob — frames the face down past the cheeks */
-  { top: "M40 44C38 24 48 14 60 14C72 14 82 24 80 44C79 36 74 31 68 31C66 25 62 23 60 23C58 23 54 25 52 31C46 31 41 36 40 44Z" },
-  /* long straight — centre part with hair behind the shoulders */
-  { top: "M40 44C39 23 48 13 60 13C72 13 81 23 80 44C79 35 74 30 68 30C66 24 62 22 60 22C58 22 54 24 52 30C46 30 41 35 40 44Z", back: LONG_BACK },
-  /* long wavy */
-  { top: "M40 44C38 22 48 13 60 13C72 13 82 22 80 44C79 34 74 30 68 30C66 24 62 22 60 22C58 22 54 24 52 30C46 30 41 34 40 44Z", back: LONG_BACK }
-];
-
-/* Clothing palettes — businesses get tailored, professional tones;
-   creators get brighter, casual streetwear colours. */
-const SUIT_COLORS = ["#333a48", "#1f2a44", "#23252b", "#3c4250", "#2c3b34", "#42323e"];
-const TIE_COLORS = ["#c44a3d", "#3b5bdb", "#2f9e44", "#9c36b5", "#1a1a1a", "#e0a33d"];
-const HOODIE_COLORS = ["#5c6470", "#e85d04", "#2563eb", "#0ea5e9", "#10b981", "#ec4899", "#8b5cf6", "#ef4444", "#1f2937"];
-
-const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-/* shift a hex colour lighter (pct > 0) or darker (pct < 0) */
-function shade(hex, pct) {
-  const n = parseInt(hex.slice(1), 16);
-  const clamp = (v) => Math.max(0, Math.min(255, Math.round(v * (1 + pct))));
-  const r = clamp((n >> 16) & 255);
-  const g = clamp((n >> 8) & 255);
-  const b = clamp(n & 255);
-  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-}
-
-document.querySelectorAll(".path-figure").forEach((fig) => {
-  const skin = pick(SKIN_TONES);
-  const hairColor = pick(HAIR_COLORS);
-  const style = pick(HAIRSTYLES);
-
-  fig.querySelectorAll(".skin").forEach((el) => el.setAttribute("fill", skin));
-  fig.querySelectorAll(".hair, .hair-back").forEach((el) => el.setAttribute("fill", hairColor));
-
-  const top = fig.querySelector(".hair");
-  const back = fig.querySelector(".hair-back");
-  const part = fig.querySelector(".hair-part");
-  if (top) top.setAttribute("d", style.top);
-  if (back) back.setAttribute("d", style.back || "");
-  if (part) {
-    part.setAttribute("d", style.part || "");
-    part.setAttribute("stroke", skin);
-  }
-
-  /* recolour the clothing without touching the shape: fills get the body
-     colour, strokes (e.g. the creator's raised arm) get it too */
-  const isBusiness = fig.classList.contains("business-path");
-  const clothes = pick(isBusiness ? SUIT_COLORS : HOODIE_COLORS);
-  fig.querySelectorAll(".clothes").forEach((el) => {
-    if (el.getAttribute("stroke")) el.setAttribute("stroke", clothes);
-    const fill = el.getAttribute("fill");
-    if (fill && fill !== "none") el.setAttribute("fill", clothes);
-  });
-
-  if (isBusiness) {
-    const tie = fig.querySelector(".tie");
-    if (tie) tie.setAttribute("fill", pick(TIE_COLORS));
-  } else {
-    /* the creator's inner-tee neckline reads as a darker shade of the hoodie */
-    const detail = fig.querySelector(".clothes-detail");
-    if (detail) detail.setAttribute("fill", shade(clothes, -0.28));
-  }
-});
