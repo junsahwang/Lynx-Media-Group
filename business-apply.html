@@ -2,19 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Business Application | Lynx Media Group Social Media Marketing</title>
   <meta name="description" content="Apply as a business to work with Lynx Media Group on social media marketing, creator partnerships, UGC content, brand promotion, and campaign strategy.">
   <meta name="keywords" content="business social media marketing application, Lynx Media Group business application, brand promotion agency, creator marketing for businesses, UGC marketing for businesses">
   <link rel="canonical" href="https://lynxmediagroup.org/business-apply.html">
   <meta name="robots" content="index, follow">
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="imgs/logo.png"><link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <header class="site-header"><a class="brand" href="/"><img class="brand-logo" src="imgs/logo.png" alt=""><span>Lynx Media Group</span></a><button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button><nav class="site-nav"><a href="/">Home</a><a href="/#about">About</a><a href="/#demos">Demos</a><a href="/#services">Services</a><a href="apply.html">Apply</a></nav></header>
+  <header class="site-header"><a class="brand" href="/"><img class="brand-logo" src="imgs/logo.png" alt=""><span>Lynx Media Group</span></a><nav class="site-nav"><a href="/">Home</a><a href="/#about">About</a><a href="/#demos">Demos</a><a href="/#services">Services</a></nav><div class="header-right"><a class="nav-cta" href="apply.html">Apply</a><button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button></div></header>
 
   <main>
     <section class="form-split reveal">
@@ -26,10 +24,11 @@
       <article class="application-panel">
         <div class="panel-heading"><h2>Apply to be promoted</h2><p>Share the basics so Lynx can understand your audience, offer, and promotion goals.</p></div>
         <form class="apply-form" data-application-type="business">
-          <label>Business name<input type="text" name="businessName" placeholder="Your business name" required></label>
-          <label>Contact email<input type="email" name="email" placeholder="you@example.com" required></label>
-          <label>Company website<input type="url" name="companyWebsite" placeholder="https://yourbusiness.com"></label>
-          <label>What social media goal could Lynx help with?<textarea name="goal" rows="5" placeholder="More awareness, more customers, event promotion, creator posts, stronger content, or another goal" required></textarea></label>
+          <label class="hp-field" aria-hidden="true">Do not fill this field<input type="text" name="company_url_confirm" tabindex="-1" autocomplete="off"></label>
+          <label>Business name<input type="text" name="businessName" maxlength="120" placeholder="Your business name" required></label>
+          <label>Contact email<input type="email" name="email" maxlength="254" placeholder="you@example.com" required></label>
+          <label>Company website<input type="url" name="companyWebsite" maxlength="300" placeholder="https://yourbusiness.com"></label>
+          <label>What social media goal could Lynx help with?<textarea name="goal" rows="5" maxlength="2000" placeholder="More awareness, more customers, event promotion, creator posts, stronger content, or another goal" required></textarea></label>
           <button class="button primary" type="submit">Submit business application</button>
         </form>
       </article>

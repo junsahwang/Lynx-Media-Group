@@ -1,8 +1,19 @@
 /* =========================================================
+   Clickjacking guard — GitHub Pages can't send frame-ancestors
+   headers, so refuse to render inside a hostile iframe
+   ========================================================= */
+if (window.top !== window.self) {
+  try {
+    window.top.location = window.self.location;
+  } catch (e) {
+    document.documentElement.style.display = "none";
+  }
+}
+
+/* =========================================================
    Motion preferences
    ========================================================= */
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
 /* =========================================================
    Mobile navigation
@@ -25,30 +36,32 @@ if (navToggle && siteNav) {
 }
 
 /* =========================================================
-   Scroll progress bar + sticky header state
+   Sticky header state + footer wordmark fill
    ========================================================= */
 const header = document.querySelector(".site-header");
-const heroCopy = document.querySelector(".hero-copy");
 const wordmark = document.querySelector(".footer-wordmark .wm");
-const progress = document.createElement("div");
-progress.className = "scroll-progress";
-document.body.appendChild(progress);
 
 let scrollTicking = false;
+let lastScrollTop = 0;
 
 function onScroll() {
   const doc = document.documentElement;
-  const max = doc.scrollHeight - doc.clientHeight;
-  const ratio = max > 0 ? doc.scrollTop / max : 0;
-  progress.style.transform = `scaleX(${ratio})`;
+  const y = doc.scrollTop;
 
-  if (header) header.classList.toggle("is-scrolled", doc.scrollTop > 12);
+  if (header) {
+    header.classList.toggle("is-scrolled", y > 12);
 
-  // hero copy drifts down and fades slightly as it scrolls away (parallax)
-  if (heroCopy && !reduceMotion) {
-    const y = Math.min(doc.scrollTop, 900);
-    heroCopy.style.transform = `translateY(${(y * 0.1).toFixed(1)}px)`;
-    heroCopy.style.opacity = Math.max(0, 1 - y / 1600).toFixed(3);
+    // the bar hides while scrolling down and returns on scroll up —
+    // but never while the mobile menu is open
+    const menuOpen = siteNav && siteNav.classList.contains("open");
+    if (!menuOpen) {
+      if (y > lastScrollTop && y > 140) {
+        header.classList.add("is-hidden");
+      } else if (y < lastScrollTop) {
+        header.classList.remove("is-hidden");
+      }
+    }
+    lastScrollTop = y;
   }
 
   // footer wordmark fills with ink from the moment it enters the
@@ -78,17 +91,6 @@ window.addEventListener(
 onScroll();
 
 /* =========================================================
-   Scroll cue in the hero
-   ========================================================= */
-const hero = document.querySelector(".hero");
-if (hero && !reduceMotion) {
-  const cue = document.createElement("div");
-  cue.className = "scroll-cue";
-  cue.setAttribute("aria-hidden", "true");
-  hero.appendChild(cue);
-}
-
-/* =========================================================
    Application form submission
    ========================================================= */
 const applicationWebhookUrl =
@@ -107,6 +109,15 @@ function showFormMessage(form, text, type = "success") {
 document.querySelectorAll(".apply-form").forEach((form) => {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+
+    // honeypot: real visitors never see this field — bots that fill
+    // it get a fake success and their submission is dropped
+    const honeypot = form.querySelector("input[name='company_url_confirm']");
+    if (honeypot && honeypot.value) {
+      form.reset();
+      showFormMessage(form, "Application submitted. Thank you!");
+      return;
+    }
 
     const submitButton = form.querySelector("button[type='submit']");
     const applicationType = form.dataset.applicationType;
@@ -274,80 +285,5 @@ if ("IntersectionObserver" in window && heroVideos.length) {
   });
 } else {
   heroVideos.forEach((video) => video.play().catch(() => {}));
-}
-
-/* =========================================================
-   Magnetic buttons + subtle card tilt (fine pointer only)
-   ========================================================= */
-if (finePointer && !reduceMotion) {
-  // gentle 3D tilt on cards. The card AND its photo are transformed
-  // together in the same frame so the image zoom can never drift out of
-  // sync with the box (both start on pointerenter, same transition).
-  const tiltCards = document.querySelectorAll(
-    ".about-card, .video-card, .service-list article"
-  );
-  tiltCards.forEach((card) => {
-    const img = card.querySelector(".photo-slot img");
-    let raf = null;
-    let px = 0;
-    let py = 0;
-    let pressed = false;
-    let hovered = false;
-
-    const apply = () => {
-      card.style.transform = hovered
-        ? `translateY(-8px) perspective(900px) rotateX(${(-py * 4).toFixed(2)}deg) rotateY(${(px * 5).toFixed(2)}deg) scale(${pressed ? 0.985 : 1})`
-        : "";
-      if (img) img.style.transform = hovered ? `scale(${pressed ? 1.04 : 1.06})` : "";
-    };
-
-    card.addEventListener("pointerenter", () => {
-      hovered = true;
-      apply();
-    });
-    card.addEventListener("pointermove", (e) => {
-      const r = card.getBoundingClientRect();
-      px = (e.clientX - r.left) / r.width - 0.5;
-      py = (e.clientY - r.top) / r.height - 0.5;
-      hovered = true;
-      if (raf) cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(apply);
-    });
-    card.addEventListener("pointerdown", () => {
-      pressed = true;
-      apply();
-    });
-    card.addEventListener("pointerup", () => {
-      pressed = false;
-      apply();
-    });
-    card.addEventListener("pointerleave", () => {
-      if (raf) cancelAnimationFrame(raf);
-      pressed = false;
-      hovered = false;
-      apply();
-    });
-  });
-}
-
-/* =========================================================
-   Pointer-tracked spotlight on cards (fine pointer only)
-   ========================================================= */
-if (finePointer) {
-  const spotEls = document.querySelectorAll(
-    ".about-card, .video-card, .service-list article, .apply-choice, .application-panel, .stats-band > div, .cta-section"
-  );
-  spotEls.forEach((el) => {
-    el.classList.add("spot");
-    const glow = document.createElement("div");
-    glow.className = "spot-glow";
-    glow.setAttribute("aria-hidden", "true");
-    el.appendChild(glow);
-    el.addEventListener("pointermove", (e) => {
-      const r = el.getBoundingClientRect();
-      el.style.setProperty("--mx", `${(e.clientX - r.left).toFixed(1)}px`);
-      el.style.setProperty("--my", `${(e.clientY - r.top).toFixed(1)}px`);
-    });
-  });
 }
 
