@@ -198,7 +198,7 @@ if (spyLinks.size && "IntersectionObserver" in window) {
    Reveal on scroll, with per-group stagger
    ========================================================= */
 const revealItems = document.querySelectorAll(
-  ".reveal, .about-card, .video-card, .service-list article, .apply-choice, .application-panel, .stats-band > div"
+  ".reveal, .about-card, .video-card, .service-list article, .apply-choice, .application-panel, .stats-band > div, .case-stat"
 );
 
 revealItems.forEach((item) => {
@@ -235,15 +235,148 @@ if ("IntersectionObserver" in window) {
 }
 
 /* =========================================================
-   Seamless hero marquee (duplicate tiles for a clean loop)
+   Case-study card — click to expand, stats count up on open
    ========================================================= */
-document.querySelectorAll(".hero-video-row").forEach((row) => {
-  Array.from(row.children).forEach((tile) => {
-    const clone = tile.cloneNode(true);
-    clone.setAttribute("aria-hidden", "true");
-    row.appendChild(clone);
+const caseCard = document.querySelector(".case-card");
+const caseSummary = document.querySelector(".case-summary");
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let caseCountersRan = false;
+
+const runCaseCounters = () => {
+  if (caseCountersRan) return;
+  caseCountersRan = true;
+  if (reducedMotion) return; // final values are already in the markup
+
+  document.querySelectorAll(".case-stat strong[data-count]").forEach((el) => {
+    const decimals = Number(el.dataset.decimals || 0);
+    const target = parseFloat(el.dataset.count);
+    const started = performance.now();
+    const duration = 1400;
+
+    const render = (value) => {
+      el.textContent =
+        (el.dataset.prefix || "") +
+        value.toLocaleString("en-US", {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+        }) +
+        (el.dataset.suffix || "");
+    };
+
+    const tick = (now) => {
+      const progress = Math.min((now - started) / duration, 1);
+      render(target * (1 - Math.pow(1 - progress, 4)));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
   });
-});
+};
+
+if (caseCard && caseSummary) {
+  caseSummary.addEventListener("click", () => {
+    const open = caseCard.classList.toggle("open");
+    caseSummary.setAttribute("aria-expanded", String(open));
+    if (open) runCaseCounters();
+  });
+}
+
+/* =========================================================
+   Hero scatter — tiles sit tilted around the copy (positions
+   live in the CSS). Hovering a tile plays its clip while the
+   rest fall back; the copy drifts and fades as you scroll away.
+   ========================================================= */
+const heroEl = document.querySelector(".hero");
+const heroOrbit = document.querySelector(".hero-orbit");
+
+if (heroEl && heroOrbit) {
+  const heroCopy = heroEl.querySelector(".hero-copy");
+
+  // Hover previews play muted — browsers refuse audible playback until
+  // the visitor has clicked something, so sound can't start on hover
+  // alone. Each tile gets a small speaker toggle (heyclicky-style);
+  // that click is the gesture that unlocks audio, and once sound is on,
+  // every later hover plays with audio automatically.
+  // Sound is on by default; browsers still block audible autoplay until
+  // the visitor interacts, so the first hovers fall back to muted and
+  // the toggle (or any click on the page) unlocks it.
+  let heroSoundOn = true;
+  const ICON_MUTED =
+    '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5L11 19V5Z" fill="currentColor"/><path d="m15.5 9.5 5 5m0-5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  const ICON_SOUND =
+    '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5L11 19V5Z" fill="currentColor"/><path d="M15 9.5a4 4 0 0 1 0 5M17.5 7a8 8 0 0 1 0 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
+  heroOrbit.querySelectorAll(".hero-video-tile").forEach((tile) => {
+    const video = tile.querySelector("video");
+    if (!video) return;
+
+    const vol = document.createElement("button");
+    vol.type = "button";
+    vol.className = "tile-vol";
+    const syncVol = () => {
+      vol.innerHTML = video.muted ? ICON_MUTED : ICON_SOUND;
+      vol.setAttribute("aria-label", video.muted ? "unmute video" : "mute video");
+    };
+    syncVol();
+    tile.appendChild(vol);
+
+    vol.addEventListener("click", (e) => {
+      e.stopPropagation();
+      video.muted = !video.muted;
+      heroSoundOn = !video.muted;
+      if (video.paused) video.play().catch(() => {});
+      syncVol();
+    });
+
+    tile.addEventListener("mouseenter", () => {
+      video.muted = !heroSoundOn;
+      syncVol();
+      video.play().catch(() => {
+        // audible play refused (no gesture yet) — preview muted instead
+        video.muted = true;
+        syncVol();
+        video.play().catch(() => {});
+      });
+    });
+    tile.addEventListener("mouseleave", () => video.pause());
+  });
+
+  if (!reduceMotion) {
+    // Scrolling away fades the tiles (not the copy), each at its own
+    // pace — faster tiles vanish first while slower ones linger, and
+    // every tile drifts upward at a different rate as it goes.
+    const tiles = [...heroOrbit.querySelectorAll(".hero-video-tile")];
+    const FADE_SPEED = [1.9, 1.2, 1.55, 0.95, 2.3, 1.4, 1.05];
+    const DRIFT_SPEED = [0.34, 0.18, 0.26, 0.12, 0.42, 0.22, 0.3];
+    let heroTicking = false;
+    const heroParallax = () => {
+      const y = window.scrollY;
+      if (y < heroEl.offsetHeight) {
+        const leave = Math.min(y / (heroEl.offsetHeight * 0.72), 1);
+        tiles.forEach((tile, i) => {
+          tile.style.setProperty(
+            "--fade",
+            Math.max(0, 1 - leave * FADE_SPEED[i % FADE_SPEED.length]).toFixed(3)
+          );
+          tile.style.setProperty(
+            "--drift",
+            `${(-y * DRIFT_SPEED[i % DRIFT_SPEED.length]).toFixed(1)}px`
+          );
+        });
+      }
+      heroTicking = false;
+    };
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!heroTicking) {
+          heroTicking = true;
+          requestAnimationFrame(heroParallax);
+        }
+      },
+      { passive: true }
+    );
+  }
+}
 
 /* Duplicate the trusted-by logos so the marquee fills the width and loops seamlessly */
 const trustedRow = document.querySelector(".trusted-row");
@@ -259,31 +392,5 @@ if (trustedRow) {
   }
 }
 
-/* Only play hero clips whose tile is on-screen. Browsers can only decode
-   a limited number of videos at once, so playing all ~20 tiles together
-   makes the extras freeze a few seconds in. Pausing the off-screen ones
-   keeps the active count low while the marquee still looks continuous. */
-const heroVideos = document.querySelectorAll(".hero-video-tile video");
-if ("IntersectionObserver" in window && heroVideos.length) {
-  const heroPlayObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const video = entry.target;
-        if (entry.isIntersecting) {
-          video.muted = true;
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      });
-    },
-    { root: null, rootMargin: "0px 120px", threshold: 0 }
-  );
-  heroVideos.forEach((video) => {
-    video.muted = true;
-    heroPlayObserver.observe(video);
-  });
-} else {
-  heroVideos.forEach((video) => video.play().catch(() => {}));
-}
+/* Hero clips only play while hovered (see the scatter block above). */
 

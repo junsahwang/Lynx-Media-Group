@@ -83,12 +83,22 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* Memo's brand face — used only to set the Memo wordmark in the
+   trusted-by row and case study, matching memo.cards */
+@font-face {
+  font-family: 'EightiesComeBack';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url(../fonts/EightiesComeback_Black.woff2) format('woff2');
+}
+
 /* =========================================================
    Lynx Media Group — design system
    ========================================================= */
 :root{
-  /* surfaces — a calm warm white that keeps text high-contrast */
-  --bg:#faf9f6;
+  /* surfaces — plain white base */
+  --bg:#ffffff;
   --surface:#ffffff;
   --surface-2:#f1efeb;
   --ink:#1c1b18;
@@ -183,7 +193,7 @@ h1,h2,h3,p{margin-top:0}
    flows straight through it at the top of the page */
 .site-header.is-scrolled{
   padding:16px clamp(18px,4vw,56px);
-  background:rgba(250,249,246,.85);
+  background:rgba(255,255,255,.85);
   backdrop-filter:blur(10px);
   -webkit-backdrop-filter:blur(10px);
   box-shadow:0 8px 28px rgba(28,27,24,.07);
@@ -312,22 +322,23 @@ h1,h2,h3,p{margin-top:0}
    ========================================================= */
 .hero{
   position:relative;
-  display:flex;
-  flex-direction:column;
-  align-items:stretch;
+  min-height:100vh;
+  min-height:100svh;
+  display:grid;
+  place-items:center;
   padding:0;
   overflow:hidden;
-  background:
-    radial-gradient(46% 52% at 16% -6%,rgba(190,160,235,.18),transparent 70%),
-    radial-gradient(44% 48% at 50% -8%,rgba(246,190,160,.15),transparent 70%),
-    radial-gradient(46% 52% at 84% -6%,rgba(240,170,200,.16),transparent 70%),
-    var(--bg);
+  background:var(--bg);
 }
 
-/* hero: centered copy with the two apply buttons beneath */
+/* hero: big centered copy with the video scatter around it.
+   The copy block spans the hero, so let the pointer fall through
+   to the tiles beneath — only its buttons stay interactive. */
 .hero-copy{
-  order:1;
   position:relative;
+  z-index:2;
+  pointer-events:none;
+  margin-top:clamp(28px,5vh,56px);
   width:100%;
   max-width:1320px;
   margin-inline:auto;
@@ -335,10 +346,10 @@ h1,h2,h3,p{margin-top:0}
   flex-direction:column;
   align-items:center;
   text-align:center;
-  padding:clamp(96px,13vh,132px) clamp(20px,5vw,72px) clamp(24px,3.6vh,40px);
+  padding:clamp(96px,12vh,128px) clamp(20px,5vw,72px) clamp(48px,8vh,84px);
   color:var(--ink);
 }
-.hero-text{width:min(100%,720px)}
+.hero-text{width:min(100%,860px)}
 .hero-text .eyebrow{margin:0 0 clamp(14px,1.8vh,20px)}
 .hero-text h1{margin:0 0 clamp(16px,2.2vh,26px)}
 .hero-text p:not(.eyebrow){margin:0 auto}
@@ -363,13 +374,20 @@ h1,h2,h3,p{margin-top:0}
 
 .hero h1{
   font-weight:600;
-  font-size:clamp(2.4rem,5.2vw,4.4rem);
-  line-height:1.05;
-  letter-spacing:-.025em;
+  font-size:clamp(2.8rem,7.5vw,6.2rem);
+  line-height:1.02;
+  letter-spacing:-.03em;
   color:var(--ink);
 }
 
-.hero p:not(.eyebrow),.apply-hero p:not(.eyebrow),.form-hero p:not(.eyebrow){
+.hero p:not(.eyebrow){
+  max-width:660px;
+  color:var(--ink-soft);
+  font-size:clamp(1rem,1.5vw,1.18rem);
+  line-height:1.7;
+}
+
+.apply-hero p:not(.eyebrow),.form-hero p:not(.eyebrow){
   max-width:580px;
   color:var(--ink-soft);
   font-size:clamp(.95rem,1.3vw,1.02rem);
@@ -383,6 +401,7 @@ h1,h2,h3,p{margin-top:0}
   gap:14px;
   margin-top:clamp(26px,4vh,40px);
 }
+.hero-actions .button{pointer-events:auto}
 
 /* entrance for hero copy */
 .hero-copy>*{animation:fadeUp .85s var(--ease) both}
@@ -394,26 +413,15 @@ h1,h2,h3,p{margin-top:0}
 .hero:after{display:none}
 .hero .scroll-cue{display:none}
 
-/* single video scroll row below the intro (cleaner, fewer at a time) */
-.hero-video-wall{
-  order:2;
-  position:static;
-  display:grid;
-  grid-template-rows:auto;
-  padding:44px 0 clamp(24px,3.4vw,44px);
-  overflow:hidden;
+/* the video scatter: tiles sit casually tilted around the copy.
+   Hovering one straightens it and plays the clip (app.js) while
+   every other tile falls back. */
+.hero-orbit{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
 }
-
-.hero-video-row{
-  display:flex;
-  gap:clamp(14px,1.4vw,22px);
-  width:max-content;
-  will-change:transform;
-}
-
-.hero-video-row-right{display:none}
-
-.hero-video-row-left{animation:marquee 46s linear infinite}
 
 @keyframes marquee{
   from{transform:translate3d(0,0,0)}
@@ -421,13 +429,58 @@ h1,h2,h3,p{margin-top:0}
 }
 
 .hero-video-tile{
-  position:relative;
-  height:clamp(280px,40vh,400px);
+  position:absolute;
+  left:var(--x,50%);
+  top:var(--y,50%);
+  width:calc(clamp(96px,10.5vw,158px) * var(--s,1));
   aspect-ratio:10/16;
+  transform:translate(-50%,-50%) translateY(var(--drift,0px)) rotate(var(--rot,0deg));
+  opacity:var(--fade,1);
   overflow:hidden;
   border:1px solid var(--line);
   border-radius:var(--r);
   background:var(--surface-2);
+  box-shadow:var(--shadow-sm);
+  pointer-events:auto;
+  cursor:pointer;
+  transition:transform var(--t) var(--ease),opacity var(--t) var(--ease),
+             filter var(--t) var(--ease),box-shadow var(--t) var(--ease);
+}
+
+/* hovered tile straightens, grows, and plays… */
+.hero-video-tile:hover{
+  transform:translate(-50%,-50%) translateY(var(--drift,0px)) rotate(0deg) scale(1.35);
+  z-index:30;
+  opacity:var(--fade,1);
+  box-shadow:var(--shadow-lg);
+}
+
+/* …while its neighbours step back */
+.hero-orbit:hover .hero-video-tile:not(:hover){
+  opacity:calc(var(--fade,1) * .3);
+  filter:saturate(.5);
+}
+
+/* six tiles in a calm symmetric frame around the copy — pulled well
+   inside the edges so nothing clips, gentle alternating tilts */
+.hero-video-tile:nth-child(1){--x:18%;--y:26%;--rot:-4deg;--s:.95}
+.hero-video-tile:nth-child(2){--x:85%;--y:26%;--rot:4deg;--s:.95}
+.hero-video-tile:nth-child(3){--x:11%;--y:64%;--rot:3deg;--s:1}
+.hero-video-tile:nth-child(4){--x:89%;--y:64%;--rot:-3deg;--s:1}
+.hero-video-tile:nth-child(5){--x:30%;--y:81%;--rot:-13deg;--s:.9}
+.hero-video-tile:nth-child(6){--x:70%;--y:81%;--rot:13deg;--s:.9}
+.hero-video-tile:nth-child(7){--x:50%;--y:25%;--rot:2deg;--s:.8}
+.hero-video-tile:nth-child(n+8){display:none}
+
+/* fewer tiles as the viewport narrows so the scatter never crowds */
+@media (max-width:1024px){
+  .hero-video-tile:nth-child(5),
+  .hero-video-tile:nth-child(6),
+  .hero-video-tile:nth-child(7){display:none}
+}
+@media (max-width:640px){
+  .hero-video-tile:nth-child(3),
+  .hero-video-tile:nth-child(4){display:none}
 }
 
 .hero-video-tile video{
@@ -435,6 +488,28 @@ h1,h2,h3,p{margin-top:0}
   display:block;
   object-fit:cover;
 }
+
+/* per-tile speaker toggle — appears on hover, click unlocks audio */
+.tile-vol{
+  position:absolute;
+  right:6px;
+  bottom:6px;
+  z-index:2;
+  width:26px;height:26px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:none;
+  border-radius:50%;
+  background:rgba(10,10,10,.62);
+  color:#fff;
+  cursor:pointer;
+  opacity:0;
+  transition:opacity var(--t) var(--ease),background var(--t) var(--ease);
+}
+.tile-vol svg{width:14px;height:14px}
+.hero-video-tile:hover .tile-vol{opacity:1}
+.tile-vol:hover{background:rgba(10,10,10,.85)}
 
 /* =========================================================
    Buttons
@@ -561,6 +636,200 @@ h1,h2,h3,p{margin-top:0}
 
 .section-heading p{font-size:.95rem;max-width:560px;margin-inline:auto}
 .section-heading.left p{margin-inline:0}
+
+/* =========================================================
+   Case studies
+   ========================================================= */
+.case-section{background:var(--bg)}
+
+.case-card{
+  max-width:1200px;
+  margin:0 auto;
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  background:var(--surface);
+  box-shadow:var(--shadow-sm);
+  transition:transform var(--t) var(--ease),border-color var(--t) var(--ease),box-shadow var(--t) var(--ease);
+}
+.case-card:hover{
+  transform:translateY(-2px);
+  border-color:var(--line-strong);
+  box-shadow:var(--shadow);
+}
+.case-card.open{transform:none}
+.case-card + .case-card{margin-top:clamp(14px,1.6vw,20px)}
+
+/* collapsed summary row — the whole strip is the toggle */
+.case-summary{
+  display:flex;
+  align-items:center;
+  gap:clamp(16px,3vw,36px);
+  width:100%;
+  padding:clamp(18px,2.6vw,28px) clamp(22px,3.4vw,44px);
+  border:none;
+  background:none;
+  font:inherit;
+  text-align:left;
+  color:inherit;
+  cursor:pointer;
+}
+.case-summary .role-label{margin-bottom:6px}
+
+/* headline numbers inside the collapsed strip — views leads, the rest support */
+.case-mini{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(24px,4vw,64px);
+}
+.case-mini strong{
+  display:block;
+  color:var(--ink-soft);
+  font-size:clamp(1rem,1.4vw,1.2rem);
+  font-weight:700;
+  letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;
+}
+.case-mini-lead strong{
+  color:var(--ink);
+  font-size:clamp(1.9rem,2.8vw,2.5rem);
+  line-height:1;
+}
+.case-mini span{
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:.72rem;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.case-toggle{
+  flex:none;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 18px;
+  border:1px solid var(--line-strong);
+  border-radius:var(--r-pill);
+  color:var(--ink);
+  font-size:.85rem;
+  font-weight:600;
+  white-space:nowrap;
+  transition:border-color var(--t-fast) var(--ease),background var(--t-fast) var(--ease);
+}
+.case-summary:hover .case-toggle{border-color:var(--ink)}
+.case-toggle svg{
+  width:14px;height:14px;flex:none;
+  transition:transform .5s var(--ease);
+}
+.case-card.open .case-toggle svg{transform:rotate(180deg)}
+
+/* expandable detail — 0fr → 1fr row so height animates smoothly */
+.case-detail{
+  display:grid;
+  grid-template-rows:0fr;
+  transition:grid-template-rows .6s var(--ease);
+}
+.case-card.open .case-detail{grid-template-rows:1fr}
+.case-detail-inner{min-height:0;overflow:hidden}
+
+.case-detail-body{
+  display:grid;
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  align-items:center;
+  gap:clamp(26px,4vw,56px);
+  margin:0 clamp(22px,3.4vw,44px);
+  padding:clamp(20px,3vw,32px) 0 clamp(24px,3.4vw,40px);
+  border-top:1px solid var(--line);
+}
+
+.case-client{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.case-client img{width:clamp(34px,3vw,42px);height:auto;flex:none}
+.case-client span{
+  font-family:Poppins,Outfit,Arial,sans-serif;
+  font-weight:600;
+  font-size:clamp(1.5rem,2.4vw,2rem);
+  letter-spacing:-.01em;
+  color:#141416;
+}
+
+.case-intro>p:not(.role-label):not(.case-period){
+  max-width:440px;
+  color:var(--muted);
+  font-size:.95rem;
+  line-height:1.7;
+}
+
+.case-quote{
+  margin:18px 0 0;
+  padding-left:16px;
+  border-left:2px solid var(--ink);
+}
+.case-quote p{
+  margin:0;
+  color:var(--ink-soft);
+  font-size:.95rem;
+  line-height:1.7;
+  font-style:italic;
+}
+.case-quote cite{
+  display:block;
+  margin-top:8px;
+  color:var(--muted);
+  font-size:.74rem;
+  font-weight:700;
+  font-style:normal;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.case-period{
+  margin:18px 0 0;
+  color:var(--muted);
+  font-size:.74rem;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.case-stats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+
+.case-stat{
+  padding:clamp(16px,1.8vw,22px);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  background:var(--surface-2);
+}
+
+.case-stat strong{
+  display:block;
+  color:var(--ink);
+  font-size:clamp(1.55rem,2.5vw,2.15rem);
+  font-weight:700;
+  letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;
+}
+
+.case-stat span{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:.76rem;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
 
 /* =========================================================
    About / founders
@@ -729,6 +998,16 @@ h1,h2,h3,p{margin-top:0}
   letter-spacing:-.01em;
 }
 
+/* Memo sets its wordmark in EightiesComeBack Black, lowercase */
+.tlogo-memo .tl-name,
+.case-client .memo-name{
+  font-family:'EightiesComeBack',Outfit,Arial,sans-serif;
+  font-weight:900;
+  text-transform:lowercase;
+  letter-spacing:-.025em;
+}
+.tlogo-memo{gap:9px}
+
 .demo-section{
   border-top:1px solid var(--line);
   border-bottom:1px solid var(--line);
@@ -762,6 +1041,18 @@ h1,h2,h3,p{margin-top:0}
   border:0;
   object-fit:cover;
 }
+
+.video-views{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin:0 0 10px;
+  color:var(--muted);
+  font-size:.82rem;
+  font-weight:600;
+  letter-spacing:.02em;
+}
+.video-views svg{width:15px;height:15px;flex:none}
 
 /* =========================================================
    Services
@@ -838,10 +1129,7 @@ h1,h2,h3,p{margin-top:0}
   align-items:flex-end;
   padding:130px clamp(18px,5vw,72px) 48px;
   color:var(--ink);
-  background:
-    radial-gradient(46% 60% at 22% -8%,rgba(190,160,235,.22),transparent 70%),
-    radial-gradient(46% 60% at 78% -8%,rgba(240,170,200,.2),transparent 70%),
-    var(--bg);
+  background:var(--bg);
   border-bottom:1px solid var(--line);
 }
 
@@ -1106,7 +1394,7 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
    Rendering performance — below-the-fold sections skip layout
    and paint until they approach the viewport
    ========================================================= */
-.about-section,.demo-section,.services-section,.cta-section,.trusted{
+.case-section,.about-section,.demo-section,.services-section,.cta-section,.trusted{
   content-visibility:auto;
   contain-intrinsic-size:auto 640px;
 }
@@ -1117,10 +1405,7 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
 .footer-wordmark{
   padding:clamp(42px,7vw,92px) clamp(14px,3vw,40px) clamp(34px,5vw,64px);
   text-align:center;
-  background:
-    radial-gradient(46% 62% at 35% 50%,rgba(190,160,235,.16),transparent 70%),
-    radial-gradient(46% 62% at 65% 50%,rgba(240,170,200,.14),transparent 70%),
-    var(--bg);
+  background:var(--bg);
   overflow:hidden;
   user-select:none;
 }
@@ -1178,7 +1463,6 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
     scroll-behavior:auto!important;
     transition-duration:.01ms!important;
   }
-  .hero-video-row-left,.hero-video-row-right{animation:none}
   .reveal{opacity:1;transform:none}
 }
 
@@ -1214,7 +1498,7 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
     align-items:stretch;
     gap:4px;
     padding:10px;
-    background:rgba(255,254,251,.96);
+    background:rgba(255,255,255,.96);
     border:1px solid var(--line);
     border-radius:var(--r);
     box-shadow:var(--shadow-lg);
@@ -1234,7 +1518,12 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
   /* the Apply pill stays in the bar next to the menu button */
   .nav-cta{padding:9px 18px;font-size:.86rem}
 
-  .founder-grid,.apply-choice-grid,.application-grid,.stats-band{grid-template-columns:1fr}
+  .founder-grid,.apply-choice-grid,.application-grid,.stats-band,.case-detail-body{grid-template-columns:1fr}
+
+  /* case summary wraps: client + toggle on the first line, numbers below */
+  .case-summary{flex-wrap:wrap}
+  .case-summary-id{flex:1}
+  .case-mini{flex:1 1 100%;order:3;justify-content:flex-start;margin-top:4px}
 
   /* stacked dark panel: dividers run horizontally */
   .stats-band{gap:22px}
@@ -1256,9 +1545,10 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
 
   .hero-copy{padding:100px clamp(18px,5.5vw,28px) clamp(28px,3.8vh,40px)}
   .hero-text{width:auto;max-width:none}
-  .hero-video-wall{padding: 30px 0 30px}
-  .hero-video-row{gap:14px}
-  .hero-video-tile{height:clamp(272px,38vh,340px)}
+
+  /* the scatter sits closer to the copy on smaller screens — fade the
+     tiles back so the headline always stays readable */
+  .hero-video-tile{width:calc(clamp(76px,13vw,120px) * var(--s,1));opacity:.55}
 
   .cta-section,footer{flex-direction:column;align-items:flex-start}
 
@@ -1269,6 +1559,8 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
 /* small tablets / large phones: remaining grids stack, tighter spacing */
 @media (max-width:680px){
   .video-grid,.service-list{grid-template-columns:1fr}
+  .case-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .case-stat strong{font-size:clamp(1.35rem,6vw,1.7rem)}
   .section{padding:clamp(56px,12vw,82px) clamp(16px,5vw,30px)}
   .cta-section{margin:clamp(20px,5vw,40px) clamp(16px,5vw,30px)}
 }
@@ -1279,7 +1571,7 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
   .brand span:last-child{max-width:175px;white-space:normal;line-height:1.1}
   .brand-logo{width:38px;height:38px}
 
-  .hero h1{font-size:clamp(1.8rem,8vw,2.4rem)}
+  .hero h1{font-size:clamp(2.3rem,11vw,3.2rem)}
   .hero p:not(.eyebrow),.apply-hero p:not(.eyebrow),.form-hero p:not(.eyebrow),.form-intro p:not(.eyebrow){font-size:.92rem;line-height:1.6}
   .eyebrow{font-size:.64rem;margin-bottom:12px}
 
@@ -1301,7 +1593,7 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
   .service-list article{min-height:0}
   .service-list span{width:42px;height:42px;margin-bottom:22px}
 
-  .hero-video-tile{height:clamp(250px,34vh,300px)}
+  .hero-video-tile{width:calc(clamp(64px,17vw,92px) * var(--s,1));opacity:.5}
 
   .footer-links{gap:10px}
   footer{gap:16px}
