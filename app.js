@@ -235,19 +235,17 @@ if ("IntersectionObserver" in window) {
 }
 
 /* =========================================================
-   Case-study card — click to expand, stats count up on open
+   Case-study cards — every client card expands the same way,
+   and its stats count up the first time it opens
    ========================================================= */
-const caseCard = document.querySelector(".case-card");
-const caseSummary = document.querySelector(".case-summary");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-let caseCountersRan = false;
 
-const runCaseCounters = () => {
-  if (caseCountersRan) return;
-  caseCountersRan = true;
+const runCaseCounters = (card) => {
+  if (card.dataset.counted) return;
+  card.dataset.counted = "1";
   if (reducedMotion) return; // final values are already in the markup
 
-  document.querySelectorAll(".case-stat strong[data-count]").forEach((el) => {
+  card.querySelectorAll(".case-stat strong[data-count]").forEach((el) => {
     const decimals = Number(el.dataset.decimals || 0);
     const target = parseFloat(el.dataset.count);
     const started = performance.now();
@@ -272,13 +270,15 @@ const runCaseCounters = () => {
   });
 };
 
-if (caseCard && caseSummary) {
-  caseSummary.addEventListener("click", () => {
-    const open = caseCard.classList.toggle("open");
-    caseSummary.setAttribute("aria-expanded", String(open));
-    if (open) runCaseCounters();
+document.querySelectorAll(".case-card").forEach((card) => {
+  const summary = card.querySelector(".case-summary");
+  if (!summary) return;
+  summary.addEventListener("click", () => {
+    const open = card.classList.toggle("open");
+    summary.setAttribute("aria-expanded", String(open));
+    if (open) runCaseCounters(card);
   });
-}
+});
 
 /* =========================================================
    Hero scatter — tiles sit tilted around the copy (positions
@@ -300,6 +300,7 @@ if (heroEl && heroOrbit) {
   // the visitor interacts, so the first hovers fall back to muted and
   // the toggle (or any click on the page) unlocks it.
   let heroSoundOn = true;
+  const volSyncs = [];
   const ICON_MUTED =
     '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5L11 19V5Z" fill="currentColor"/><path d="m15.5 9.5 5 5m0-5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
   const ICON_SOUND =
@@ -317,6 +318,7 @@ if (heroEl && heroOrbit) {
       vol.setAttribute("aria-label", video.muted ? "unmute video" : "mute video");
     };
     syncVol();
+    volSyncs.push(syncVol);
     tile.appendChild(vol);
 
     vol.addEventListener("click", (e) => {
@@ -339,6 +341,21 @@ if (heroEl && heroOrbit) {
     });
     tile.addEventListener("mouseleave", () => video.pause());
   });
+
+
+  // The first real click anywhere is the gesture that unlocks audio.
+  // If a preview is playing muted only because the browser refused
+  // sound before that gesture, switch its audio back on immediately.
+  const unlockAudio = (e) => {
+    if (e.target.closest && e.target.closest(".tile-vol")) return; // speaker button manages itself
+    document.removeEventListener("pointerdown", unlockAudio, true);
+    if (!heroSoundOn) return;
+    heroOrbit.querySelectorAll("video").forEach((video) => {
+      if (!video.paused && video.muted) video.muted = false;
+    });
+    volSyncs.forEach((sync) => sync());
+  };
+  document.addEventListener("pointerdown", unlockAudio, true);
 
   if (!reduceMotion) {
     // Scrolling away fades the tiles (not the copy), each at its own

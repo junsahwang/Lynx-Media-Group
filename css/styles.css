@@ -432,7 +432,9 @@ h1,h2,h3,p{margin-top:0}
   position:absolute;
   left:var(--x,50%);
   top:var(--y,50%);
-  width:calc(clamp(96px,10.5vw,158px) * var(--s,1));
+  /* scales with the viewport all the way up — on big monitors the
+     tiles stay proportional instead of leaving dead space */
+  width:calc(clamp(96px,10.5vw,300px) * var(--s,1));
   aspect-ratio:10/16;
   transform:translate(-50%,-50%) translateY(var(--drift,0px)) rotate(var(--rot,0deg));
   opacity:var(--fade,1);
@@ -461,26 +463,40 @@ h1,h2,h3,p{margin-top:0}
   filter:saturate(.5);
 }
 
-/* six tiles in a calm symmetric frame around the copy — pulled well
-   inside the edges so nothing clips, gentle alternating tilts */
-.hero-video-tile:nth-child(1){--x:18%;--y:26%;--rot:-4deg;--s:.95}
-.hero-video-tile:nth-child(2){--x:85%;--y:26%;--rot:4deg;--s:.95}
-.hero-video-tile:nth-child(3){--x:11%;--y:64%;--rot:3deg;--s:1}
-.hero-video-tile:nth-child(4){--x:89%;--y:64%;--rot:-3deg;--s:1}
-.hero-video-tile:nth-child(5){--x:30%;--y:81%;--rot:-13deg;--s:.9}
-.hero-video-tile:nth-child(6){--x:70%;--y:81%;--rot:13deg;--s:.9}
+/* seven tiles in a calm frame around the copy — only the tilt angles
+   vary (unmatched magnitudes) so it reads casual without losing order */
+.hero-video-tile:nth-child(1){--x:18%;--y:26%;--rot:-7deg;--s:.95}
+.hero-video-tile:nth-child(2){--x:85%;--y:26%;--rot:3deg;--s:.95}
+.hero-video-tile:nth-child(3){--x:11%;--y:64%;--rot:5deg;--s:1}
+.hero-video-tile:nth-child(4){--x:89%;--y:64%;--rot:-2deg;--s:1}
+.hero-video-tile:nth-child(5){--x:30%;--y:81%;--rot:-11deg;--s:.9}
+.hero-video-tile:nth-child(6){--x:70%;--y:81%;--rot:8deg;--s:.9}
 .hero-video-tile:nth-child(7){--x:50%;--y:25%;--rot:2deg;--s:.8}
 .hero-video-tile:nth-child(n+8){display:none}
 
-/* fewer tiles as the viewport narrows so the scatter never crowds */
+
+/* the scatter sheds tiles gradually as the viewport narrows:
+   7 on desktop → 6 on tablets → 4 on phones — never suddenly bare */
 @media (max-width:1024px){
-  .hero-video-tile:nth-child(5),
-  .hero-video-tile:nth-child(6),
+  /* tablets: drop only the top-center tile and pull the six remaining
+     tiles inward so they frame the copy instead of hugging the edges */
   .hero-video-tile:nth-child(7){display:none}
+  .hero-video-tile:nth-child(1){--x:22%;--y:24%}
+  .hero-video-tile:nth-child(2){--x:78%;--y:24%}
+  .hero-video-tile:nth-child(3){--x:13%;--y:62%}
+  .hero-video-tile:nth-child(4){--x:87%;--y:62%}
+  .hero-video-tile:nth-child(5){--x:29%;--y:85%}
+  .hero-video-tile:nth-child(6){--x:71%;--y:85%}
 }
 @media (max-width:640px){
+  /* phones: four tiles anchor the corners — same size, but each with
+     its own tilt so the frame stays composed without feeling mirrored */
+  .hero-video-tile:nth-child(1){--x:24%;--y:22%;--rot:-7deg;--s:1}
+  .hero-video-tile:nth-child(2){--x:76%;--y:22%;--rot:4deg;--s:1}
   .hero-video-tile:nth-child(3),
   .hero-video-tile:nth-child(4){display:none}
+  .hero-video-tile:nth-child(5){--x:27%;--y:88%;--rot:5deg;--s:1;display:block}
+  .hero-video-tile:nth-child(6){--x:73%;--y:88%;--rot:-8deg;--s:1;display:block}
 }
 
 .hero-video-tile video{
@@ -1007,6 +1023,35 @@ h1,h2,h3,p{margin-top:0}
   letter-spacing:-.025em;
 }
 .tlogo-memo{gap:9px}
+
+/* social proof tucked into the apply pages' intro column —
+   client logos on the business form, creator faces on the creator form */
+.intro-proof{margin-top:clamp(28px,4vw,46px)}
+.proof-label{
+  margin:0 0 16px;
+  color:var(--muted);
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.proof-logos{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:16px 28px;
+}
+.proof-logos .tlogo{opacity:.85}
+.proof-avatars{display:flex;align-items:center}
+.proof-avatars img{
+  width:clamp(40px,3.4vw,50px);
+  height:clamp(40px,3.4vw,50px);
+  border-radius:50%;
+  object-fit:cover;
+  border:2.5px solid var(--bg);
+  box-shadow:var(--shadow-sm);
+}
+.proof-avatars img+img{margin-left:-11px}
 
 .demo-section{
   border-top:1px solid var(--line);
@@ -1547,8 +1592,8 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
   .hero-text{width:auto;max-width:none}
 
   /* the scatter sits closer to the copy on smaller screens — fade the
-     tiles back so the headline always stays readable */
-  .hero-video-tile{width:calc(clamp(76px,13vw,120px) * var(--s,1));opacity:.55}
+     tiles back a touch so the headline always stays readable */
+  .hero-video-tile{width:calc(clamp(80px,14vw,124px) * var(--s,1));opacity:.7}
 
   .cta-section,footer{flex-direction:column;align-items:flex-start}
 
@@ -1593,9 +1638,13 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
   .service-list article{min-height:0}
   .service-list span{width:42px;height:42px;margin-bottom:22px}
 
-  .hero-video-tile{width:calc(clamp(64px,17vw,92px) * var(--s,1));opacity:.5}
-
   .footer-links{gap:10px}
   footer{gap:16px}
   .footer-brand small{font-size:.76rem}
+}
+
+/* phones: the corner tiles read as content, not decoration — bigger
+   and nearly full strength, since they sit clear of the copy */
+@media (max-width:640px){
+  .hero-video-tile{width:calc(clamp(92px,25vw,128px) * var(--s,1));opacity:.85}
 }
