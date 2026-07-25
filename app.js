@@ -357,7 +357,11 @@ if (heroEl && heroOrbit) {
   };
   document.addEventListener("pointerdown", unlockAudio, true);
 
-  if (!reduceMotion) {
+  // Skip the scroll-driven drift on touch devices: phones scroll the
+  // hero away quickly anyway, and dropping the per-frame style writes
+  // keeps mobile scrolling smooth.
+  const coarsePointer = window.matchMedia("(pointer:coarse)").matches;
+  if (!reduceMotion && !coarsePointer) {
     // Scrolling away fades the tiles (not the copy), each at its own
     // pace — faster tiles vanish first while slower ones linger, and
     // every tile drifts upward at a different rate as it goes.

@@ -445,6 +445,7 @@ h1,h2,h3,p{margin-top:0}
   box-shadow:var(--shadow-sm);
   pointer-events:auto;
   cursor:pointer;
+  will-change:transform,opacity;
   transition:transform var(--t) var(--ease),opacity var(--t) var(--ease),
              filter var(--t) var(--ease),box-shadow var(--t) var(--ease);
 }
@@ -479,7 +480,12 @@ h1,h2,h3,p{margin-top:0}
    7 on desktop → 6 on tablets → 4 on phones — never suddenly bare */
 @media (max-width:1024px){
   /* tablets: drop only the top-center tile and pull the six remaining
-     tiles inward so they frame the copy instead of hugging the edges */
+     tiles inward so they frame the copy instead of hugging the edges.
+     The active tile grows less here — the frame is tighter, and a big
+     zoom would push the clip into the headline and paragraph text */
+  .hero-video-tile:hover{
+    transform:translate(-50%,-50%) translateY(var(--drift,0px)) rotate(0deg) scale(1.12);
+  }
   .hero-video-tile:nth-child(7){display:none}
   .hero-video-tile:nth-child(1){--x:22%;--y:24%}
   .hero-video-tile:nth-child(2){--x:78%;--y:24%}
@@ -489,14 +495,11 @@ h1,h2,h3,p{margin-top:0}
   .hero-video-tile:nth-child(6){--x:71%;--y:85%}
 }
 @media (max-width:640px){
-  /* phones: four tiles anchor the corners — same size, but each with
-     its own tilt so the frame stays composed without feeling mirrored */
-  .hero-video-tile:nth-child(1){--x:24%;--y:22%;--rot:-7deg;--s:1}
-  .hero-video-tile:nth-child(2){--x:76%;--y:22%;--rot:4deg;--s:1}
-  .hero-video-tile:nth-child(3),
-  .hero-video-tile:nth-child(4){display:none}
-  .hero-video-tile:nth-child(5){--x:27%;--y:88%;--rot:5deg;--s:1;display:block}
-  .hero-video-tile:nth-child(6){--x:73%;--y:88%;--rot:-8deg;--s:1;display:block}
+  /* phones: no scatter — the hero is just the copy, compact and
+     comfortably spaced instead of a mostly-empty full screen */
+  .hero-video-tile{display:none}
+  .hero{min-height:0}
+  .hero-copy{padding:122px clamp(18px,5.5vw,28px) 48px}
 }
 
 .hero-video-tile video{
@@ -1641,10 +1644,4 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
   .footer-links{gap:10px}
   footer{gap:16px}
   .footer-brand small{font-size:.76rem}
-}
-
-/* phones: the corner tiles read as content, not decoration — bigger
-   and nearly full strength, since they sit clear of the copy */
-@media (max-width:640px){
-  .hero-video-tile{width:calc(clamp(92px,25vw,128px) * var(--s,1));opacity:.85}
 }
