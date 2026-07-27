@@ -124,6 +124,7 @@ document.querySelectorAll(".apply-form").forEach((form) => {
 
     const payload = {
       applicationType,
+      source: "lynx-site-v1", // must match the endpoint's expected token
       submittedAt: new Date().toISOString(),
       page: window.location.href,
       ...Object.fromEntries(new FormData(form).entries())

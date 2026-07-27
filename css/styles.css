@@ -1860,7 +1860,11 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
   position:absolute;
   left:0;top:0;
   color:var(--ink);
-  -webkit-text-stroke:0;
+  /* same stroke geometry as the base layer, but in ink — the filled
+     letters fully cover the gray outline underneath instead of
+     showing it as a fuzzy halo */
+  -webkit-text-stroke:2px var(--ink);
+  paint-order:stroke fill;
   clip-path:inset(-5% calc(100% - var(--fill,0%)) -10% 0);
 }
 
