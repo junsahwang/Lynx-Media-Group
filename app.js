@@ -114,8 +114,8 @@ document.querySelectorAll(".apply-form").forEach((form) => {
     // it get a fake success and their submission is dropped
     const honeypot = form.querySelector("input[name='company_url_confirm']");
     if (honeypot && honeypot.value) {
-      form.reset();
-      showFormMessage(form, "Application submitted. Thank you!");
+      // fake success — bots get the same redirect real visitors do
+      window.location.href = "thank-you.html";
       return;
     }
 
@@ -148,7 +148,9 @@ document.querySelectorAll(".apply-form").forEach((form) => {
       }
 
       form.reset();
-      showFormMessage(form, "Application submitted. Thank you!");
+      window.location.href =
+        "thank-you.html?type=" + encodeURIComponent(applicationType || "");
+      return;
     } catch (error) {
       showFormMessage(
         form,
@@ -166,6 +168,20 @@ document.querySelectorAll(".apply-form").forEach((form) => {
     }
   });
 });
+
+/* =========================================================
+   Thank-you page — show only the section that matches the
+   application the visitor just submitted (?type=…)
+   ========================================================= */
+const thanksPage = document.querySelector("[data-thanks]");
+if (thanksPage) {
+  const thanksType = new URLSearchParams(window.location.search).get("type");
+  if (thanksType === "creator" || thanksType === "business") {
+    thanksPage.querySelectorAll("[data-thanks-for]").forEach((section) => {
+      if (section.dataset.thanksFor !== thanksType) section.remove();
+    });
+  }
+}
 
 /* =========================================================
    Scrollspy — underline the nav link for the section in view
@@ -542,4 +558,30 @@ if (trustedRow) {
 }
 
 /* Hero clips only play while hovered (see the scatter block above). */
+
+/* Demo posters attach only when the demo section approaches the
+   viewport — first paint never waits on below-the-fold images. */
+const demoVideos = document.querySelectorAll(".video-frame video[data-poster]");
+if (demoVideos.length) {
+  const attach = (video) => {
+    video.poster = video.dataset.poster;
+    video.removeAttribute("data-poster");
+  };
+  if ("IntersectionObserver" in window) {
+    const posterObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            attach(entry.target);
+            posterObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "800px 0px" }
+    );
+    demoVideos.forEach((video) => posterObserver.observe(video));
+  } else {
+    demoVideos.forEach(attach);
+  }
+}
 
