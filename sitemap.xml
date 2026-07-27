@@ -16,4 +16,32 @@
     <loc>https://lynxmediagroup.org/creator-apply.html</loc>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://lynxmediagroup.org/blog.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lynxmediagroup.org/what-is-ugc.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lynxmediagroup.org/ugc-for-brands.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lynxmediagroup.org/ugc-for-creators.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lynxmediagroup.org/how-short-form-reach-works.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lynxmediagroup.org/why-ugc-works.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lynxmediagroup.org/how-it-works.html</loc>
+    <priority>0.7</priority>
+  </url>
 </urlset>

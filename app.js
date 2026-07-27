@@ -198,11 +198,15 @@ if (spyLinks.size && "IntersectionObserver" in window) {
    Reveal on scroll, with per-group stagger
    ========================================================= */
 const revealItems = document.querySelectorAll(
-  ".reveal, .about-card, .video-card, .service-list article, .apply-choice, .application-panel, .stats-band > div, .case-stat"
+  ".reveal, .about-card, .video-card, .service-list article, .apply-choice, .application-panel, .stats-band > div, .case-stat, .qa"
 );
 
 revealItems.forEach((item) => {
   item.classList.add("reveal");
+
+  // Q&A articles reveal with zero stagger — long lists shouldn't
+  // make the reader wait for a wave animation
+  if (item.classList.contains("qa")) return;
 
   // stagger siblings inside grids for a wave-like entrance
   // (skip top-level sections so each section reveals promptly on scroll)
@@ -217,21 +221,131 @@ revealItems.forEach((item) => {
 });
 
 if ("IntersectionObserver" in window) {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
-  );
+  const onReveal = (entries, obs) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        obs.unobserve(entry.target);
+      }
+    });
+  };
 
-  revealItems.forEach((item) => observer.observe(item));
+  const observer = new IntersectionObserver(onReveal, {
+    threshold: 0.12,
+    rootMargin: "0px 0px -8% 0px",
+  });
+
+  // Q&A articles pre-reveal half a viewport ahead of the scroll, so
+  // the reader never watches them fade in
+  const qaObserver = new IntersectionObserver(onReveal, {
+    threshold: 0,
+    rootMargin: "0px 0px 50% 0px",
+  });
+
+  revealItems.forEach((item) =>
+    (item.classList.contains("qa") ? qaObserver : observer).observe(item)
+  );
 } else {
   revealItems.forEach((item) => item.classList.add("visible"));
+}
+
+/* =========================================================
+   How-it-works walkthrough — each step plays its animation
+   (and counts up any numbers) when scrolled into view
+   ========================================================= */
+const hiwSteps = document.querySelectorAll(".hiw-step");
+if (hiwSteps.length) {
+  const hiwReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const runHiwCounters = (step) => {
+    if (hiwReduced) return; // final values are already in the markup
+    step.querySelectorAll("strong[data-hiw-count]").forEach((el) => {
+      const decimals = Number(el.dataset.decimals || 0);
+      const target = parseFloat(el.dataset.hiwCount);
+      const started = performance.now();
+      const duration = 1400;
+      const tick = (now) => {
+        const progress = Math.min((now - started) / duration, 1);
+        const value = target * (1 - Math.pow(1 - progress, 4));
+        el.textContent =
+          (el.dataset.prefix || "") +
+          value.toLocaleString("en-US", {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals,
+          }) +
+          (el.dataset.suffix || "");
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  };
+
+  if ("IntersectionObserver" in window && !hiwReduced) {
+    const hiwObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // .play only gates the ambient ring pulses — the stage
+            // sequences and counters are driven by --p / the scroll
+            entry.target.classList.add("play");
+            hiwObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.35 }
+    );
+    hiwSteps.forEach((step) => hiwObserver.observe(step));
+  } else {
+    hiwSteps.forEach((step) => {
+      step.classList.add("play");
+      step.style.setProperty("--p", "1");
+      step.dataset.hiwCounted = "1"; // markup already holds final values
+    });
+  }
+
+  // Scroll driver: the spine line draws down the page (--flow) and
+  // each step's copy and stage drift in at their own rate (--p) as
+  // the step travels the viewport — the walkthrough moves WITH the
+  // scroll instead of just appearing.
+  const hiwFlow = document.querySelector(".hiw-flow");
+  if (hiwFlow && !hiwReduced) {
+    const clamp01 = (v) => Math.min(1, Math.max(0, v));
+    let hiwTicking = false;
+
+    const hiwScroll = () => {
+      const vh = window.innerHeight;
+      const flowRect = hiwFlow.getBoundingClientRect();
+      // the dark line reaches whatever point of the flow sits at 60% of
+      // the viewport — it "arrives" at each step as you reach it
+      hiwFlow.style.setProperty(
+        "--flow",
+        clamp01((vh * 0.6 - flowRect.top) / flowRect.height).toFixed(4)
+      );
+      hiwSteps.forEach((step) => {
+        const r = step.getBoundingClientRect();
+        const p = clamp01((vh * 0.9 - r.top) / (r.height * 0.9));
+        step.style.setProperty("--p", p.toFixed(4));
+        // numbers start counting once the step is well in view
+        if (p > 0.55 && !step.dataset.hiwCounted) {
+          step.dataset.hiwCounted = "1";
+          runHiwCounters(step);
+        }
+      });
+      hiwTicking = false;
+    };
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!hiwTicking) {
+          hiwTicking = true;
+          requestAnimationFrame(hiwScroll);
+        }
+      },
+      { passive: true }
+    );
+    hiwScroll();
+  }
 }
 
 /* =========================================================
@@ -290,6 +404,20 @@ const heroOrbit = document.querySelector(".hero-orbit");
 
 if (heroEl && heroOrbit) {
   const heroCopy = heroEl.querySelector(".hero-copy");
+
+  // Posters live in data-poster and are only attached on screens that
+  // actually show the scatter — phones (tiles hidden ≤1024px) skip
+  // ~350KB of images they would never render.
+  const scatterMQ = window.matchMedia("(min-width:1025px)");
+  const attachPosters = () => {
+    if (!scatterMQ.matches) return;
+    heroOrbit.querySelectorAll("video[data-poster]").forEach((video) => {
+      video.poster = video.dataset.poster;
+      video.removeAttribute("data-poster");
+    });
+  };
+  attachPosters();
+  if (scatterMQ.addEventListener) scatterMQ.addEventListener("change", attachPosters);
 
   // Hover previews play muted — browsers refuse audible playback until
   // the visitor has clicked something, so sound can't start on hover

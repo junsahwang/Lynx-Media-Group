@@ -472,34 +472,24 @@ h1,h2,h3,p{margin-top:0}
 .hero-video-tile:nth-child(4){--x:89%;--y:64%;--rot:-2deg;--s:1}
 .hero-video-tile:nth-child(5){--x:30%;--y:81%;--rot:-11deg;--s:.9}
 .hero-video-tile:nth-child(6){--x:70%;--y:81%;--rot:8deg;--s:.9}
+
+/* smaller laptops (below the ~15" MacBook width): the hero is shorter,
+   so the bottom pair slides down and outward to stay clear of the CTAs */
+@media (min-width:1025px) and (max-width:1500px){
+  .hero-video-tile:nth-child(5){--x:25%;--y:88%}
+  .hero-video-tile:nth-child(6){--x:75%;--y:88%}
+}
 .hero-video-tile:nth-child(7){--x:50%;--y:25%;--rot:2deg;--s:.8}
 .hero-video-tile:nth-child(n+8){display:none}
 
 
-/* the scatter sheds tiles gradually as the viewport narrows:
-   7 on desktop → 6 on tablets → 4 on phones — never suddenly bare */
+/* the scatter is a desktop-only feature: below 1024px there isn't
+   room to frame the copy without crowding it, so the hero becomes
+   just the copy — compact and comfortably spaced */
 @media (max-width:1024px){
-  /* tablets: drop only the top-center tile and pull the six remaining
-     tiles inward so they frame the copy instead of hugging the edges.
-     The active tile grows less here — the frame is tighter, and a big
-     zoom would push the clip into the headline and paragraph text */
-  .hero-video-tile:hover{
-    transform:translate(-50%,-50%) translateY(var(--drift,0px)) rotate(0deg) scale(1.12);
-  }
-  .hero-video-tile:nth-child(7){display:none}
-  .hero-video-tile:nth-child(1){--x:22%;--y:24%}
-  .hero-video-tile:nth-child(2){--x:78%;--y:24%}
-  .hero-video-tile:nth-child(3){--x:13%;--y:62%}
-  .hero-video-tile:nth-child(4){--x:87%;--y:62%}
-  .hero-video-tile:nth-child(5){--x:29%;--y:85%}
-  .hero-video-tile:nth-child(6){--x:71%;--y:85%}
-}
-@media (max-width:640px){
-  /* phones: no scatter — the hero is just the copy, compact and
-     comfortably spaced instead of a mostly-empty full screen */
   .hero-video-tile{display:none}
   .hero{min-height:0}
-  .hero-copy{padding:122px clamp(18px,5.5vw,28px) 48px}
+  .hero-copy{padding:126px clamp(18px,5.5vw,28px) 52px}
 }
 
 .hero-video-tile video{
@@ -564,6 +554,375 @@ h1,h2,h3,p{margin-top:0}
   transform:translateY(-3px) scale(.99);
 }
 .footer-links a:active{transform:scale(.9)}
+
+/* text links in the footer (e.g. Blog) — pill instead of icon circle */
+.footer-links a.footer-page-link{
+  width:auto;
+  padding:0 20px;
+  border-radius:999px;
+  font-weight:600;
+  font-size:.86rem;
+  color:inherit;
+}
+
+/* blog Q&A list */
+.qa-list{
+  max-width:860px;
+  margin:0 auto;
+  padding:clamp(18px,3vw,34px) clamp(16px,5vw,30px) clamp(64px,9vw,110px);
+  display:grid;
+  gap:clamp(26px,4vw,40px);
+}
+.qa{border-top:1px solid var(--line);padding-top:clamp(22px,3vw,32px)}
+.qa h2{
+  margin:0 0 12px;
+  font-size:clamp(1.12rem,2vw,1.4rem);
+  letter-spacing:-.01em;
+}
+.qa p{margin:0;color:var(--muted);line-height:1.7}
+.qa a{color:inherit;font-weight:600}
+
+/* educational guide pages (the UGC learning cluster) */
+.guide-body{
+  max-width:760px;
+  margin:0 auto;
+  padding:clamp(10px,2vw,24px) clamp(16px,5vw,30px) clamp(30px,4vw,54px);
+}
+.guide-body h2{
+  margin:clamp(30px,4vw,44px) 0 12px;
+  font-size:clamp(1.2rem,2.2vw,1.5rem);
+  letter-spacing:-.01em;
+}
+.guide-body p{margin:0 0 14px;color:var(--muted);line-height:1.75}
+.guide-body ul{margin:0 0 14px;padding-left:22px;color:var(--muted);line-height:1.75}
+.guide-body li{margin-bottom:6px}
+.guide-body a{color:inherit;font-weight:600}
+.guide-lede{font-size:1.05rem}
+
+/* =========================================================
+   How-it-works walkthrough — each step animates when scrolled
+   into view (app.js adds .play)
+   ========================================================= */
+.hiw-sub{margin:14px auto 0;max-width:520px;color:var(--muted);line-height:1.6}
+
+/* founder-explainer placeholder video + scroll invitation */
+.hiw-video-wrap{
+  max-width:820px;
+  margin:0 auto;
+  padding:0 clamp(16px,5vw,30px) clamp(24px,4vw,48px);
+  text-align:center;
+}
+.hiw-video{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  aspect-ratio:16/9;
+  border:1.5px dashed var(--line-strong);
+  border-radius:var(--r);
+  background:var(--surface-2);
+}
+.ph-play{
+  width:64px;height:64px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:var(--panel);
+  color:var(--panel-ink);
+}
+.ph-play svg{width:24px;height:24px}
+.hiw-video p{margin:0}
+.hiw-video strong{display:block;margin-bottom:4px}
+.hiw-video span{color:var(--muted);font-size:.86rem}
+.hiw-scroll-cue{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  margin:26px 0 0;
+  color:var(--muted);
+  font-size:.86rem;
+  font-weight:600;
+}
+.hiw-scroll-cue svg{width:18px;height:18px;animation:hiw-cue-bounce 1.7s var(--ease) infinite}
+@keyframes hiw-cue-bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(7px)}
+}
+
+/* the flow spine: a faint track down the middle of the walkthrough,
+   with a darker line that draws itself as you scroll — each step is a
+   node on the line, so one step visibly leads to the next */
+.hiw-flow{position:relative}
+.hiw-flow::before,
+.hiw-flow::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:0;
+  width:2px;
+  height:100%;
+  transform:translateX(-50%);
+  background:rgba(20,20,22,.09);
+  pointer-events:none;
+}
+.hiw-flow::after{
+  background:rgba(20,20,22,.42);
+  transform:translateX(-50%) scaleY(var(--flow,0));
+  transform-origin:top center;
+}
+.hiw-step::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:13px;height:13px;
+  border-radius:50%;
+  background:var(--bg);
+  border:2px solid rgba(20,20,22,.35);
+  transform:translate(-50%,-50%);
+  z-index:1;
+  transition:background var(--t) var(--ease),border-color var(--t) var(--ease);
+}
+.hiw-step.play::before{background:var(--panel);border-color:var(--panel)}
+
+.hiw-step{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(26px,4.5vw,64px);
+  align-items:center;
+  max-width:1080px;
+  margin:0 auto;
+  padding:clamp(44px,8vh,104px) clamp(16px,5vw,30px);
+}
+.hiw-step:nth-of-type(even) .hiw-copy{order:2}
+
+/* scroll parallax: the copy and the stage drift at different rates
+   (--p is set per-step by app.js as the step travels the viewport) */
+.hiw-stage{transform:translateY(calc((1 - var(--p,1)) * 46px))}
+.hiw-copy{transform:translateY(calc((1 - var(--p,1)) * 18px))}
+.hiw-num{
+  display:block;
+  margin-bottom:10px;
+  font-size:.74rem;
+  font-weight:700;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.hiw-copy h2{margin:0 0 12px;font-size:clamp(1.4rem,2.6vw,2rem);letter-spacing:-.015em}
+.hiw-copy p{margin:0;color:var(--muted);line-height:1.75}
+
+.hiw-stage{
+  position:relative;
+  width:100%;
+  aspect-ratio:4/3;
+  display:grid;
+  place-items:center;
+}
+
+/* step 1: the brand, pulsing with untapped attention */
+.brand-node{
+  width:118px;height:118px;
+  display:grid;place-items:center;
+  border-radius:26px;
+  background:var(--panel);
+  color:var(--panel-ink);
+  font-weight:700;
+  text-align:center;
+  line-height:1.25;
+  z-index:2;
+}
+.stage-brand i,.stage-audition i{
+  position:absolute;
+  left:50%;top:50%;
+  width:118px;height:118px;
+  margin:-59px 0 0 -59px;
+  border:1.5px solid rgba(20,20,22,.3);
+  border-radius:26px;
+  opacity:0;
+}
+.play .stage-brand i,.hiw-step.play .stage-audition i{animation:hiw-ring 2.4s ease-out infinite}
+.stage-brand i:nth-child(2),.stage-audition i:nth-child(2){animation-delay:.8s}
+.stage-brand i:nth-child(3),.stage-audition i:nth-child(3){animation-delay:1.6s}
+@keyframes hiw-ring{
+  from{transform:scale(1);opacity:.65}
+  to{transform:scale(2.1);opacity:0}
+}
+
+/* step 2: spokes grow out from the brand and a creator lands on the
+   end of each one. Spokes and avatars share the same --a angle and
+   --r radius, so they always meet exactly. */
+.brand-node-sm{width:96px;height:96px;font-size:.86rem;z-index:2}
+.stage-match{--r:clamp(105px,11vw,150px)}
+/* every stage element scrubs with the scroll: --p (set by app.js)
+   runs 0→1 as the step travels the viewport, and each element starts
+   at its own offset --d — so the sequence plays WHILE you scroll and
+   can never finish off-screen before you look */
+.stage-match .spoke{
+  position:absolute;
+  left:50%;top:50%;
+  width:var(--r);
+  height:1.5px;
+  background:rgba(20,20,22,.25);
+  transform-origin:0 50%;
+  transform:rotate(var(--a)) scaleX(clamp(0, calc((var(--p,0) - var(--d,0)) * 3), 1));
+}
+.stage-match .spoke:nth-of-type(1){--d:.05}
+.stage-match .spoke:nth-of-type(2){--d:.11}
+.stage-match .spoke:nth-of-type(3){--d:.17}
+.stage-match .spoke:nth-of-type(4){--d:.23}
+.stage-match .spoke:nth-of-type(5){--d:.29}
+.match-avatar{
+  position:absolute;
+  left:50%;top:50%;
+  width:58px;height:58px;
+  margin:-29px 0 0 -29px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2.5px solid var(--bg);
+  box-shadow:var(--shadow-sm);
+  transform:rotate(var(--a)) translateX(var(--r)) rotate(calc(-1 * var(--a)))
+            scale(clamp(0, calc((var(--p,0) - var(--d,0)) * 4), 1));
+  z-index:1;
+}
+.match-avatar:nth-of-type(1){--d:.23}
+.match-avatar:nth-of-type(2){--d:.29}
+.match-avatar:nth-of-type(3){--d:.35}
+.match-avatar:nth-of-type(4){--d:.41}
+.match-avatar:nth-of-type(5){--d:.47}
+/* angles live here, not in style attributes — the CSP blocks inline styles */
+.stage-match .spoke:nth-of-type(1),.stage-match .match-avatar:nth-of-type(1){--a:-90deg}
+.stage-match .spoke:nth-of-type(2),.stage-match .match-avatar:nth-of-type(2){--a:-18deg}
+.stage-match .spoke:nth-of-type(3),.stage-match .match-avatar:nth-of-type(3){--a:54deg}
+.stage-match .spoke:nth-of-type(4),.stage-match .match-avatar:nth-of-type(4){--a:126deg}
+.stage-match .spoke:nth-of-type(5),.stage-match .match-avatar:nth-of-type(5){--a:198deg}
+
+/* step 3: a month of posts filling in, one by one */
+.post-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:min(340px,100%)}
+.post-grid img{
+  width:100%;
+  aspect-ratio:10/16;
+  object-fit:cover;
+  border-radius:10px;
+  border:1px solid var(--line);
+  transform:scale(clamp(0, calc((var(--p,0) - var(--d,0)) * 4), 1));
+  opacity:clamp(0, calc((var(--p,0) - var(--d,0)) * 4), 1);
+}
+.post-grid img:nth-child(1){--d:.05}
+.post-grid img:nth-child(2){--d:.12}
+.post-grid img:nth-child(3){--d:.19}
+.post-grid img:nth-child(4){--d:.26}
+.post-grid img:nth-child(5){--d:.33}
+.post-grid img:nth-child(6){--d:.4}
+.post-grid img:nth-child(7){--d:.47}
+.post-grid img:nth-child(8){--d:.54}
+
+/* step 4: the audition — rings radiate, viewers light up */
+.audition-tile{
+  width:110px;
+  aspect-ratio:10/16;
+  object-fit:cover;
+  border-radius:14px;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow-sm);
+  z-index:2;
+}
+.stage-audition i{border-radius:50%}
+.stage-audition b{
+  position:absolute;
+  width:12px;height:12px;
+  border-radius:50%;
+  background:var(--panel);
+  transform:translate(-50%,-50%) scale(clamp(0, calc((var(--p,0) - var(--d,0)) * 5), 1));
+}
+.stage-audition b:nth-of-type(1){--d:.08}
+.stage-audition b:nth-of-type(2){--d:.17}
+.stage-audition b:nth-of-type(3){--d:.26}
+.stage-audition b:nth-of-type(4){--d:.35}
+.stage-audition b:nth-of-type(5){--d:.44}
+.stage-audition b:nth-of-type(6){--d:.53}
+.stage-audition b:nth-of-type(7){--d:.62}
+.stage-audition b:nth-of-type(8){--d:.71}
+/* viewer-dot positions (inline styles are blocked by the CSP) */
+.stage-audition b:nth-of-type(1){left:12%;top:18%}
+.stage-audition b:nth-of-type(2){left:85%;top:14%}
+.stage-audition b:nth-of-type(3){left:8%;top:70%}
+.stage-audition b:nth-of-type(4){left:90%;top:64%}
+.stage-audition b:nth-of-type(5){left:28%;top:6%}
+.stage-audition b:nth-of-type(6){left:66%;top:92%}
+.stage-audition b:nth-of-type(7){left:22%;top:90%}
+.stage-audition b:nth-of-type(8){left:74%;top:4%}
+.views-chip{
+  position:absolute;
+  left:50%;bottom:0;
+  transform:translateX(-50%);
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  padding:10px 18px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--surface);
+  box-shadow:var(--shadow-sm);
+  white-space:nowrap;
+}
+.views-chip strong{font-size:1.1rem}
+.views-chip span{font-size:.78rem;color:var(--muted)}
+
+/* step 5: the results count themselves up */
+.hiw-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%}
+
+@media (max-width:900px){
+  .hiw-step{grid-template-columns:1fr;padding:clamp(36px,7vh,64px) clamp(16px,5vw,30px)}
+  .hiw-step:nth-of-type(even) .hiw-copy{order:0}
+  .hiw-stage{max-width:420px;margin:0 auto}
+  .views-chip span{white-space:normal}
+  /* stacked layout: the center spine would run through the content */
+  .hiw-flow::before,.hiw-flow::after,.hiw-step::before{display:none}
+}
+
+/* the spiderweb: every learning page links across the cluster and
+   back toward the case studies and application pages */
+.web-links{
+  max-width:1020px;
+  margin:0 auto;
+  padding:0 clamp(16px,5vw,30px) clamp(56px,8vw,96px);
+}
+.web-links h2{
+  margin:0 0 18px;
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.web-links-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+.web-links-grid a{
+  display:block;
+  padding:18px 20px;
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  background:var(--surface);
+  text-decoration:none;
+  color:inherit;
+  transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);
+}
+.web-links-grid a:hover{
+  border-color:var(--line-strong);
+  transform:translateY(-3px);
+  box-shadow:var(--shadow);
+}
+.web-links-grid strong{display:block;margin-bottom:6px;font-size:.98rem}
+.web-links-grid span{color:var(--muted);font-size:.86rem;line-height:1.5}
+@media (max-width:680px){
+  .web-links-grid{grid-template-columns:1fr}
+}
 .site-nav a:active{opacity:.55}
 
 .button.primary{
@@ -631,6 +990,19 @@ h1,h2,h3,p{margin-top:0}
 }
 
 .stats-band span{font-size:.92rem;color:rgba(244,241,233,.62)}
+.stats-band>div>a{
+  display:block;
+  width:fit-content;
+  margin-top:12px;
+  font-size:.88rem;
+  font-weight:600;
+  color:var(--panel-ink);
+  text-decoration:underline;
+  text-underline-offset:4px;
+  text-decoration-color:rgba(244,241,233,.35);
+  transition:text-decoration-color var(--t-fast) var(--ease);
+}
+.stats-band>div>a:hover{text-decoration-color:var(--panel-ink)}
 
 .section-heading p,.about-card p,.video-card p,.service-list p,.panel-heading p,.apply-choice p:not(.eyebrow),footer{
   color:var(--muted);
@@ -1140,6 +1512,7 @@ h1,h2,h3,p{margin-top:0}
   display:flex;
   align-items:center;
   justify-content:space-between;
+  flex-wrap:wrap;
   gap:30px;
   margin:clamp(24px,4vw,56px) clamp(18px,5vw,72px);
   padding:clamp(36px,5vw,64px) clamp(26px,5vw,56px);
@@ -1149,6 +1522,8 @@ h1,h2,h3,p{margin-top:0}
   overflow:hidden;
   isolation:isolate;
 }
+/* buttons in the CTA never shrink or wrap mid-word */
+.cta-section .button{flex:none;white-space:nowrap}
 
 .cta-section:before{
   content:"";
@@ -1593,10 +1968,6 @@ footer span:first-child{color:var(--ink);font-weight:700;letter-spacing:-.01em}
 
   .hero-copy{padding:100px clamp(18px,5.5vw,28px) clamp(28px,3.8vh,40px)}
   .hero-text{width:auto;max-width:none}
-
-  /* the scatter sits closer to the copy on smaller screens — fade the
-     tiles back a touch so the headline always stays readable */
-  .hero-video-tile{width:calc(clamp(80px,14vw,124px) * var(--s,1));opacity:.7}
 
   .cta-section,footer{flex-direction:column;align-items:flex-start}
 
