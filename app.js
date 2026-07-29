@@ -130,6 +130,12 @@ document.querySelectorAll(".apply-form").forEach((form) => {
       ...Object.fromEntries(new FormData(form).entries())
     };
 
+    // legacy aliases: the currently deployed Apps Script still reads the
+    // old field names; the v8 script ignores unknown keys, so these are
+    // safe to keep after redeploying
+    if (payload.applicantName) payload.businessName = payload.applicantName;
+    if (payload.marketingBudget) payload.goal = payload.marketingBudget;
+
     if (submitButton) {
       submitButton.disabled = true;
       submitButton.textContent = "Submitting...";

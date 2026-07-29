@@ -561,6 +561,80 @@ h1,h2,h3,p{margin-top:0}
 .tile-vol:hover{background:rgba(10,10,10,.85)}
 
 /* =========================================================
+   Floating engagement chips — decorative like/comment/share/view
+   badges scattered between the video tiles. Purely visual
+   (aria-hidden, no pointer events); they bob gently and survive
+   below 1024px where the tile scatter is hidden.
+   ========================================================= */
+.hero-social{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  animation:fadeUp .85s var(--ease) .35s both;
+}
+.social-chip{
+  position:absolute;
+  left:var(--x,50%);
+  top:var(--y,50%);
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 14px;
+  border:1px solid var(--line);
+  border-radius:var(--r-pill);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  color:var(--ink);
+  font-size:.82rem;
+  font-weight:600;
+  letter-spacing:-.01em;
+  white-space:nowrap;
+  transform:translate(-50%,-50%) rotate(var(--rot,0deg));
+  animation:chip-bob var(--bob,4.2s) ease-in-out var(--bd,0s) infinite;
+}
+.social-chip svg{width:16px;height:16px;fill:var(--ink-soft)}
+.chip-like svg,.chip-mini-like svg{fill:#d92d20}
+.social-chip-mini{
+  padding:0;
+  width:38px;height:38px;
+  justify-content:center;
+  border-radius:50%;
+}
+.social-chip-mini svg{width:17px;height:17px}
+@keyframes chip-bob{
+  0%,100%{transform:translate(-50%,-50%) rotate(var(--rot,0deg)) translateY(0)}
+  50%{transform:translate(-50%,-50%) rotate(var(--rot,0deg)) translateY(-8px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .social-chip{animation:none}
+}
+
+/* desktop: chips fill the gaps the tile scatter leaves open */
+.chip-like{--x:25%;--y:38%;--rot:-6deg;--bob:4.6s}
+.chip-views{--x:75%;--y:40%;--rot:4deg;--bob:5s;--bd:-1.6s}
+.chip-comment{--x:66%;--y:15%;--rot:3deg;--bob:4.3s;--bd:-.8s}
+.chip-share{--x:81%;--y:84%;--rot:-4deg;--bob:4.8s;--bd:-2.4s}
+.chip-mini-like{--x:33%;--y:16%;--rot:-10deg;--bob:4s;--bd:-2s}
+.chip-mini-comment{--x:14%;--y:86%;--rot:9deg;--bob:5.2s;--bd:-1.2s}
+
+/* below 1024px the video tiles are gone — the chips stay, tucked
+   into the corners so they frame the copy without covering it */
+@media (max-width:1024px){
+  .social-chip{
+    font-size:.72rem;
+    padding:6px 11px;
+    gap:6px;
+  }
+  .social-chip svg{width:13px;height:13px}
+  .social-chip-mini{display:none}
+  .chip-like{--x:13%;--y:31%;--rot:-7deg}
+  .chip-comment{--x:85%;--y:26%;--rot:5deg}
+  .chip-views{--x:17%;--y:95%;--rot:4deg}
+  .chip-share{--x:85%;--y:93%;--rot:-6deg}
+}
+
+/* =========================================================
    Buttons
    ========================================================= */
 .button{
