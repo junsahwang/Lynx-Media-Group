@@ -171,6 +171,24 @@ document.querySelectorAll(".apply-form").forEach((form) => {
 });
 
 /* =========================================================
+   Budget slider — the range maps to labeled brackets; the label
+   shows live and the hidden field carries it into the submission
+   ========================================================= */
+const budgetRange = document.querySelector(".budget-slider input[type='range']");
+if (budgetRange) {
+  const BUDGET_LABELS = ["Under $5K", "$5K–$10K", "$10K–$15K", "$15K–$25K", "Over $25K"];
+  const budgetOutput = budgetRange.closest(".budget-slider").querySelector("output");
+  const budgetHidden = budgetRange.closest(".budget-field").querySelector("input[type='hidden']");
+  const syncBudget = () => {
+    const label = BUDGET_LABELS[Number(budgetRange.value)] || BUDGET_LABELS[0];
+    budgetOutput.textContent = label;
+    budgetHidden.value = label;
+  };
+  budgetRange.addEventListener("input", syncBudget);
+  syncBudget();
+}
+
+/* =========================================================
    Thank-you page — show only the section that matches the
    application the visitor just submitted (?type=…)
    ========================================================= */
