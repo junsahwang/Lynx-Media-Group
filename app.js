@@ -709,7 +709,12 @@ if (heroSocial) {
     fxLayer.querySelectorAll(".fx-bubble").forEach((b) => b.remove());
     const { x, y } = chipCenter(chip);
     const text = FAKE_COMMENTS[Math.floor(Math.random() * FAKE_COMMENTS.length)];
-    spawnParticle("fx-bubble", { left: x + "px", top: y + "px" }, text, 2400);
+    const bubble = spawnParticle("fx-bubble", { left: x + "px", top: y + "px" }, text, 2400);
+    // the bubble is centered on the chip — near a screen edge that would
+    // clip it, so nudge it back inside the viewport
+    const half = bubble.offsetWidth / 2;
+    bubble.style.left =
+      Math.min(Math.max(x, half + 12), window.innerWidth - half - 12) + "px";
   }
 
   function paperPlane(chip) {
