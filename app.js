@@ -568,6 +568,245 @@ if (heroEl && heroOrbit) {
   }
 }
 
+/* =========================================================
+   Engagement chip easter eggs — every floating chip reacts to a
+   click: hearts burst/rain, repost flips to a checkmark, share
+   copies the link, comments pop fake replies, views count up.
+   ========================================================= */
+const heroSocial = document.querySelector(".hero-social");
+if (heroSocial) {
+  const fxReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // one fixed full-viewport layer holds every particle/toast
+  const fxLayer = document.createElement("div");
+  fxLayer.className = "fx-layer";
+  document.body.appendChild(fxLayer);
+
+  const HEART_PATH =
+    "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z";
+  const REPOST_PATH =
+    "M17 2l4 4-4 4V7h-6.5A4.5 4.5 0 0 0 6 11.5H4A6.5 6.5 0 0 1 10.5 5H17V2zM7 22l-4-4 4-4v3h6.5a4.5 4.5 0 0 0 4.5-4.5h2a6.5 6.5 0 0 1-6.5 6.5H7v3z";
+  const CHECK_PATH = "M9.55 17.05L4.9 12.4l1.6-1.6 3.05 3.05 7.95-7.95 1.6 1.6z";
+  const svgOf = (path) =>
+    `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
+
+  const HEART_COLORS = ["#d92d20", "#f04438", "#f97066", "#fda29b"];
+  const FAKE_COMMENTS = [
+    "this is so real 😭",
+    "need part 2 immediately",
+    "how is this free content",
+    "sending this to everyone i know",
+    "the hook got me ngl",
+    "algorithm did its job today 🔥"
+  ];
+
+  const rand = (min, max) => min + Math.random() * (max - min);
+
+  function formatCount(n) {
+    if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M";
+    if (n >= 1e4) return (n / 1e3).toFixed(1).replace(/\.0$/, "") + "K";
+    return n.toLocaleString("en-US");
+  }
+
+  function popCount(el) {
+    el.classList.remove("count-pop");
+    void el.offsetWidth; // restart the animation
+    el.classList.add("count-pop");
+  }
+
+  // odometer-style roll from the stored value to a new target
+  function rollCount(el, target, duration = 900) {
+    if (!el) return;
+    const from = Number(el.dataset.count) || 0;
+    el.dataset.count = target;
+    popCount(el);
+    const start = performance.now();
+    const step = (now) => {
+      const p = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = formatCount(Math.round(from + (target - from) * eased));
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  // briefly override the bob animation with a one-shot (spin/wiggle),
+  // then hand the transform back so the chip keeps floating
+  function oneShot(chip, animation) {
+    chip.style.animation = animation;
+    chip.addEventListener(
+      "animationend",
+      () => {
+        chip.style.animation = "";
+      },
+      { once: true }
+    );
+  }
+
+  function chipCenter(chip) {
+    const rect = chip.getBoundingClientRect();
+    return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  }
+
+  function spawnParticle(className, style, html, lifetime) {
+    const el = document.createElement("span");
+    el.className = className;
+    Object.assign(el.style, style);
+    el.innerHTML = html;
+    fxLayer.appendChild(el);
+    setTimeout(() => el.remove(), lifetime);
+    return el;
+  }
+
+  // hearts radiating out from the clicked chip
+  function heartBurst(x, y, n) {
+    if (fxReduceMotion) return;
+    for (let i = 0; i < n; i++) {
+      const size = rand(12, 22);
+      spawnParticle(
+        "fx-heart fx-heart-burst",
+        {
+          left: x + "px",
+          top: y + "px",
+          width: size + "px",
+          color: HEART_COLORS[i % HEART_COLORS.length],
+          "--dx": rand(-110, 110) + "px",
+          "--dy": rand(-140, -40) + "px",
+          "--rot": rand(-40, 40) + "deg"
+        },
+        svgOf(HEART_PATH),
+        1000
+      );
+    }
+  }
+
+  // hearts filling the page — popping up scattered across the whole
+  // viewport (not a rising line), each drifting up a little as it fades
+  function heartRain(n) {
+    if (fxReduceMotion) return;
+    for (let i = 0; i < n; i++) {
+      const size = rand(14, 34);
+      spawnParticle(
+        "fx-heart fx-heart-rain",
+        {
+          left: rand(2, 96) + "vw",
+          top: rand(4, 94) + "vh",
+          width: size + "px",
+          color: HEART_COLORS[i % HEART_COLORS.length],
+          "--dur": rand(1.3, 2.2) + "s",
+          "--delay": rand(0, 1.1) + "s",
+          "--sway": rand(-40, 40) + "px",
+          "--rot": rand(-50, 50) + "deg"
+        },
+        svgOf(HEART_PATH),
+        4200
+      );
+    }
+  }
+
+  function commentBubble(chip) {
+    // only one bubble on screen at a time
+    fxLayer.querySelectorAll(".fx-bubble").forEach((b) => b.remove());
+    const { x, y } = chipCenter(chip);
+    const text = FAKE_COMMENTS[Math.floor(Math.random() * FAKE_COMMENTS.length)];
+    spawnParticle("fx-bubble", { left: x + "px", top: y + "px" }, text, 2400);
+  }
+
+  function paperPlane(chip) {
+    if (fxReduceMotion) return;
+    const { x, y } = chipCenter(chip);
+    spawnParticle(
+      "fx-plane",
+      { left: x + "px", top: y + "px" },
+      svgOf("M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"),
+      1300
+    );
+  }
+
+  function floater(chip, text) {
+    const { x, y } = chipCenter(chip);
+    spawnParticle("fx-float", { left: x + "px", top: y + "px" }, text, 1600);
+  }
+
+  function toast(html) {
+    fxLayer.querySelectorAll(".fx-toast").forEach((t) => t.remove());
+    spawnParticle("fx-toast", {}, html, 2200);
+  }
+
+  /* ---- per-icon behaviors ---- */
+
+  function heartFx(chip) {
+    const count = chip.querySelector(".chip-count");
+    const { x, y } = chipCenter(chip);
+    chip.classList.add("is-liked");
+    heartBurst(x, y, 14);
+    heartRain(64);
+    if (count) rollCount(count, Number(count.dataset.count) + 1200, 1100);
+  }
+
+  function commentFx(chip) {
+    const count = chip.querySelector(".chip-count");
+    oneShot(chip, "chip-wiggle .5s var(--ease)");
+    commentBubble(chip);
+    if (count) rollCount(count, Number(count.dataset.count) + 1, 300);
+  }
+
+  function shareFx(chip) {
+    const label = chip.querySelector(".chip-label");
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText("https://lynxmediagroup.org").catch(() => {});
+    }
+    if (label && !chip.dataset.busy) {
+      chip.dataset.busy = "1";
+      const original = label.textContent;
+      label.textContent = "Copied!";
+      chip.classList.add("is-shared");
+      setTimeout(() => {
+        label.textContent = original;
+        chip.classList.remove("is-shared");
+        delete chip.dataset.busy;
+      }, 1600);
+    }
+    paperPlane(chip);
+    toast("🔗 Link copied to clipboard");
+  }
+
+  function viewsFx(chip) {
+    const count = chip.querySelector(".chip-count");
+    if (!count) return;
+    // sprint to the next round million
+    const current = Number(count.dataset.count);
+    const target = Math.ceil((current + 1) / 1e6) * 1e6;
+    rollCount(count, target, 1200);
+    floater(chip, "+" + formatCount(target - current));
+  }
+
+  function repostFx(chip) {
+    const svgHolder = chip;
+    const reposted = chip.classList.contains("is-reposted");
+    if (reposted) {
+      // clicking again un-reposts
+      chip.classList.remove("is-reposted");
+      svgHolder.innerHTML = svgOf(REPOST_PATH);
+      return;
+    }
+    chip.classList.add("is-reposted");
+    svgHolder.innerHTML = svgOf(CHECK_PATH);
+    oneShot(chip, "chip-spin .6s var(--ease)");
+    toast("✓ Reposted");
+  }
+
+  heroSocial.addEventListener("click", (event) => {
+    const chip = event.target.closest(".social-chip");
+    if (!chip) return;
+    if (chip.matches(".chip-like, .chip-mini-like")) heartFx(chip);
+    else if (chip.matches(".chip-comment, .chip-mini-comment")) commentFx(chip);
+    else if (chip.matches(".chip-share")) shareFx(chip);
+    else if (chip.matches(".chip-views")) viewsFx(chip);
+    else if (chip.matches(".chip-mini-repost")) repostFx(chip);
+  });
+}
+
 /* Duplicate the trusted-by logos so the marquee fills the width and loops seamlessly */
 const trustedRow = document.querySelector(".trusted-row");
 if (trustedRow) {
