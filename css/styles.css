@@ -723,27 +723,6 @@ h1,h2,h3,p{margin-top:0}
   100%{opacity:0;transform:translate(-50%,8px)}
 }
 
-/* decorative icon scatters on landing-page sections — same chips,
-   parked in the side gutters, purely visual (no pointer events) */
-.case-section,.demo-section,.cta-section{position:relative}
-.section-social{
-  position:absolute;
-  inset:0;
-  z-index:1;
-  pointer-events:none;
-}
-.section-social .social-chip{pointer-events:none;cursor:default}
-.sc-case-heart svg,.sc-demo-likes svg,.sc-cta-heart svg{fill:#d92d20}
-.sc-case-heart{--x:93%;--y:10%;--rot:9deg;--bob:4.4s;--bd:-1.4s}
-.sc-case-views{--x:5%;--y:72%;--rot:-6deg;--bob:5s;--bd:-2.2s}
-.sc-demo-comment{--x:6%;--y:16%;--rot:-8deg;--bob:4.6s;--bd:-.6s}
-.sc-demo-likes{--x:92%;--y:8%;--rot:5deg;--bob:4.2s;--bd:-3s}
-.sc-cta-share{--x:92%;--y:26%;--rot:7deg;--bob:4.8s;--bd:-1.8s}
-.sc-cta-heart{--x:88%;--y:72%;--rot:-9deg;--bob:4s;--bd:-2.6s}
-@media (max-width:900px){
-  .section-social{display:none}
-}
-
 /* desktop: chips fill the gaps the tile scatter leaves open */
 .chip-like{--x:25%;--y:38%;--rot:-6deg;--bob:4.6s}
 .chip-views{--x:75%;--y:40%;--rot:4deg;--bob:5s;--bd:-1.6s}
@@ -2167,6 +2146,8 @@ footer{
   grid-template-columns:1fr auto 1fr;
   gap:clamp(28px,5vw,72px);
   align-items:start;
+  max-width:1200px;
+  margin-inline:auto;
 }
 .footer-grid .footer-col:last-child{justify-self:end}
 .footer-brand-link{
@@ -2207,6 +2188,8 @@ footer{
 }
 .footer-col a:not(.button):hover{color:var(--ink)}
 .footer-bottom{
+  max-width:1200px;
+  margin-inline:auto;
   display:flex;
   justify-content:space-between;
   align-items:center;
