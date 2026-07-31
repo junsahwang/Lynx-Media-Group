@@ -2159,7 +2159,7 @@ footer{
   letter-spacing:-.01em;
   text-decoration:none;
 }
-.footer-brand-link img{width:30px;height:30px;object-fit:contain}
+.footer-brand-link img{width:36px;height:36px;object-fit:contain}
 .footer-about p{
   margin:10px 0 14px;
   max-width:360px;
@@ -2287,7 +2287,7 @@ footer{
 .footer-wordmark .wm{
   position:relative;
   display:inline-block;
-  font-size:clamp(1.5rem,5.5vw,4.6rem);
+  font-size:clamp(2.2rem,8.6vw,4.6rem);
   font-weight:700;
   letter-spacing:-.01em;
   line-height:1;
@@ -2498,4 +2498,37 @@ footer{
 
   .footer-links{gap:10px}
   .footer-bottom small{font-size:.76rem}
+}
+
+/* =========================================================
+   Mobile footer — one clean centered stack: brand, socials,
+   inline links, CTA, copyright. Labels and tagline hide;
+   the hero already carries the pitch.
+   ========================================================= */
+@media (max-width:760px){
+  .footer-grid{grid-template-columns:1fr;gap:24px;justify-items:center;text-align:center}
+  .footer-grid .footer-col:last-child{justify-self:center}
+  .footer-about{display:flex;flex-direction:column;align-items:center;gap:16px}
+  .footer-about p{display:none}
+  .footer-label{display:none}
+  .footer-col{display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap}
+  .footer-col a:not(.button){margin-bottom:0;font-size:.92rem}
+  .footer-bottom{justify-content:center;text-align:center}
+}
+
+/* mobile: the dark CTA panel centers, the scroll wordmark breathes */
+@media (max-width:760px){
+  .cta-section{align-items:center;text-align:center}
+  .cta-actions{justify-content:center}
+  .footer-wordmark .wm{letter-spacing:.01em}
+}
+
+/* mobile footer rhythm: tighten the run from wordmark to copyright
+   so every gap reads intentional instead of airy */
+@media (max-width:760px){
+  .footer-wordmark{padding:36px 14px 6px}
+  footer{padding-top:20px}
+  .footer-grid{gap:18px}
+  .footer-about{gap:14px}
+  .footer-bottom{margin-top:14px}
 }
