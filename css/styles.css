@@ -2526,9 +2526,9 @@ footer{
 /* mobile footer rhythm: tighten the run from wordmark to copyright
    so every gap reads intentional instead of airy */
 @media (max-width:760px){
-  .footer-wordmark{padding:36px 14px 6px}
-  footer{padding-top:20px}
-  .footer-grid{gap:18px}
-  .footer-about{gap:14px}
-  .footer-bottom{margin-top:14px}
+  .footer-wordmark{padding:44px 14px 22px}
+  footer{padding-top:30px}
+  .footer-grid{gap:30px}
+  .footer-about{gap:20px}
+  .footer-bottom{margin-top:26px}
 }
