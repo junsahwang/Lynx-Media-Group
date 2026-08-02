@@ -286,6 +286,19 @@ if ("IntersectionObserver" in window) {
   revealItems.forEach((item) =>
     (item.classList.contains("qa") ? qaObserver : observer).observe(item)
   );
+
+  // anything already on screen reveals immediately on load — content
+  // peeking above the fold shouldn't wait for a scroll to fade in
+  requestAnimationFrame(() => {
+    revealItems.forEach((item) => {
+      const rect = item.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        item.classList.add("visible");
+        observer.unobserve(item);
+        qaObserver.unobserve(item);
+      }
+    });
+  });
 } else {
   revealItems.forEach((item) => item.classList.add("visible"));
 }

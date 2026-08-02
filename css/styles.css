@@ -334,8 +334,10 @@ h1,h2,h3,p{margin-top:0}
    ========================================================= */
 .hero{
   position:relative;
-  min-height:100vh;
-  min-height:100svh;
+  /* short of full viewport: the trusted-by marquee peeks above the
+     fold instead of leaving a dead band under the CTA */
+  min-height:88vh;
+  min-height:88svh;
   display:grid;
   place-items:center;
   padding:0;
@@ -350,7 +352,7 @@ h1,h2,h3,p{margin-top:0}
   position:relative;
   z-index:2;
   pointer-events:none;
-  margin-top:clamp(28px,5vh,56px);
+  margin-top:clamp(52px,8vh,92px);
   width:100%;
   max-width:1320px;
   margin-inline:auto;
@@ -506,21 +508,11 @@ h1,h2,h3,p{margin-top:0}
 
 /* seven tiles in a calm frame around the copy — only the tilt angles
    vary (unmatched magnitudes) so it reads casual without losing order */
-.hero-video-tile:nth-child(1){--x:16%;--y:25%;--rot:-7deg;--s:.85}
-.hero-video-tile:nth-child(2){--x:87%;--y:25%;--rot:3deg;--s:.85}
-.hero-video-tile:nth-child(3){--x:11%;--y:64%;--rot:5deg;--s:1}
-.hero-video-tile:nth-child(4){--x:89%;--y:64%;--rot:-2deg;--s:1}
-.hero-video-tile:nth-child(5){--x:30%;--y:81%;--rot:-11deg;--s:.9}
-.hero-video-tile:nth-child(6){--x:70%;--y:81%;--rot:8deg;--s:.9}
-
-/* smaller laptops (below the ~15" MacBook width): the hero is shorter,
-   so the bottom pair slides down and outward to stay clear of the CTAs */
-@media (min-width:1025px) and (max-width:1500px){
-  .hero-video-tile:nth-child(5){--x:25%;--y:88%}
-  .hero-video-tile:nth-child(6){--x:75%;--y:88%}
-}
-.hero-video-tile:nth-child(7){--x:50%;--y:25%;--rot:2deg;--s:.8}
-.hero-video-tile:nth-child(n+8){display:none}
+.hero-video-tile:nth-child(1){--x:15%;--y:33%;--rot:-7deg;--s:.95}
+.hero-video-tile:nth-child(2){--x:85%;--y:33%;--rot:3deg;--s:.95}
+.hero-video-tile:nth-child(3){--x:13%;--y:73%;--rot:5deg;--s:1}
+.hero-video-tile:nth-child(4){--x:87%;--y:73%;--rot:-2deg;--s:1}
+.hero-video-tile:nth-child(n+5){display:none}
 
 
 /* the scatter is a desktop-only feature: below 1024px there isn't
@@ -725,14 +717,17 @@ h1,h2,h3,p{margin-top:0}
   100%{opacity:0;transform:translate(-50%,8px)}
 }
 
-/* desktop: chips fill the gaps the tile scatter leaves open */
-.chip-like{--x:25%;--y:38%;--rot:-6deg;--bob:4.6s}
-.chip-views{--x:75%;--y:40%;--rot:4deg;--bob:5s;--bd:-1.6s}
-.chip-comment{--x:66%;--y:15%;--rot:3deg;--bob:4.3s;--bd:-.8s}
-.chip-share{--x:81%;--y:84%;--rot:-4deg;--bob:4.8s;--bd:-2.4s}
-.chip-mini-like{--x:33%;--y:16%;--rot:-10deg;--bob:4s;--bd:-2s}
-.chip-mini-comment{--x:14%;--y:86%;--rot:9deg;--bob:5.2s;--bd:-1.2s}
-.chip-mini-repost{--x:50%;--y:87%;--rot:-8deg;--bob:4.4s;--bd:-3s}
+/* desktop: the labeled chips pin to the inner corners of the four
+   corner tiles (computed from the tile size, so they track every
+   viewport), and the minis frame the open center */
+.hero-social{--tileW:clamp(96px,10.5vw,300px)}
+.chip-like{--x:calc(15% + var(--tileW)*.475 + 88px);--y:calc(33% + 24px);--rot:-5deg;--bob:4.6s}
+.chip-views{--x:calc(85% - var(--tileW)*.475 - 88px);--y:calc(33% + 24px);--rot:4deg;--bob:5s;--bd:-1.6s}
+.chip-comment{--x:calc(13% + var(--tileW)*.5 + 124px);--y:calc(73% - 24px);--rot:3deg;--bob:4.3s;--bd:-.8s}
+.chip-share{--x:calc(87% - var(--tileW)*.5 - 122px);--y:calc(73% - 24px);--rot:-4deg;--bob:4.8s;--bd:-2.4s}
+.chip-mini-like{--x:33%;--y:22%;--rot:-10deg;--bob:4s;--bd:-2s}
+.chip-mini-comment{--x:67%;--y:22%;--rot:9deg;--bob:5.2s;--bd:-1.2s}
+.chip-mini-repost{--x:50%;--y:84%;--rot:-8deg;--bob:4.4s;--bd:-3s}
 
 /* below 1024px the video tiles are gone — the chips stay, tucked
    into the corners so they frame the copy without covering it */
