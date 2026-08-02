@@ -384,6 +384,9 @@ h1,h2,h3,p{margin-top:0}
   border-radius:2px;
 }
 
+/* "system." in the headline picks up the CTA red */
+.hero-accent{color:#d92d20}
+
 .hero h1{
   font-weight:600;
   /* sized so the value-prop headline holds a single line on desktop —
