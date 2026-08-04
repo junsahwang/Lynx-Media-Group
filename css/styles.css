@@ -727,7 +727,7 @@ h1,h2,h3,p{margin-top:0}
 .chip-share{--x:calc(87% - var(--tileW)*.5 - 166px);--y:calc(73% + 48px);--rot:-4deg;--bob:4.8s;--bd:-2.4s}
 .chip-mini-like{--x:37%;--y:21%;--rot:-10deg;--bob:4s;--bd:-2s}
 .chip-mini-comment{--x:63%;--y:21%;--rot:9deg;--bob:5.2s;--bd:-1.2s}
-.chip-mini-repost{--x:50%;--y:84%;--rot:-8deg;--bob:4.4s;--bd:-3s}
+.chip-mini-repost{--x:50%;--y:90%;--rot:-8deg;--bob:4.4s;--bd:-3s}
 
 /* below 1024px the video tiles are gone — the chips stay, tucked
    into the corners so they frame the copy without covering it */
