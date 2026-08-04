@@ -721,12 +721,12 @@ h1,h2,h3,p{margin-top:0}
    corner tiles (computed from the tile size, so they track every
    viewport), and the minis frame the open center */
 .hero-social{--tileW:clamp(96px,10.5vw,300px)}
-.chip-like{--x:calc(15% + var(--tileW)*.475 + 88px);--y:calc(36% + 24px);--rot:-5deg;--bob:4.6s}
-.chip-views{--x:calc(85% - var(--tileW)*.475 - 88px);--y:calc(36% + 24px);--rot:4deg;--bob:5s;--bd:-1.6s}
+.chip-like{--x:calc(15% + var(--tileW)*.475 + 128px);--y:calc(36% - 10px);--rot:-5deg;--bob:4.6s}
+.chip-views{--x:calc(85% - var(--tileW)*.475 - 128px);--y:calc(36% - 10px);--rot:4deg;--bob:5s;--bd:-1.6s}
 .chip-comment{--x:calc(13% + var(--tileW)*.5 + 168px);--y:calc(73% + 48px);--rot:3deg;--bob:4.3s;--bd:-.8s}
 .chip-share{--x:calc(87% - var(--tileW)*.5 - 166px);--y:calc(73% + 48px);--rot:-4deg;--bob:4.8s;--bd:-2.4s}
-.chip-mini-like{--x:33%;--y:25%;--rot:-10deg;--bob:4s;--bd:-2s}
-.chip-mini-comment{--x:67%;--y:25%;--rot:9deg;--bob:5.2s;--bd:-1.2s}
+.chip-mini-like{--x:37%;--y:21%;--rot:-10deg;--bob:4s;--bd:-2s}
+.chip-mini-comment{--x:63%;--y:21%;--rot:9deg;--bob:5.2s;--bd:-1.2s}
 .chip-mini-repost{--x:50%;--y:84%;--rot:-8deg;--bob:4.4s;--bd:-3s}
 
 /* below 1024px the video tiles are gone — the chips stay, tucked
