@@ -510,8 +510,8 @@ h1,h2,h3,p{margin-top:0}
    vary (unmatched magnitudes) so it reads casual without losing order */
 .hero-video-tile:nth-child(1){--x:15%;--y:36%;--rot:7deg;--s:.95}
 .hero-video-tile:nth-child(2){--x:85%;--y:36%;--rot:-6deg;--s:.95}
-.hero-video-tile:nth-child(3){--x:16%;--y:76%;--rot:-8deg;--s:1}
-.hero-video-tile:nth-child(4){--x:84%;--y:76%;--rot:7deg;--s:1}
+.hero-video-tile:nth-child(3){--x:16%;--y:80%;--rot:-8deg;--s:1}
+.hero-video-tile:nth-child(4){--x:84%;--y:80%;--rot:7deg;--s:1}
 .hero-video-tile:nth-child(n+5){display:none}
 
 
