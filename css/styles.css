@@ -730,8 +730,8 @@ h1,h2,h3,p{margin-top:0}
 .chip-views{--x:calc(85% - var(--tileW)*.475 - 8.9vw);--y:calc(36% - 1.1vh);--rot:4deg;--bob:5s;--bd:-1.6s}
 .chip-comment{--x:calc(13% + var(--tileW)*.5 + 11.7vw);--y:calc(73% + 5.3vh);--rot:3deg;--bob:4.3s;--bd:-.8s}
 .chip-share{--x:calc(87% - var(--tileW)*.5 - 11.5vw);--y:calc(73% + 5.3vh);--rot:-4deg;--bob:4.8s;--bd:-2.4s}
-.chip-mini-like{--x:37%;--y:21%;--rot:-10deg;--bob:4s;--bd:-2s}
-.chip-mini-comment{--x:63%;--y:21%;--rot:9deg;--bob:5.2s;--bd:-1.2s}
+.chip-mini-like{--x:42%;--y:21%;--rot:-10deg;--bob:4s;--bd:-2s}
+.chip-mini-comment{--x:58%;--y:21%;--rot:9deg;--bob:5.2s;--bd:-1.2s}
 .chip-mini-repost{--x:50%;--y:90%;--rot:-8deg;--bob:4.4s;--bd:-3s}
 
 /* below 1024px the video tiles are gone — the chips stay, tucked
