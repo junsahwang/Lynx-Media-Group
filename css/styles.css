@@ -476,7 +476,9 @@ h1,h2,h3,p{margin-top:0}
   top:var(--y,50%);
   /* scales with the viewport all the way up — on big monitors the
      tiles stay proportional instead of leaving dead space */
-  width:calc(clamp(96px,10.5vw,300px) * var(--s,1));
+  /* height-capped too: short, wide windows shrink the tiles instead
+     of letting the two rows collide */
+  width:calc(clamp(96px,min(10.5vw,21vh),300px) * var(--s,1));
   aspect-ratio:10/16;
   transform:translate(-50%,-50%) translateY(var(--drift,0px)) rotate(var(--rot,0deg));
   opacity:var(--fade,1);
@@ -720,11 +722,11 @@ h1,h2,h3,p{margin-top:0}
 /* desktop: the labeled chips pin to the inner corners of the four
    corner tiles (computed from the tile size, so they track every
    viewport), and the minis frame the open center */
-.hero-social{--tileW:clamp(96px,10.5vw,300px)}
-.chip-like{--x:calc(15% + var(--tileW)*.475 + 128px);--y:calc(36% - 10px);--rot:-5deg;--bob:4.6s}
-.chip-views{--x:calc(85% - var(--tileW)*.475 - 128px);--y:calc(36% - 10px);--rot:4deg;--bob:5s;--bd:-1.6s}
-.chip-comment{--x:calc(13% + var(--tileW)*.5 + 168px);--y:calc(73% + 48px);--rot:3deg;--bob:4.3s;--bd:-.8s}
-.chip-share{--x:calc(87% - var(--tileW)*.5 - 166px);--y:calc(73% + 48px);--rot:-4deg;--bob:4.8s;--bd:-2.4s}
+.hero-social{--tileW:clamp(96px,min(10.5vw,21vh),300px)}
+.chip-like{--x:calc(15% + var(--tileW)*.475 + 8.9vw);--y:calc(36% - 1.1vh);--rot:-5deg;--bob:4.6s}
+.chip-views{--x:calc(85% - var(--tileW)*.475 - 8.9vw);--y:calc(36% - 1.1vh);--rot:4deg;--bob:5s;--bd:-1.6s}
+.chip-comment{--x:calc(13% + var(--tileW)*.5 + 11.7vw);--y:calc(73% + 5.3vh);--rot:3deg;--bob:4.3s;--bd:-.8s}
+.chip-share{--x:calc(87% - var(--tileW)*.5 - 11.5vw);--y:calc(73% + 5.3vh);--rot:-4deg;--bob:4.8s;--bd:-2.4s}
 .chip-mini-like{--x:37%;--y:21%;--rot:-10deg;--bob:4s;--bd:-2s}
 .chip-mini-comment{--x:63%;--y:21%;--rot:9deg;--bob:5.2s;--bd:-1.2s}
 .chip-mini-repost{--x:50%;--y:90%;--rot:-8deg;--bob:4.4s;--bd:-3s}
