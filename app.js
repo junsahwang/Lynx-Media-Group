@@ -40,6 +40,7 @@ if (navToggle && siteNav) {
    ========================================================= */
 const header = document.querySelector(".site-header");
 const wordmark = document.querySelector(".footer-wordmark .wm");
+const trustedLine = document.querySelector(".trusted");
 
 let scrollTicking = false;
 let lastScrollTop = 0;
@@ -63,6 +64,10 @@ function onScroll() {
     }
     lastScrollTop = y;
   }
+
+  // the divider under the hero starts invisible and draws itself
+  // as soon as the visitor begins to scroll
+  if (trustedLine) trustedLine.classList.toggle("line-in", y > 30);
 
   // footer wordmark fills with ink from the moment it enters the
   // viewport until the page is scrolled all the way to the bottom
