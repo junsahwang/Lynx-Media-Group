@@ -341,7 +341,10 @@ h1,h2,h3,p{margin-top:0}
   display:grid;
   place-items:center;
   padding:0;
-  overflow:hidden;
+  /* visible: hovered tiles scale up and pop past the section edge
+     instead of getting sliced (nothing can reach the viewport sides,
+     so no horizontal scrollbar risk) */
+  overflow:visible;
   background:var(--bg);
 }
 
@@ -496,7 +499,7 @@ h1,h2,h3,p{margin-top:0}
 
 /* hovered tile straightens, grows, and plays… */
 .hero-video-tile:hover{
-  transform:translate(-50%,-50%) translateY(var(--drift,0px)) rotate(0deg) scale(1.35);
+  transform:translate(-50%,-50%) translateY(var(--drift,0px)) rotate(0deg) scale(1.15);
   z-index:30;
   opacity:var(--fade,1);
   box-shadow:var(--shadow-lg);
