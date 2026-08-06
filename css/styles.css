@@ -364,14 +364,14 @@ h1,h2,h3,p{margin-top:0}
   top:52%;
   translate:-50% -50%;
   background:url("../imgs/logo-pounce.svg") center/contain no-repeat;
-  opacity:.07;
-  filter:blur(38px);
+  opacity:.13;
+  filter:blur(26px);
   will-change:transform,opacity;
   animation:bg-glow 14s ease-in-out infinite alternate;
 }
 @keyframes bg-glow{
-  from{transform:scale(1);opacity:.055}
-  to{transform:scale(1.06);opacity:.09}
+  from{transform:scale(1);opacity:.10}
+  to{transform:scale(1.06);opacity:.17}
 }
 @media (prefers-reduced-motion:reduce){
   .site-bg i{animation:none}
