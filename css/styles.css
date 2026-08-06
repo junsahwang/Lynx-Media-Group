@@ -347,10 +347,10 @@ h1,h2,h3,p{margin-top:0}
   overflow:visible;
 }
 
-/* dynamic backdrop, two planes like the reference: a luminescent
-   base — three soft light washes drifting in brand tones — with the
-   crisp Pounce watermark floating over it, and all content above.
-   Gradient falloff does the glow (no blur filters = cheap). */
+/* dynamic backdrop, two planes like the reference site: a silk
+   texture with real light and shadow drifts slowly as the base
+   layer, the crisp Pounce watermark floats over it, and all page
+   content sits on the plane above. */
 .site-bg{
   position:fixed;
   inset:0;
@@ -358,51 +358,29 @@ h1,h2,h3,p{margin-top:0}
   overflow:hidden;
   pointer-events:none;
 }
-.site-bg i{
-  position:absolute;
-  will-change:transform;
-}
-/* wash 1: warm cream sheen, upper left */
+.site-bg i{position:absolute;will-change:transform}
 .site-bg i:nth-child(1){
-  width:90vw;height:90vw;
-  left:-18%;top:-28%;
-  background:radial-gradient(closest-side,#efe9dc 0%,rgba(239,233,220,.55) 42%,transparent 74%);
-  animation:bg-wash-a 29s ease-in-out infinite alternate;
+  /* over-scanned so the slow pan never shows an edge */
+  inset:-6%;
+  background:url("../imgs/bg-silk.jpg") center/cover no-repeat;
+  opacity:.22;
+  animation:bg-silk 47s ease-in-out infinite alternate;
 }
-/* wash 2: red bloom, right of center — the accent's ambient light */
 .site-bg i:nth-child(2){
-  width:74vw;height:74vw;
-  right:-22%;top:16%;
-  background:radial-gradient(closest-side,rgba(217,45,32,.10) 0%,rgba(217,45,32,.045) 45%,transparent 72%);
-  animation:bg-wash-b 37s ease-in-out infinite alternate;
-}
-/* wash 3: warm smoke, low center */
-.site-bg i:nth-child(3){
-  width:80vw;height:80vw;
-  left:8%;bottom:-34%;
-  background:radial-gradient(closest-side,rgba(28,27,24,.055) 0%,rgba(28,27,24,.025) 48%,transparent 74%);
-  animation:bg-wash-c 23s ease-in-out infinite alternate;
-}
-/* the mark rides above the washes, below all content */
-.site-bg i:nth-child(4){
-  width:min(58vw,900px);height:min(58vw,900px);
+  width:min(66vw,1020px);height:min(66vw,1020px);
   left:50%;top:52%;
   translate:-50% -50%;
-  background:url("../imgs/logo-pounce.svg") center/contain no-repeat;
-  opacity:.05;
+  /* the silk shows through a giant Pounce silhouette — the
+     background literally is the logo, rendered in fabric light */
+  background:url("../imgs/bg-silk.jpg") center/cover no-repeat;
+  -webkit-mask:url("../imgs/logo-pounce.svg") center/contain no-repeat;
+  mask:url("../imgs/logo-pounce.svg") center/contain no-repeat;
+  opacity:.42;
   animation:bg-mark 32s ease-in-out infinite alternate;
 }
-@keyframes bg-wash-a{
+@keyframes bg-silk{
   from{transform:translate(0,0) scale(1)}
-  to{transform:translate(9%,12%) scale(1.14)}
-}
-@keyframes bg-wash-b{
-  from{transform:translate(0,0) scale(1.1)}
-  to{transform:translate(-11%,9%) scale(.94)}
-}
-@keyframes bg-wash-c{
-  from{transform:translate(0,0) scale(.96)}
-  to{transform:translate(8%,-9%) scale(1.12)}
+  to{transform:translate(-2.5%,2%) scale(1.09)}
 }
 @keyframes bg-mark{
   from{transform:scale(1) rotate(-1.2deg)}
@@ -411,10 +389,10 @@ h1,h2,h3,p{margin-top:0}
 @media (prefers-reduced-motion:reduce){
   .site-bg i{animation:none}
 }
-/* phones: same layers, just still */
+/* phones: same layers, still */
 @media (max-width:1024px){
   .site-bg i{animation:none}
-  .site-bg i:nth-child(4){width:88vw;height:88vw}
+  .site-bg i:nth-child(2){width:88vw;height:88vw}
 }
 
 /* hero: big centered copy with the video scatter around it.
@@ -958,6 +936,20 @@ h1,h2,h3,p{margin-top:0}
 /* not enough room beside the centered video: tuck the button below it */
 @media (max-width:1240px){
   .rocket-btn{position:static;margin:22px 0 0}
+}
+/* the real explainer replaces the dashed placeholder */
+.hiw-video.has-video{
+  display:block;
+  padding:0;
+  border:0;
+  background:#000;
+  overflow:hidden;
+}
+.hiw-video.has-video video{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
 }
 .ph-play{
   width:64px;height:64px;
