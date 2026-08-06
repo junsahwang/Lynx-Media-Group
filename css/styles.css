@@ -365,8 +365,8 @@ h1,h2,h3,p{margin-top:0}
   top:52%;
   translate:-50% -50%;
   background:url("../imgs/logo-pounce.svg") center/contain no-repeat;
-  opacity:.08;
-  filter:url(#liquid-glass);
+  opacity:.075;
+  filter:blur(12px);
   will-change:transform;
   animation:bg-breathe 38s ease-in-out infinite alternate;
 }
@@ -375,10 +375,10 @@ h1,h2,h3,p{margin-top:0}
   to{transform:scale(1.05)}
 }
 @media (prefers-reduced-motion:reduce){
-  .site-bg i{animation:none;filter:blur(10px)}
+  .site-bg i{animation:none}
 }
 @media (max-width:1024px){
-  .site-bg i{animation:none;width:88vw;height:88vw;filter:blur(10px)}
+  .site-bg i{animation:none;width:88vw;height:88vw}
 }
 
 /* hero: big centered copy with the video scatter around it.
