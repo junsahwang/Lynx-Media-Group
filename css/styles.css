@@ -347,9 +347,10 @@ h1,h2,h3,p{margin-top:0}
   overflow:visible;
 }
 
-/* dynamic backdrop: one giant crisp Pounce watermark behind the
-   hero — same treatment as the carousel posts — plus a soft red
-   glow, both breathing slowly */
+/* dynamic backdrop, two planes like the reference: a luminescent
+   base — three soft light washes drifting in brand tones — with the
+   crisp Pounce watermark floating over it, and all content above.
+   Gradient falloff does the glow (no blur filters = cheap). */
 .site-bg{
   position:fixed;
   inset:0;
@@ -361,40 +362,59 @@ h1,h2,h3,p{margin-top:0}
   position:absolute;
   will-change:transform;
 }
+/* wash 1: warm cream sheen, upper left */
 .site-bg i:nth-child(1){
-  width:min(58vw,900px);
-  height:min(58vw,900px);
-  left:50%;
-  top:52%;
+  width:90vw;height:90vw;
+  left:-18%;top:-28%;
+  background:radial-gradient(closest-side,#efe9dc 0%,rgba(239,233,220,.55) 42%,transparent 74%);
+  animation:bg-wash-a 29s ease-in-out infinite alternate;
+}
+/* wash 2: red bloom, right of center — the accent's ambient light */
+.site-bg i:nth-child(2){
+  width:74vw;height:74vw;
+  right:-22%;top:16%;
+  background:radial-gradient(closest-side,rgba(217,45,32,.10) 0%,rgba(217,45,32,.045) 45%,transparent 72%);
+  animation:bg-wash-b 37s ease-in-out infinite alternate;
+}
+/* wash 3: warm smoke, low center */
+.site-bg i:nth-child(3){
+  width:80vw;height:80vw;
+  left:8%;bottom:-34%;
+  background:radial-gradient(closest-side,rgba(28,27,24,.055) 0%,rgba(28,27,24,.025) 48%,transparent 74%);
+  animation:bg-wash-c 23s ease-in-out infinite alternate;
+}
+/* the mark rides above the washes, below all content */
+.site-bg i:nth-child(4){
+  width:min(58vw,900px);height:min(58vw,900px);
+  left:50%;top:52%;
   translate:-50% -50%;
   background:url("../imgs/logo-pounce.svg") center/contain no-repeat;
   opacity:.05;
   animation:bg-mark 32s ease-in-out infinite alternate;
 }
-.site-bg i:nth-child(2){
-  width:min(60vw,900px);
-  height:min(60vw,900px);
-  left:50%;
-  top:46%;
-  translate:-50% -50%;
-  background:radial-gradient(closest-side,rgba(217,45,32,.05),transparent 72%);
-  animation:bg-glow 21s ease-in-out infinite alternate;
+@keyframes bg-wash-a{
+  from{transform:translate(0,0) scale(1)}
+  to{transform:translate(9%,12%) scale(1.14)}
+}
+@keyframes bg-wash-b{
+  from{transform:translate(0,0) scale(1.1)}
+  to{transform:translate(-11%,9%) scale(.94)}
+}
+@keyframes bg-wash-c{
+  from{transform:translate(0,0) scale(.96)}
+  to{transform:translate(8%,-9%) scale(1.12)}
 }
 @keyframes bg-mark{
   from{transform:scale(1) rotate(-1.2deg)}
   to{transform:scale(1.06) rotate(1.2deg)}
 }
-@keyframes bg-glow{
-  from{transform:scale(.92);opacity:.8}
-  to{transform:scale(1.12);opacity:1}
-}
 @media (prefers-reduced-motion:reduce){
   .site-bg i{animation:none}
 }
-/* phones: the watermark stays (it's cheap when unblurred), just still */
+/* phones: same layers, just still */
 @media (max-width:1024px){
   .site-bg i{animation:none}
-  .site-bg i:nth-child(1){width:88vw;height:88vw}
+  .site-bg i:nth-child(4){width:88vw;height:88vw}
 }
 
 /* hero: big centered copy with the video scatter around it.
