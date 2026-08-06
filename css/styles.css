@@ -2600,3 +2600,26 @@ footer{
 /* the TRUSTED BY label rides the same scroll trigger as the line */
 .trusted .trusted-label{opacity:0;transition:opacity .6s var(--ease)}
 .trusted.line-in .trusted-label{opacity:1}
+
+/* =========================================================
+   Glass layer — content panels frost the silk backdrop behind
+   them (reference-site style): translucent surface + backdrop
+   blur so the moving background reads through, softened.
+   ========================================================= */
+.case-card,
+.about-card,
+.video-card,
+.service-list article,
+.quote-card,
+.application-panel,
+.web-links-grid a,
+.hiw-results .case-stat{
+  background:rgba(255,255,255,.55);
+  -webkit-backdrop-filter:blur(16px) saturate(1.15);
+  backdrop-filter:blur(16px) saturate(1.15);
+}
+.social-chip{
+  background:rgba(255,255,255,.6);
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+}
