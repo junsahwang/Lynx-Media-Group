@@ -2638,3 +2638,61 @@ footer{
   .site-header{padding:8px 10px 8px 18px}
   .site-nav{top:84px}
 }
+
+/* =========================================================
+   The content wall — two counter-scrolling rows of real
+   campaign posters on a tilt, bleeding off both edges.
+   ========================================================= */
+.video-wall{
+  position:relative;
+  overflow:hidden;
+  padding:clamp(30px,6vh,64px) 0;
+}
+.wall-inner{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  width:120vw;
+  margin-left:-10vw;
+  transform:rotate(-5deg);
+}
+.wall-track{
+  display:flex;
+  gap:16px;
+  width:max-content;
+  animation:wall-scroll 48s linear infinite;
+}
+.wall-track-b{animation:wall-scroll 62s linear infinite reverse}
+.wall-tile{
+  width:clamp(120px,13vw,190px);
+  aspect-ratio:10/16;
+  flex:none;
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--surface-2);
+  box-shadow:var(--shadow-sm);
+}
+.wall-tile img{width:100%;height:100%;object-fit:cover;display:block}
+@keyframes wall-scroll{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(-50%,0,0)}
+}
+/* soft white blends so the tilted band melts into the page */
+.video-wall:before,.video-wall:after{
+  content:"";
+  position:absolute;
+  left:0;right:0;
+  height:56px;
+  z-index:1;
+  pointer-events:none;
+}
+.video-wall:before{top:0;background:linear-gradient(var(--bg),transparent)}
+.video-wall:after{bottom:0;background:linear-gradient(transparent,var(--bg))}
+@media (prefers-reduced-motion:reduce){
+  .wall-track{animation:none}
+}
+@media (max-width:760px){
+  .wall-inner{gap:10px}
+  .wall-track{gap:10px}
+  .wall-tile{width:96px;border-radius:10px}
+}

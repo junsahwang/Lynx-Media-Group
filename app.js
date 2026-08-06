@@ -819,6 +819,40 @@ if (heroSocial) {
     toast("✓ Reposted");
   }
 
+  /* ---- ambient virality: the hero engagement ticks up on its own,
+     like watching a post take off — subtle, paused off-screen ---- */
+  if (!fxReduceMotion) {
+    const likeCount = document.querySelector(".chip-like .chip-count");
+    const viewCount = document.querySelector(".chip-views .chip-count");
+    const commentCount = document.querySelector(".chip-comment .chip-count");
+    const likeChip = document.querySelector(".chip-like");
+    let heroVisible = true;
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver((entries) => {
+        heroVisible = entries[0].isIntersecting;
+      }).observe(document.querySelector(".hero"));
+    }
+    const ambientTick = () => {
+      if (heroVisible && !document.hidden) {
+        const roll = Math.random();
+        if (roll < 0.5 && likeCount) {
+          rollCount(likeCount, Number(likeCount.dataset.count) + 40 + Math.floor(Math.random() * 160), 600);
+          // now and then a stray heart floats off the like chip
+          if (Math.random() < 0.4 && likeChip) {
+            const { x, y } = chipCenter(likeChip);
+            heartBurst(x, y, 1 + Math.floor(Math.random() * 2));
+          }
+        } else if (roll < 0.8 && viewCount) {
+          rollCount(viewCount, Number(viewCount.dataset.count) + 400 + Math.floor(Math.random() * 1600), 700);
+        } else if (commentCount) {
+          rollCount(commentCount, Number(commentCount.dataset.count) + 1, 300);
+        }
+      }
+      setTimeout(ambientTick, 2600 + Math.random() * 2800);
+    };
+    setTimeout(ambientTick, 2200);
+  }
+
   heroSocial.addEventListener("click", (event) => {
     const chip = event.target.closest(".social-chip");
     if (!chip) return;
