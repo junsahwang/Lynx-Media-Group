@@ -2623,3 +2623,35 @@ footer{
   -webkit-backdrop-filter:blur(10px);
   backdrop-filter:blur(10px);
 }
+
+/* =========================================================
+   Floating glass capsule header — the nav sits in a detached
+   frosted pill over the silk backdrop, readable at all times.
+   ========================================================= */
+.site-header{
+  top:14px;
+  left:50%;
+  right:auto;
+  transform:translateX(-50%);
+  width:min(calc(100% - 28px),1280px);
+  padding:10px 12px 10px 24px;
+  border-radius:999px;
+  border:1px solid rgba(28,27,24,.08);
+  background:rgba(255,255,255,.62);
+  -webkit-backdrop-filter:blur(18px) saturate(1.15);
+  backdrop-filter:blur(18px) saturate(1.15);
+  box-shadow:0 10px 30px rgba(28,27,24,.06);
+}
+.site-header.is-scrolled{
+  padding:8px 12px 8px 24px;
+  background:rgba(255,255,255,.8);
+  box-shadow:0 14px 36px rgba(28,27,24,.09);
+}
+.site-header.is-hidden{
+  transform:translate(-50%,-130%);
+  opacity:0;
+}
+@media (max-width:900px){
+  .site-header{padding:8px 10px 8px 18px}
+  .site-nav{top:84px}
+}
