@@ -345,72 +345,56 @@ h1,h2,h3,p{margin-top:0}
      instead of getting sliced (nothing can reach the viewport sides,
      so no horizontal scrollbar risk) */
   overflow:visible;
-  background:var(--bg);
 }
 
-/* dynamic backdrop: two giant blurred Pounce marks and a soft red
-   glow drift slowly behind the hero — brand-shaped atmosphere, never
-   competing with content */
-.hero-bg{
-  position:absolute;
+/* dynamic backdrop: one giant crisp Pounce watermark behind the
+   hero — same treatment as the carousel posts — plus a soft red
+   glow, both breathing slowly */
+.site-bg{
+  position:fixed;
   inset:0;
-  z-index:0;
+  z-index:-1;
   overflow:hidden;
   pointer-events:none;
 }
-.hero-bg i{
+.site-bg i{
   position:absolute;
   will-change:transform;
 }
-.hero-bg i:nth-child(1),
-.hero-bg i:nth-child(2){
+.site-bg i:nth-child(1){
+  width:min(58vw,900px);
+  height:min(58vw,900px);
+  left:50%;
+  top:52%;
+  translate:-50% -50%;
   background:url("../imgs/logo-pounce.svg") center/contain no-repeat;
-  filter:blur(64px);
-  opacity:.06;
+  opacity:.05;
+  animation:bg-mark 32s ease-in-out infinite alternate;
 }
-.hero-bg i:nth-child(1){
-  width:min(72vw,1050px);
-  height:min(72vw,1050px);
-  left:-14%;
-  top:4%;
-  animation:bg-drift-a 34s ease-in-out infinite alternate;
-}
-.hero-bg i:nth-child(2){
-  width:min(54vw,800px);
-  height:min(54vw,800px);
-  right:-12%;
-  bottom:-6%;
-  transform:rotate(14deg);
-  animation:bg-drift-b 27s ease-in-out infinite alternate;
-}
-.hero-bg i:nth-child(3){
+.site-bg i:nth-child(2){
   width:min(60vw,900px);
   height:min(60vw,900px);
   left:50%;
-  top:44%;
+  top:46%;
   translate:-50% -50%;
-  background:radial-gradient(closest-side,rgba(217,45,32,.06),transparent 72%);
+  background:radial-gradient(closest-side,rgba(217,45,32,.05),transparent 72%);
   animation:bg-glow 21s ease-in-out infinite alternate;
 }
-@keyframes bg-drift-a{
-  from{transform:translate(0,0) rotate(-6deg) scale(1)}
-  to{transform:translate(6%,4%) rotate(4deg) scale(1.08)}
-}
-@keyframes bg-drift-b{
-  from{transform:translate(0,0) rotate(14deg) scale(1.05)}
-  to{transform:translate(-5%,-6%) rotate(4deg) scale(.97)}
+@keyframes bg-mark{
+  from{transform:scale(1) rotate(-1.2deg)}
+  to{transform:scale(1.06) rotate(1.2deg)}
 }
 @keyframes bg-glow{
   from{transform:scale(.92);opacity:.8}
   to{transform:scale(1.12);opacity:1}
 }
 @media (prefers-reduced-motion:reduce){
-  .hero-bg i{animation:none}
+  .site-bg i{animation:none}
 }
-/* phones: one still glow, no blurred giants — keeps scrolling cheap */
+/* phones: the watermark stays (it's cheap when unblurred), just still */
 @media (max-width:1024px){
-  .hero-bg i:nth-child(1),.hero-bg i:nth-child(2){display:none}
-  .hero-bg i:nth-child(3){animation:none}
+  .site-bg i{animation:none}
+  .site-bg i:nth-child(1){width:88vw;height:88vw}
 }
 
 /* hero: big centered copy with the video scatter around it.
@@ -1370,7 +1354,7 @@ h1,h2,h3,p{margin-top:0}
 /* =========================================================
    Case studies
    ========================================================= */
-.case-section{background:var(--bg)}
+.case-section{}
 
 .case-card{
   max-width:1200px;
@@ -1564,7 +1548,7 @@ h1,h2,h3,p{margin-top:0}
 /* =========================================================
    About / founders
    ========================================================= */
-.about-section{background:var(--bg)}
+.about-section{}
 
 .founder-grid{
   display:grid;
@@ -1673,7 +1657,6 @@ h1,h2,h3,p{margin-top:0}
 .trusted{
   transition:border-color .6s var(--ease);
   padding:clamp(44px,6vw,80px) 0;
-  background:var(--bg);
   border-top:1px solid transparent;
   overflow:hidden;
 }
@@ -1924,7 +1907,6 @@ h1,h2,h3,p{margin-top:0}
    Services
    ========================================================= */
 .services-section{
-  background:var(--bg);
   border-bottom:1px solid var(--line);
 }
 
@@ -2204,7 +2186,6 @@ h1,h2,h3,p{margin-top:0}
    ========================================================= */
 footer{
   padding:clamp(26px,4.5vh,42px) clamp(18px,5vw,72px) 18px;
-  background:var(--bg);
 }
 
 /* three columns spanning the full footer width — brand pinned left,
@@ -2349,7 +2330,6 @@ footer{
 .footer-wordmark{
   padding:clamp(42px,7vw,92px) clamp(14px,3vw,40px) clamp(34px,5vw,64px);
   text-align:center;
-  background:var(--bg);
   overflow:hidden;
   user-select:none;
 }
