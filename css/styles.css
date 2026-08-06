@@ -347,9 +347,8 @@ h1,h2,h3,p{margin-top:0}
   overflow:visible;
 }
 
-/* dynamic backdrop: an ambient silk layer drifts gently while a
-   second silk sheet flows THROUGH a fixed Pounce silhouette — the
-   logo holds still, the light inside it moves. Content sits above. */
+/* dynamic backdrop: the Pounce mark as a soft neutral glow —
+   one blurred silhouette breathing slowly behind every page */
 .site-bg{
   position:fixed;
   inset:0;
@@ -357,43 +356,28 @@ h1,h2,h3,p{margin-top:0}
   overflow:hidden;
   pointer-events:none;
 }
-.site-bg i{position:absolute}
-.site-bg i:nth-child(1){
-  inset:-8%;
-  background:url("../imgs/bg-silk.jpg") center/cover no-repeat;
-  opacity:.16;
-  will-change:transform;
-  animation:bg-ambient 24s ease-in-out infinite alternate;
-}
-.site-bg i:nth-child(2){
-  width:min(66vw,1020px);height:min(66vw,1020px);
-  left:50%;top:52%;
-  translate:-50% -50%;
-  -webkit-mask:url("../imgs/logo-pounce.svg") center/contain no-repeat;
-  mask:url("../imgs/logo-pounce.svg") center/contain no-repeat;
-  opacity:.4;
-}
-.site-bg i:nth-child(2) b{
+.site-bg i{
   position:absolute;
-  inset:-24%;
-  background:url("../imgs/bg-silk.jpg") center/cover no-repeat;
-  will-change:transform;
-  animation:bg-flow 15s ease-in-out infinite alternate;
+  width:min(62vw,960px);
+  height:min(62vw,960px);
+  left:50%;
+  top:52%;
+  translate:-50% -50%;
+  background:url("../imgs/logo-pounce.svg") center/contain no-repeat;
+  opacity:.07;
+  filter:blur(38px);
+  will-change:transform,opacity;
+  animation:bg-glow 14s ease-in-out infinite alternate;
 }
-@keyframes bg-ambient{
-  from{transform:translate(0,0) scale(1)}
-  to{transform:translate(-3%,2.4%) scale(1.09)}
-}
-@keyframes bg-flow{
-  from{transform:translate(0,0) scale(1) rotate(0deg)}
-  to{transform:translate(6%,-5%) scale(1.16) rotate(2deg)}
+@keyframes bg-glow{
+  from{transform:scale(1);opacity:.055}
+  to{transform:scale(1.06);opacity:.09}
 }
 @media (prefers-reduced-motion:reduce){
-  .site-bg i,.site-bg i b{animation:none}
+  .site-bg i{animation:none}
 }
 @media (max-width:1024px){
-  .site-bg i,.site-bg i b{animation:none}
-  .site-bg i:nth-child(2){width:88vw;height:88vw}
+  .site-bg i{animation:none;width:88vw;height:88vw}
 }
 
 /* hero: big centered copy with the video scatter around it.
@@ -2000,7 +1984,6 @@ h1,h2,h3,p{margin-top:0}
   align-items:flex-end;
   padding:130px clamp(18px,5vw,72px) 48px;
   color:var(--ink);
-  background:var(--bg);
   border-bottom:1px solid var(--line);
 }
 
