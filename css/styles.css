@@ -348,6 +348,71 @@ h1,h2,h3,p{margin-top:0}
   background:var(--bg);
 }
 
+/* dynamic backdrop: two giant blurred Pounce marks and a soft red
+   glow drift slowly behind the hero — brand-shaped atmosphere, never
+   competing with content */
+.hero-bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+.hero-bg i{
+  position:absolute;
+  will-change:transform;
+}
+.hero-bg i:nth-child(1),
+.hero-bg i:nth-child(2){
+  background:url("../imgs/logo-pounce.svg") center/contain no-repeat;
+  filter:blur(64px);
+  opacity:.06;
+}
+.hero-bg i:nth-child(1){
+  width:min(72vw,1050px);
+  height:min(72vw,1050px);
+  left:-14%;
+  top:4%;
+  animation:bg-drift-a 34s ease-in-out infinite alternate;
+}
+.hero-bg i:nth-child(2){
+  width:min(54vw,800px);
+  height:min(54vw,800px);
+  right:-12%;
+  bottom:-6%;
+  transform:rotate(14deg);
+  animation:bg-drift-b 27s ease-in-out infinite alternate;
+}
+.hero-bg i:nth-child(3){
+  width:min(60vw,900px);
+  height:min(60vw,900px);
+  left:50%;
+  top:44%;
+  translate:-50% -50%;
+  background:radial-gradient(closest-side,rgba(217,45,32,.06),transparent 72%);
+  animation:bg-glow 21s ease-in-out infinite alternate;
+}
+@keyframes bg-drift-a{
+  from{transform:translate(0,0) rotate(-6deg) scale(1)}
+  to{transform:translate(6%,4%) rotate(4deg) scale(1.08)}
+}
+@keyframes bg-drift-b{
+  from{transform:translate(0,0) rotate(14deg) scale(1.05)}
+  to{transform:translate(-5%,-6%) rotate(4deg) scale(.97)}
+}
+@keyframes bg-glow{
+  from{transform:scale(.92);opacity:.8}
+  to{transform:scale(1.12);opacity:1}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-bg i{animation:none}
+}
+/* phones: one still glow, no blurred giants — keeps scrolling cheap */
+@media (max-width:1024px){
+  .hero-bg i:nth-child(1),.hero-bg i:nth-child(2){display:none}
+  .hero-bg i:nth-child(3){animation:none}
+}
+
 /* hero: big centered copy with the video scatter around it.
    The copy block spans the hero, so let the pointer fall through
    to the tiles beneath — only its buttons stay interactive. */
