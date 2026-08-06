@@ -347,10 +347,9 @@ h1,h2,h3,p{margin-top:0}
   overflow:visible;
 }
 
-/* dynamic backdrop, site-wide: monochrome depth — three large
-   soft shadows drift like light through water, a whisper of film
-   grain adds texture, and the blurred mark glows on top. No color,
-   just light. */
+/* backdrop: exactly the carousel-post treatment — one giant crisp
+   Pounce watermark in quiet gray on clean white, breathing almost
+   imperceptibly. Nothing else. */
 .site-bg{
   position:fixed;
   inset:0;
@@ -358,56 +357,27 @@ h1,h2,h3,p{margin-top:0}
   overflow:hidden;
   pointer-events:none;
 }
-.site-bg i,
-.site-bg:before,
-.site-bg:after{
-  content:"";
-  position:absolute;
-  will-change:transform;
-}
-/* drifting shadow masses — big, soft, clearly moving */
-.site-bg:before{
-  width:110vw;height:110vw;
-  left:-30%;top:-45%;
-  background:radial-gradient(closest-side,rgba(28,27,24,.085),rgba(28,27,24,.03) 55%,transparent 75%);
-  animation:bg-shadow-a 19s ease-in-out infinite alternate;
-}
-.site-bg:after{
-  width:95vw;height:95vw;
-  right:-35%;bottom:-40%;
-  background:radial-gradient(closest-side,rgba(28,27,24,.075),rgba(28,27,24,.025) 55%,transparent 75%);
-  animation:bg-shadow-b 25s ease-in-out infinite alternate;
-}
-/* the glowing mark rides above the shadows */
 .site-bg i{
-  width:min(62vw,960px);
-  height:min(62vw,960px);
+  position:absolute;
+  width:min(60vw,920px);
+  height:min(60vw,920px);
   left:50%;
   top:52%;
   translate:-50% -50%;
   background:url("../imgs/logo-pounce.svg") center/contain no-repeat;
-  opacity:.22;
-  filter:blur(20px);
-  animation:bg-glow 14s ease-in-out infinite alternate;
+  opacity:.06;
+  will-change:transform;
+  animation:bg-breathe 38s ease-in-out infinite alternate;
 }
-@keyframes bg-shadow-a{
-  from{transform:translate(0,0) scale(1)}
-  to{transform:translate(14%,10%) scale(1.18)}
-}
-@keyframes bg-shadow-b{
-  from{transform:translate(0,0) scale(1.12)}
-  to{transform:translate(-12%,-9%) scale(.95)}
-}
-@keyframes bg-glow{
-  from{transform:scale(1);opacity:.18}
-  to{transform:scale(1.06);opacity:.27}
+@keyframes bg-breathe{
+  from{transform:scale(1)}
+  to{transform:scale(1.05)}
 }
 @media (prefers-reduced-motion:reduce){
-  .site-bg i,.site-bg:before,.site-bg:after{animation:none}
+  .site-bg i{animation:none}
 }
 @media (max-width:1024px){
-  .site-bg i,.site-bg:before,.site-bg:after{animation:none}
-  .site-bg i{width:88vw;height:88vw}
+  .site-bg i{animation:none;width:88vw;height:88vw}
 }
 
 /* hero: big centered copy with the video scatter around it.
