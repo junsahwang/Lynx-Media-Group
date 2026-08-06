@@ -365,7 +365,8 @@ h1,h2,h3,p{margin-top:0}
   top:52%;
   translate:-50% -50%;
   background:url("../imgs/logo-pounce.svg") center/contain no-repeat;
-  opacity:.06;
+  opacity:.075;
+  filter:blur(12px);
   will-change:transform;
   animation:bg-breathe 38s ease-in-out infinite alternate;
 }
