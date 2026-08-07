@@ -1852,11 +1852,6 @@ body:before{
   line-height:1.7;
 }
 
-.demo-section{
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-}
-
 .video-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -1901,10 +1896,6 @@ body:before{
 /* =========================================================
    Services
    ========================================================= */
-.services-section{
-  border-bottom:1px solid var(--line);
-}
-
 .service-list{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -1982,7 +1973,6 @@ body:before{
   align-items:flex-end;
   padding:130px clamp(18px,5vw,72px) 48px;
   color:var(--ink);
-  border-bottom:1px solid var(--line);
 }
 
 .apply-hero h1,.form-hero h1{max-width:940px}
