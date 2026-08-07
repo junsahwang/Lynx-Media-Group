@@ -2585,14 +2585,12 @@ footer{
 .application-panel,
 .web-links-grid a,
 .hiw-results .case-stat{
-  background:rgba(255,255,255,.55);
-  -webkit-backdrop-filter:blur(16px) saturate(1.15);
-  backdrop-filter:blur(16px) saturate(1.15);
+  /* solid surfaces: content sits ON the dot grid as its own plane
+     rather than letting blurred dots bleed through it */
+  background:var(--surface);
 }
 .social-chip{
-  background:rgba(255,255,255,.6);
-  -webkit-backdrop-filter:blur(10px);
-  backdrop-filter:blur(10px);
+  background:var(--surface);
 }
 
 /* =========================================================
@@ -2641,9 +2639,7 @@ footer{
   padding:9px 18px;
   border:1px solid var(--line);
   border-radius:var(--r-pill);
-  background:rgba(255,255,255,.6);
-  -webkit-backdrop-filter:blur(10px);
-  backdrop-filter:blur(10px);
+  background:var(--surface);
   color:var(--ink-soft);
   font-size:.88rem;
   font-weight:600;
