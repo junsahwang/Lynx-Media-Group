@@ -775,8 +775,8 @@ body.dots-live:before{display:none}
   .chip-comment{--x:85%;--y:142px;--rot:5deg}
   /* pinned a fixed distance above the hero's bottom edge so they sit
      in the padding band below the CTA, clear of both it and the divider */
-  .chip-views{--x:17%;--y:calc(100% - 92px);--rot:4deg}
-  .chip-share{--x:85%;--y:calc(100% - 106px);--rot:-6deg}
+  .chip-views{--x:17%;--y:calc(100% - 46px);--rot:4deg}
+  .chip-share{--x:85%;--y:calc(100% - 60px);--rot:-6deg}
 }
 
 /* =========================================================
