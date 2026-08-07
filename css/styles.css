@@ -417,9 +417,6 @@ body.dots-live:before{display:none}
   border-radius:2px;
 }
 
-/* "system." in the headline picks up the CTA red */
-.hero-accent{color:#d92d20}
-
 .hero h1{
   font-weight:600;
   /* sized so the value-prop headline holds a single line on desktop —
@@ -460,20 +457,20 @@ body.dots-live:before{display:none}
   padding:17px 38px;
   font-size:1.05rem;
   min-height:56px;
-  background:#d92d20;
-  border-color:#d92d20;
+  background:var(--ink);
+  border-color:var(--ink);
   color:#fff;
   animation:cta-radiate 1.6s var(--ease) infinite;
 }
 .button.primary.button-xl:hover{
-  background:#c0261b;
+  background:#000;
   animation-play-state:paused;
 }
 .button-xl .btn-ico{width:21px;height:21px}
 @keyframes cta-radiate{
-  0%{box-shadow:0 0 0 0 rgba(217,45,32,.45)}
-  70%{box-shadow:0 0 0 14px rgba(217,45,32,0)}
-  100%{box-shadow:0 0 0 0 rgba(217,45,32,0)}
+  0%{box-shadow:0 0 0 0 rgba(28,27,24,.35)}
+  70%{box-shadow:0 0 0 14px rgba(28,27,24,0)}
+  100%{box-shadow:0 0 0 0 rgba(28,27,24,0)}
 }
 
 /* entrance for hero copy */
