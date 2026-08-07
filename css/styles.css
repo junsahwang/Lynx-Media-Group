@@ -368,13 +368,13 @@ body:before{
    cursor passes. Sits directly over the static CSS grid. */
 .dot-fx{
   position:fixed;
-  inset:0;
+  left:0;top:0;
   z-index:-1;
   pointer-events:none;
-  opacity:0;
-  transition:opacity .5s var(--ease);
 }
-body.spot-on .dot-fx{opacity:1}
+/* once the canvas is live it IS the grid — retire the CSS one so
+   there is never a second, offset set of dots */
+body.dots-live:before{display:none}
 
 /* hero: big centered copy with the video scatter around it.
    The copy block spans the hero, so let the pointer fall through

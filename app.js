@@ -865,74 +865,86 @@ if (heroSocial) {
 }
 
 /* =========================================================
-   Interactive dot grid — mouse pointers only. A canvas over the
-   static CSS grid redraws just the dots within reach of the
-   cursor: each grows, darkens, and eases away from the pointer.
-   Only ~80 dots are touched per frame, so it stays cheap.
+   Interactive dot grid — mouse pointers only. The canvas draws
+   the WHOLE grid (so there is exactly one set of dots, perfectly
+   aligned) and swells the ones nearest the pointer. The static
+   CSS grid is hidden only once this is running.
    ========================================================= */
 if (window.matchMedia("(hover:hover) and (pointer:fine)").matches && !reduceMotion) {
-  const GAP = 34; // must match the CSS grid spacing
-  const REACH = 130; // px of influence around the cursor
+  const GAP = 34; // matches the CSS grid spacing
+  const REACH = 78; // px of influence around the cursor
+  const DOT_R = 1.4; // resting dot radius, matches the CSS grid
+  const DOT_A = 0.14; // resting dot alpha, matches the CSS grid
+
   const canvas = document.createElement("canvas");
   canvas.className = "dot-fx";
   canvas.setAttribute("aria-hidden", "true");
   document.body.appendChild(canvas);
+  document.body.classList.add("dots-live"); // retires the CSS grid
 
   const ctx = canvas.getContext("2d");
-  let dpr = 1;
-  let pointerX = -999;
-  let pointerY = -999;
-  let frameQueued = false;
-
   let viewW = 0;
   let viewH = 0;
-  const sizeCanvas = () => {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    viewW = document.documentElement.clientWidth || window.innerWidth;
-    viewH = document.documentElement.clientHeight || window.innerHeight;
-    canvas.width = Math.floor(viewW * dpr);
-    canvas.height = Math.floor(viewH * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  };
-  sizeCanvas();
-  window.addEventListener("resize", sizeCanvas);
+  let dpr = 1;
+  let pointerX = -9999;
+  let pointerY = -9999;
+  let frameQueued = false;
 
+  // drawn in device pixels (not CSS px) and snapped to the device
+  // grid, so dots stay razor-sharp at any zoom or display density
   const draw = () => {
     frameQueued = false;
-    ctx.clearRect(0, 0, viewW, viewH);
-    if (pointerX < -100) return;
-
-    // only walk the grid cells inside the cursor's reach
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     const half = GAP / 2;
-    const startCol = Math.floor((pointerX - REACH - half) / GAP);
-    const endCol = Math.ceil((pointerX + REACH - half) / GAP);
-    const startRow = Math.floor((pointerY - REACH - half) / GAP);
-    const endRow = Math.ceil((pointerY + REACH - half) / GAP);
-
-    for (let col = startCol; col <= endCol; col++) {
-      for (let row = startRow; row <= endRow; row++) {
-        const baseX = col * GAP + half;
-        const baseY = row * GAP + half;
-        const dx = baseX - pointerX;
-        const dy = baseY - pointerY;
-        const dist = Math.hypot(dx, dy);
-        if (dist > REACH) continue;
-
-        // 0 at the edge of reach, 1 right under the cursor
-        const t = 1 - dist / REACH;
-        const ease = t * t;
-        const push = ease * 5; // gentle drift outward
-        const angle = dist === 0 ? 0 : Math.atan2(dy, dx);
-        const x = baseX + Math.cos(angle) * push;
-        const y = baseY + Math.sin(angle) * push;
-
+    for (let x = half; x < viewW + half; x += GAP) {
+      for (let y = half; y < viewH + half; y += GAP) {
+        const dist = Math.hypot(x - pointerX, y - pointerY);
+        let radius = DOT_R;
+        let alpha = DOT_A;
+        if (dist < REACH) {
+          // 0 at the edge of reach, 1 directly under the cursor
+          const ease = (1 - dist / REACH) ** 2;
+          radius = DOT_R + ease * 1.9;
+          alpha = DOT_A + ease * 0.5;
+        }
         ctx.beginPath();
-        ctx.arc(x, y, 1.4 + ease * 1.7, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(28,27,24,${(0.14 + ease * 0.5).toFixed(3)})`;
+        ctx.arc(Math.round(x * dpr), Math.round(y * dpr), radius * dpr, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(28,27,24,${alpha.toFixed(3)})`;
         ctx.fill();
       }
     }
   };
+
+  const queueDraw = () => {
+    if (!frameQueued) {
+      frameQueued = true;
+      requestAnimationFrame(draw);
+    }
+  };
+
+  const sizeCanvas = () => {
+    // follow the real pixel ratio (browser zoom changes it) so the
+    // canvas never renders below the display's resolution
+    dpr = Math.min(window.devicePixelRatio || 1, 4);
+    viewW = document.documentElement.clientWidth || window.innerWidth;
+    viewH = document.documentElement.clientHeight || window.innerHeight;
+    canvas.width = Math.round(viewW * dpr);
+    canvas.height = Math.round(viewH * dpr);
+    canvas.style.width = viewW + "px";
+    canvas.style.height = viewH + "px";
+    draw();
+  };
+
+  // zoom changes devicePixelRatio without always firing resize
+  const watchDpr = () => {
+    window
+      .matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`)
+      .addEventListener("change", () => { sizeCanvas(); watchDpr(); }, { once: true });
+  };
+
+  sizeCanvas();
+  watchDpr();
+  window.addEventListener("resize", sizeCanvas);
 
   document.addEventListener(
     "pointermove",
@@ -940,18 +952,19 @@ if (window.matchMedia("(hover:hover) and (pointer:fine)").matches && !reduceMoti
       if (event.pointerType && event.pointerType !== "mouse") return;
       pointerX = event.clientX;
       pointerY = event.clientY;
-      document.body.classList.add("spot-on");
-      if (!frameQueued) {
-        frameQueued = true;
-        requestAnimationFrame(draw);
-      }
+      queueDraw();
     },
     { passive: true }
   );
 
-  const hideDots = () => document.body.classList.remove("spot-on");
-  document.addEventListener("pointerleave", hideDots);
-  window.addEventListener("blur", hideDots);
+  // pointer gone: settle every dot back to its resting size
+  const restDots = () => {
+    pointerX = -9999;
+    pointerY = -9999;
+    queueDraw();
+  };
+  document.addEventListener("pointerleave", restDots);
+  window.addEventListener("blur", restDots);
 }
 
 /* Duplicate the trusted-by logos so the marquee fills the width and loops seamlessly */
