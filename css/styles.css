@@ -347,40 +347,6 @@ h1,h2,h3,p{margin-top:0}
   overflow:visible;
 }
 
-/* backdrop: exactly the carousel-post treatment — one giant crisp
-   Pounce watermark in quiet gray on clean white, breathing almost
-   imperceptibly. Nothing else. */
-.site-bg{
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  overflow:hidden;
-  pointer-events:none;
-}
-.site-bg i{
-  position:absolute;
-  width:min(60vw,920px);
-  height:min(60vw,920px);
-  left:50%;
-  top:52%;
-  translate:-50% -50%;
-  background:url("../imgs/logo-pounce.svg") center/contain no-repeat;
-  opacity:.12;
-  filter:blur(12px);
-  will-change:transform;
-  animation:bg-breathe 38s ease-in-out infinite alternate;
-}
-@keyframes bg-breathe{
-  from{transform:scale(1)}
-  to{transform:scale(1.05)}
-}
-@media (prefers-reduced-motion:reduce){
-  .site-bg i{animation:none}
-}
-@media (max-width:1024px){
-  .site-bg i{animation:none;width:88vw;height:88vw}
-}
-
 /* hero: big centered copy with the video scatter around it.
    The copy block spans the hero, so let the pointer fall through
    to the tiles beneath — only its buttons stay interactive. */
@@ -930,6 +896,7 @@ h1,h2,h3,p{margin-top:0}
   border:0;
   background:#000;
   overflow:hidden;
+  box-shadow:0 6px 18px rgba(28,27,24,.10),0 24px 48px rgba(28,27,24,.08);
 }
 .hiw-video.has-video video{
   width:100%;
