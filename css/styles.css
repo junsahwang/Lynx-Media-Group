@@ -1006,15 +1006,25 @@ h1,h2,h3,p{margin-top:0}
 /* step 1: the brand, pulsing with untapped attention */
 .brand-node{
   width:118px;height:118px;
-  display:grid;place-items:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
   border-radius:26px;
-  background:var(--panel);
+  /* app-icon treatment: lit-from-above gradient, soft lift, hairline
+     inner highlight — reads premium instead of a flat black box */
+  background:linear-gradient(155deg,#2e2b25,#131210 78%);
+  box-shadow:0 12px 28px rgba(28,27,24,.20),inset 0 1px 0 rgba(255,255,255,.16);
   color:var(--panel-ink);
-  font-weight:700;
+  font-weight:600;
+  font-size:.82rem;
+  letter-spacing:.02em;
   text-align:center;
-  line-height:1.25;
   z-index:2;
 }
+.brand-node svg{width:22px;height:22px;fill:#fff}
+.brand-node span{opacity:.92}
 .stage-brand i,.stage-audition i{
   position:absolute;
   left:50%;top:50%;
@@ -1035,7 +1045,8 @@ h1,h2,h3,p{margin-top:0}
 /* step 2: spokes grow out from the brand and a creator lands on the
    end of each one. Spokes and avatars share the same --a angle and
    --r radius, so they always meet exactly. */
-.brand-node-sm{width:96px;height:96px;font-size:.86rem;z-index:2}
+.brand-node-sm{width:94px;height:94px;font-size:.74rem;gap:5px;border-radius:22px;z-index:2}
+.brand-node-sm svg{width:17px;height:17px}
 .stage-match{--r:clamp(105px,11vw,150px)}
 /* every stage element scrubs with the scroll: --p (set by app.js)
    runs 0→1 as the step travels the viewport, and each element starts
