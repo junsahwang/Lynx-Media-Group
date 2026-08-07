@@ -347,6 +347,22 @@ h1,h2,h3,p{margin-top:0}
   overflow:visible;
 }
 
+/* =========================================================
+   Dot-grid backdrop — a soft, evenly spaced dot lattice behind
+   every page. Fixed so it never scrolls away, pure CSS so it
+   stays crisp at any zoom and costs no bytes.
+   ========================================================= */
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(rgba(28,27,24,.14) 1.4px,transparent 1.5px) 0 0/34px 34px,
+    var(--bg);
+}
+
 /* hero: big centered copy with the video scatter around it.
    The copy block spans the hero, so let the pointer fall through
    to the tiles beneath — only its buttons stay interactive. */
