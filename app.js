@@ -864,6 +864,96 @@ if (heroSocial) {
   });
 }
 
+/* =========================================================
+   Interactive dot grid — mouse pointers only. A canvas over the
+   static CSS grid redraws just the dots within reach of the
+   cursor: each grows, darkens, and eases away from the pointer.
+   Only ~80 dots are touched per frame, so it stays cheap.
+   ========================================================= */
+if (window.matchMedia("(hover:hover) and (pointer:fine)").matches && !reduceMotion) {
+  const GAP = 34; // must match the CSS grid spacing
+  const REACH = 130; // px of influence around the cursor
+  const canvas = document.createElement("canvas");
+  canvas.className = "dot-fx";
+  canvas.setAttribute("aria-hidden", "true");
+  document.body.appendChild(canvas);
+
+  const ctx = canvas.getContext("2d");
+  let dpr = 1;
+  let pointerX = -999;
+  let pointerY = -999;
+  let frameQueued = false;
+
+  let viewW = 0;
+  let viewH = 0;
+  const sizeCanvas = () => {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    viewW = document.documentElement.clientWidth || window.innerWidth;
+    viewH = document.documentElement.clientHeight || window.innerHeight;
+    canvas.width = Math.floor(viewW * dpr);
+    canvas.height = Math.floor(viewH * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
+  sizeCanvas();
+  window.addEventListener("resize", sizeCanvas);
+
+  const draw = () => {
+    frameQueued = false;
+    ctx.clearRect(0, 0, viewW, viewH);
+    if (pointerX < -100) return;
+
+    // only walk the grid cells inside the cursor's reach
+    const half = GAP / 2;
+    const startCol = Math.floor((pointerX - REACH - half) / GAP);
+    const endCol = Math.ceil((pointerX + REACH - half) / GAP);
+    const startRow = Math.floor((pointerY - REACH - half) / GAP);
+    const endRow = Math.ceil((pointerY + REACH - half) / GAP);
+
+    for (let col = startCol; col <= endCol; col++) {
+      for (let row = startRow; row <= endRow; row++) {
+        const baseX = col * GAP + half;
+        const baseY = row * GAP + half;
+        const dx = baseX - pointerX;
+        const dy = baseY - pointerY;
+        const dist = Math.hypot(dx, dy);
+        if (dist > REACH) continue;
+
+        // 0 at the edge of reach, 1 right under the cursor
+        const t = 1 - dist / REACH;
+        const ease = t * t;
+        const push = ease * 5; // gentle drift outward
+        const angle = dist === 0 ? 0 : Math.atan2(dy, dx);
+        const x = baseX + Math.cos(angle) * push;
+        const y = baseY + Math.sin(angle) * push;
+
+        ctx.beginPath();
+        ctx.arc(x, y, 1.4 + ease * 1.7, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(28,27,24,${(0.14 + ease * 0.5).toFixed(3)})`;
+        ctx.fill();
+      }
+    }
+  };
+
+  document.addEventListener(
+    "pointermove",
+    (event) => {
+      if (event.pointerType && event.pointerType !== "mouse") return;
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      document.body.classList.add("spot-on");
+      if (!frameQueued) {
+        frameQueued = true;
+        requestAnimationFrame(draw);
+      }
+    },
+    { passive: true }
+  );
+
+  const hideDots = () => document.body.classList.remove("spot-on");
+  document.addEventListener("pointerleave", hideDots);
+  window.addEventListener("blur", hideDots);
+}
+
 /* Duplicate the trusted-by logos so the marquee fills the width and loops seamlessly */
 const trustedRow = document.querySelector(".trusted-row");
 if (trustedRow) {

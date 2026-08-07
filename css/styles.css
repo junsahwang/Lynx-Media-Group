@@ -363,6 +363,19 @@ body:before{
     var(--bg);
 }
 
+/* interactive dot layer: a canvas that redraws only the grid dots
+   near the pointer — they grow, darken, and drift aside as the
+   cursor passes. Sits directly over the static CSS grid. */
+.dot-fx{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .5s var(--ease);
+}
+body.spot-on .dot-fx{opacity:1}
+
 /* hero: big centered copy with the video scatter around it.
    The copy block spans the hero, so let the pointer fall through
    to the tiles beneath — only its buttons stay interactive. */
