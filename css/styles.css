@@ -2294,7 +2294,7 @@ footer{
 }
 
 /* brand icons: muted grayscale at rest, true brand colors on hover */
-.footer-links svg{
+.footer-links svg,.footer-links img{
   width:22px;
   height:22px;
   display:block;
@@ -2302,7 +2302,7 @@ footer{
   opacity:.5;
   transition:filter var(--t) var(--ease),opacity var(--t) var(--ease),transform var(--t) var(--ease-spring);
 }
-.footer-links a:hover svg{
+.footer-links a:hover svg,.footer-links a:hover img{
   filter:none;
   opacity:1;
   transform:scale(1.06);
