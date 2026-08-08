@@ -1966,7 +1966,22 @@ body.dots-live:before{display:none}
   background:var(--panel-ink);
   box-shadow:none;
 }
-.cta-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cta-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;flex:none}
+/* the panel never stretches past a comfortable measure on wide
+   monitors, so the heading and buttons stay a readable pair */
+.cta-section h2{max-width:22ch}
+/* only while the panel is a row — in the stacked mobile layout a
+   flex-basis would become a HEIGHT and blow a hole in the middle */
+@media (min-width:901px){
+  .cta-section>div:first-child{flex:1 1 360px;min-width:0}
+}
+@media (min-width:1500px){
+  .cta-section{
+    max-width:1320px;
+    margin-inline:auto;
+    padding:clamp(44px,3.4vw,64px) clamp(40px,3.6vw,64px);
+  }
+}
 .cta-section .button.cta-ghost{
   color:var(--panel-ink);
   border-color:rgba(244,241,233,.38);
