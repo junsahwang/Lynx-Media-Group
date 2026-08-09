@@ -2275,9 +2275,8 @@ footer{
    stay side by side — never a single vertical wall */
 @media (max-width:1000px){
   .footer-grid{
-    grid-template-columns:repeat(3,auto);
-    justify-content:center;
-    gap:34px clamp(34px,8vw,110px);
+    grid-template-columns:repeat(3,1fr);
+    gap:34px clamp(20px,4vw,48px);
   }
   /* mark, tagline and CTA centre above the link columns */
   .footer-about{
@@ -2593,10 +2592,9 @@ footer{
 @media (max-width:760px){
   /* three compact columns under a centred brand block */
   .footer-grid{
-    grid-template-columns:repeat(3,auto);
-    justify-content:center;
+    grid-template-columns:repeat(3,1fr);
     justify-items:start;
-    gap:24px clamp(14px,5vw,34px);
+    gap:24px clamp(10px,3vw,22px);
     text-align:left;
   }
   .footer-about{grid-column:1/-1;justify-self:stretch;align-items:center;text-align:center;gap:16px}
