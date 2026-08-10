@@ -1,3 +1,15 @@
+/**
+ * Lynx site forms -> CRM tab
+ *
+ * Receives submissions from the site's forms and appends one row to the
+ * single CRM tab. Calendly bookings land in the same tab via the separate
+ * calendly-webhook.js project, so every lead — creator or brand — sits in
+ * one list.
+ *
+ * The two scripts MUST agree on CRM_TAB_NAME and CRM_HEADERS below.
+ * Change one, change the other.
+ */
+
 const SPREADSHEET_ID = "1j6vW_X6ETyKQXKYv8MfV1hk2JqjZeZoQjgwGBesJ2Fc";
 
 // Simple site token — visible in the site's JS (nothing in a static site
@@ -13,39 +25,59 @@ const RATE_LIMIT_WINDOW_SECONDS = 600; // 10 minutes
 
 const MAX_PAYLOAD_BYTES = 10 * 1024;
 
-const SHEETS = {
-  business: {
-    // routes to the business tab (matched by gid, so renaming the tab
-    // is safe); falls back to matching/creating a tab by name
-    gid: 1647757159,
-    name: "business web app",
-    headers: ["Submitted At", "Name", "Email", "Company Website", "Marketing Budget", "Page"],
-    fields: [
-      { key: "applicantName", max: 120 },
-      { key: "email", max: 254 },
-      { key: "companyWebsite", max: 300 },
-      { key: "marketingBudget", max: 40 },
-      { key: "page", max: 300 }
-    ]
-  },
+/* ---- shared CRM schema (keep in sync with calendly-webhook.js) ---- */
+const CRM_TAB_NAME = "CRM";
+const CRM_HEADERS = [
+  "Submitted At",
+  "Type",
+  "Name",
+  "Email",
+  "Website / Portfolio",
+  "Details",
+  "Budget",
+  "Page",
+  "Meeting Time"
+];
+
+/**
+ * Each form maps its own fields into the shared column order. Blank
+ * strings keep every row the same width, so sorting and filtering the
+ * CRM never shears a row apart.
+ */
+const FORMS = {
   creator: {
-    // matched by tab name (case-insensitive); if you send me this
-    // tab's gid it can be pinned like the business one
-    name: "creator web app",
-    headers: ["Submitted At", "Creator Name", "Email", "Portfolio", "Experience", "Page"],
-    fields: [
-      { key: "creatorName", max: 120 },
-      { key: "email", max: 254 },
-      { key: "portfolio", max: 300 },
-      { key: "experience", max: 2000 },
-      { key: "page", max: 300 }
-    ]
+    label: "Creator",
+    row: function (data) {
+      return [
+        cell(data.creatorName, 120), // Name
+        cell(data.portfolio, 300), // Website / Portfolio
+        cell(data.experience, 2000), // Details
+        "", // Budget — creators do not have one
+        cell(data.page, 300), // Page
+        "" // Meeting Time — no call is booked from this form
+      ];
+    }
+  },
+  // The site's business form was replaced by Calendly booking, so this
+  // path is dormant; kept so any old cached page still records cleanly.
+  business: {
+    label: "Brand form",
+    row: function (data) {
+      return [
+        cell(data.applicantName, 120),
+        cell(data.companyWebsite, 300),
+        "",
+        cell(data.marketingBudget, 60),
+        cell(data.page, 300),
+        ""
+      ];
+    }
   }
 };
 
 function doGet() {
   return ContentService
-    .createTextOutput("Lynx Media Group application endpoint is ready. [v8-hardened]")
+    .createTextOutput("Lynx Media Group application endpoint is ready. [v9-crm]")
     .setMimeType(ContentService.MimeType.TEXT);
 }
 
@@ -53,7 +85,7 @@ function doGet() {
 // = + - @ or a tab/CR would otherwise be interpreted as a formula when
 // the sheet is opened (a classic data-exfiltration vector). Prefixing
 // with an apostrophe forces Sheets to store plain text.
-function sanitizeCell(value, max) {
+function cell(value, max) {
   let text = String(value == null ? "" : value);
   text = text.replace(/[\u0000-\u001F\u007F]/g, "");
   text = text.slice(0, max);
@@ -100,19 +132,25 @@ function doPost(event) {
     if (data.source !== REQUIRED_SOURCE) return reject("Invalid request.");
     if (data.company_url_confirm) return reject("Invalid request.");
 
-    const config = SHEETS[data.applicationType];
-    if (!config) return reject("Unknown application type.");
+    const form = FORMS[data.applicationType];
+    if (!form) return reject("Unknown application type.");
     if (!isValidEmail(data.email)) return reject("Please provide a valid email.");
 
-    const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    const sheet = getOrCreateSheet(spreadsheet, config);
-
     // only whitelisted fields are written — unknown keys are ignored
-    const row = [sanitizeCell(data.submittedAt || new Date().toISOString(), 40)];
-    config.fields.forEach(function (field) {
-      row.push(sanitizeCell(data[field.key], field.max));
-    });
-    sheet.appendRow(row);
+    const mapped = form.row(data);
+    const row = [
+      cell(data.submittedAt || new Date().toISOString(), 40), // Submitted At
+      form.label, // Type
+      mapped[0], // Name
+      cell(data.email, 254), // Email
+      mapped[1], // Website / Portfolio
+      mapped[2], // Details
+      mapped[3], // Budget
+      mapped[4], // Page
+      mapped[5] // Meeting Time
+    ];
+
+    getCrmSheet(SpreadsheetApp.openById(SPREADSHEET_ID)).appendRow(row);
 
     return ContentService
       .createTextOutput(JSON.stringify({ ok: true }))
@@ -125,32 +163,19 @@ function doPost(event) {
   }
 }
 
-function getOrCreateSheet(spreadsheet, config) {
-  let sheet = null;
-
-  // prefer lookup by tab id (gid) — immune to tab renames
-  if (config.gid) {
-    sheet = spreadsheet.getSheets().filter(function (s) {
-      return s.getSheetId() === config.gid;
-    })[0] || null;
-  }
-
+function getCrmSheet(spreadsheet) {
   // name match is case- and whitespace-insensitive
-  if (!sheet) {
-    const wanted = config.name.trim().toLowerCase();
-    sheet = spreadsheet.getSheets().filter(function (s) {
-      return s.getName().trim().toLowerCase() === wanted;
-    })[0] || null;
-  }
+  const wanted = CRM_TAB_NAME.trim().toLowerCase();
+  let sheet = spreadsheet.getSheets().filter(function (s) {
+    return s.getName().trim().toLowerCase() === wanted;
+  })[0] || null;
 
-  if (!sheet) {
-    sheet = spreadsheet.insertSheet(config.name);
-  }
+  if (!sheet) sheet = spreadsheet.insertSheet(CRM_TAB_NAME);
 
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(config.headers);
+    sheet.appendRow(CRM_HEADERS);
     sheet.setFrozenRows(1);
-    sheet.getRange(1, 1, 1, config.headers.length).setFontWeight("bold");
+    sheet.getRange(1, 1, 1, CRM_HEADERS.length).setFontWeight("bold");
   }
 
   return sheet;
