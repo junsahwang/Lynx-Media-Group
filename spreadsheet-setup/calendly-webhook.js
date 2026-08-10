@@ -2,8 +2,12 @@
  * Calendly -> CRM sheet
  *
  * Receives Calendly's `invitee.created` webhook and appends one row per
- * booking to the shared CRM tab, so booked calls sit in the same list
- * as creator applications from the site.
+ * booking to the "business web app" tab.
+ *
+ * One spreadsheet, one tab per source: the site's creator form writes to
+ * "creator web app" (see google-apps-script.js) and booked brand calls
+ * land here. Same file, different tabs, so the two never fight over
+ * columns they do not share.
  *
  * DEPLOY
  *  1. Create a NEW, standalone Apps Script project at script.google.com
@@ -40,21 +44,19 @@
  */
 
 const CRM_SPREADSHEET_ID = "1j6vW_X6ETyKQXKYv8MfV1hk2JqjZeZoQjgwGBesJ2Fc";
-const CRM_TAB_NAME = "CRM";
+const CRM_TAB_NAME = "business web app";
 
 // Anyone who learns the /exec URL could POST to it, so require a secret in
 // the query string. Set this to a long random string and use the same one
 // in the webhook URL above.
 const WEBHOOK_SECRET = "CHANGE_ME_TO_A_LONG_RANDOM_STRING";
 
-/* ---- shared CRM schema (keep in sync with google-apps-script.js) ---- */
 const CRM_HEADERS = [
   "Submitted At",
-  "Type",
   "Name",
   "Email",
-  "Website / Portfolio",
-  "Details",
+  "Company Website",
+  "Challenge",
   "Budget",
   "Page",
   "Meeting Time"
@@ -134,7 +136,6 @@ function doPost(event) {
 
     const row = [
       crmCell(new Date(p.created_at || Date.now()).toLocaleString("en-US"), 40),
-      "Brand call", // Type — tells booked calls apart from form leads
       crmCell(p.name, 120),
       crmCell(p.email, 254),
       crmCell(findAnswer(answers, QUESTION_MATCHES.website), 300),
