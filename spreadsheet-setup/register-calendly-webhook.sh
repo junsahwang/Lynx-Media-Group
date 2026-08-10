@@ -16,7 +16,7 @@
 #   CALENDLY_TOKEN — create at calendly.com/integrations/api_webhooks
 #                    ("Personal access token"). Treat it like a password.
 #   EXEC_URL       — the /exec URL from Deploy -> New deployment -> Web app
-#   WEBHOOK_SECRET — must match WEBHOOK_SECRET in calendly-webhook.js
+#   WEBHOOK_SECRET — must match WEBHOOK_SECRET in apps-script.js
 
 set -euo pipefail
 
