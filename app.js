@@ -872,7 +872,7 @@ if (heroSocial) {
    ========================================================= */
 if (window.matchMedia("(hover:hover) and (pointer:fine)").matches && !reduceMotion) {
   const GAP = 34; // matches the CSS grid spacing
-  const REACH = 78; // px of influence around the cursor
+  const REACH = 66; // px of influence around the cursor
   const DOT_R = 1.4; // resting dot radius, matches the CSS grid
   const DOT_A = 0.14; // resting dot alpha, matches the CSS grid
 
@@ -904,8 +904,8 @@ if (window.matchMedia("(hover:hover) and (pointer:fine)").matches && !reduceMoti
         if (dist < REACH) {
           // 0 at the edge of reach, 1 directly under the cursor
           const ease = (1 - dist / REACH) ** 2;
-          radius = DOT_R + ease * 1.9;
-          alpha = DOT_A + ease * 0.5;
+          radius = DOT_R + ease * 1.1;
+          alpha = DOT_A + ease * 0.3;
         }
         ctx.beginPath();
         ctx.arc(Math.round(x * dpr), Math.round(y * dpr), radius * dpr, 0, Math.PI * 2);
