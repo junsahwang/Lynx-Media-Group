@@ -6,8 +6,16 @@
  * sheet as everything else.
  *
  * DEPLOY
- *  1. Open the Apps Script project bound to the CRM spreadsheet
- *     (Extensions -> Apps Script), add this file.
+ *  1. Create a NEW, standalone Apps Script project at script.google.com
+ *     ("New project") and paste this file in, replacing Code.gs.
+ *
+ *     Do NOT add it to the project running google-apps-script.js: that
+ *     one already defines doPost() for the creator form, a project can
+ *     only have one, and the collision would break creator applications.
+ *     Separate project, separate deployment URL.
+ *
+ *     On first run Google asks for permission to reach the spreadsheet
+ *     (it is opened by id below) — approve it.
  *  2. Deploy -> New deployment -> Web app.
  *       Execute as: Me
  *       Who has access: Anyone
