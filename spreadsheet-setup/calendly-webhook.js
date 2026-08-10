@@ -51,6 +51,7 @@ const CRM_TAB_NAME = "business web app";
 // in the webhook URL above.
 const WEBHOOK_SECRET = "CHANGE_ME_TO_A_LONG_RANDOM_STRING";
 
+// matches the live "business web app" tab exactly, in order
 const CRM_HEADERS = [
   "Submitted At",
   "Name",
@@ -58,8 +59,7 @@ const CRM_HEADERS = [
   "Company Website",
   "Challenge",
   "Budget",
-  "Page",
-  "Meeting Time"
+  "Page"
 ];
 
 /**
@@ -132,7 +132,6 @@ function doPost(event) {
     const p = body.payload || {};
     const answers = p.questions_and_answers || [];
     const tracking = p.tracking || {};
-    const scheduled = p.scheduled_event || {};
 
     const row = [
       crmCell(new Date(p.created_at || Date.now()).toLocaleString("en-US"), 40),
@@ -143,13 +142,7 @@ function doPost(event) {
       crmCell(findAnswer(answers, QUESTION_MATCHES.budget), 60),
       // utm_content is stamped by the site's booking links, so this says
       // which page sent them; fall back to the raw source
-      crmCell(tracking.utm_content || tracking.utm_source || "direct", 120),
-      crmCell(
-        scheduled.start_time
-          ? new Date(scheduled.start_time).toLocaleString("en-US")
-          : "",
-        40
-      )
+      crmCell(tracking.utm_content || tracking.utm_source || "direct", 120)
     ];
 
     crmSheet(SpreadsheetApp.openById(CRM_SPREADSHEET_ID)).appendRow(row);
