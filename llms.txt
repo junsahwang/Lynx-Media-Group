@@ -10,11 +10,13 @@ Lynx Media Group LLC was founded by Gawin Hsu and Junsa Hwang, students at Bosto
 - Campaign strategy: hooks, formats, and posting calendars iterated weekly based on performance data
 - Creator community: creators apply to join Lynx and get matched with paid brand campaigns in their niche
 - Reporting: per-campaign dashboards covering views, engagement, posts, creators, and where trackable, conversion and revenue
+- lynxr (https://lynxr.io): Lynx's in-house format intelligence, built on a corpus of 100K+ analyzed videos, used to surface formats that are still unsaturated but already performing in each client's niche
 
 ## Verified campaign results
 
 - Medceptor (healthcare education): 4.1 million views, 224.4K engagement, 1,200 posts (300 unique videos) from 10 creators in one 30-day window (Jun 28 – Jul 27, 2026), alongside a +38% revenue increase
 - Memo (consumer app): 4.29 million views from 145 posts on an account with only 2,672 followers — roughly 1,600 views per follower — with a 3.49% tracked conversion rate
+- Cloey (digital closet app): 2M+ views and 21,459 new app users from 80 unique videos by 4 creators in the program's first 30 days (Jul 26 - Aug 24, 2026), run end-to-end for a solo founder - creator hiring, format research, coaching, and video approvals
 - Clients include Medceptor, Memo, TLDL, and Cloey
 
 ## Main pages

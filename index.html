@@ -73,10 +73,40 @@
           "https://www.linkedin.com/company/lynxmediagroup",
           "https://www.tiktok.com/@lynxmediagroup"
         ],
+        "owns": { "@id": "https://lynxr.io/#app" },
         "founder": [
-          { "@type": "Person", "name": "Gawin Hsu", "sameAs": "https://www.instagram.com/gawinhsu/" },
-          { "@type": "Person", "name": "Junsa Hwang", "sameAs": "https://www.instagram.com/junsahwang/" }
+          {
+            "@type": "Person",
+            "@id": "https://lynxmediagroup.org/#gawin",
+            "name": "Gawin Hsu",
+            "jobTitle": "Co-founder",
+            "description": "Co-founder of Lynx Media Group. 250M+ organic views across short-form platforms, with four years creating and testing content and mentoring UGC creators from zero to their first retainer deal.",
+            "knowsAbout": ["short-form video hooks", "storytelling for UGC", "creator mentorship", "organic content strategy"],
+            "worksFor": { "@id": "https://lynxmediagroup.org/#org" },
+            "sameAs": "https://www.instagram.com/gawinhsu/"
+          },
+          {
+            "@type": "Person",
+            "@id": "https://lynxmediagroup.org/#junsa",
+            "name": "Junsa Hwang",
+            "jobTitle": "Co-founder",
+            "description": "Co-founder of Lynx Media Group and creator of lynxr, the format intelligence that powers the agency's campaign strategy.",
+            "knowsAbout": ["format intelligence", "UGC campaign strategy", "short-form video analytics"],
+            "worksFor": { "@id": "https://lynxmediagroup.org/#org" },
+            "sameAs": "https://www.instagram.com/junsahwang/"
+          }
         ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://lynxr.io/#app",
+        "name": "lynxr",
+        "url": "https://lynxr.io",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "Format intelligence for short-form video. lynxr analyses a corpus of 100K+ videos to surface formats that are still unsaturated but already performing in a given niche, and powers campaign strategy at Lynx Media Group.",
+        "author": { "@id": "https://lynxmediagroup.org/#junsa" },
+        "publisher": { "@id": "https://lynxmediagroup.org/#org" }
       },
       {
         "@type": "WebSite",
@@ -94,7 +124,7 @@
   <link rel="preload" href="videos/hero-2.jpg" as="image" media="(min-width:1025px)">
   <link rel="preload" href="videos/hero-3.jpg" as="image" media="(min-width:1025px)">
   <link rel="preload" href="videos/hero-4.jpg" as="image" media="(min-width:1025px)">
-  <link rel="stylesheet" href="css/styles.css?v=10">
+  <link rel="stylesheet" href="css/styles.css?v=11">
 </head>
 
 <body>
@@ -391,7 +421,8 @@
       </div>
 
       <div class="founder-grid">
-        <a class="about-card founder-card-link" href="https://www.instagram.com/gawinhsu/" target="_blank" rel="noopener noreferrer">
+        <div class="about-card founder-card">
+          <a class="card-link" href="https://www.instagram.com/gawinhsu/" target="_blank" rel="noopener noreferrer" aria-label="Gawin Hsu on Instagram"></a>
           <div class="photo-slot founder-photo gawin-photo">
             <img src="imgs/gawin-hsu.jpg" loading="lazy" decoding="async" alt="Gawin Hsu portrait">
             <span class="ig-cue">Visit Instagram<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 16 16 8M9 8h7v7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -399,17 +430,18 @@
           <p class="role-label">Co-founder</p>
           <h3>Gawin Hsu</h3>
           <p>250M+ organic views. 4 years studying, creating content, and mentoring creators from zero to their first retainer deal. He isn't theorizing about UGC; he's lived it. That experience shapes everything he leads, from hooks and storytelling to creator mentorship: he knows what earns attention, and how to turn it into growth for a brand.</p>
-        </a>
+        </div>
 
-        <a class="about-card founder-card-link" href="https://www.instagram.com/junsahwang/" target="_blank" rel="noopener noreferrer">
+        <div class="about-card founder-card">
+          <a class="card-link" href="https://www.instagram.com/junsahwang/" target="_blank" rel="noopener noreferrer" aria-label="Junsa Hwang on Instagram"></a>
           <div class="photo-slot founder-photo junsa-photo">
             <img src="imgs/junsa-hwang.jpg" loading="lazy" decoding="async" alt="Junsa Hwang portrait">
             <span class="ig-cue">Visit Instagram<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 16 16 8M9 8h7v7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </div>
           <p class="role-label">Co-founder</p>
           <h3>Junsa Hwang</h3>
-          <p>100K+ videos analyzed. He created lynxr, the format intelligence that powers Lynx Media Group. With an engineering background, he built it to find the formats still unsaturated but already performing, tailored to each client. Other agencies promise reach; LMG is powered by a system that finds it.</p>
-        </a>
+          <p>100K+ videos analyzed. He created <a class="bio-link" href="https://lynxr.io" target="_blank" rel="noopener noreferrer">lynxr</a>, the format intelligence that powers Lynx Media Group. With an engineering background, he built it to find the formats still unsaturated but already performing, tailored to each client. Other agencies promise reach; LMG is powered by a system that finds it.</p>
+        </div>
       </div>
     </section>
 

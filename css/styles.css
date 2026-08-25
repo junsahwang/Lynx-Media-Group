@@ -1579,7 +1579,27 @@ body.dots-live:before{display:none}
   transition:transform var(--t) var(--ease),border-color var(--t) var(--ease),box-shadow var(--t) var(--ease);
 }
 
-.founder-card-link{color:inherit;text-decoration:none;cursor:pointer}
+/* the founder card is a plain box with a stretched Instagram link laid over
+   it, so the whole card stays clickable while real links (lynxr) can live
+   inside the bio — nesting <a> inside <a> is invalid and breaks the parser */
+.founder-card{position:relative;cursor:pointer}
+.founder-card .card-link{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  border-radius:inherit;
+}
+.founder-card .bio-link{
+  position:relative;
+  z-index:2;
+  color:inherit;
+  text-decoration:underline;
+  text-underline-offset:2px;
+  text-decoration-thickness:1px;
+  text-decoration-color:var(--line-strong);
+  transition:text-decoration-color var(--t) var(--ease);
+}
+.founder-card .bio-link:hover{text-decoration-color:currentColor}
 
 .about-card:hover,.video-card:hover,.service-list article:hover,.apply-choice:hover,.application-panel:hover{
   transform:translateY(-4px);
@@ -1635,7 +1655,7 @@ body.dots-live:before{display:none}
 }
 .ig-cue svg{width:14px;height:14px;flex:none}
 .about-card:hover .ig-cue,
-.founder-card-link:focus-visible .ig-cue{
+.founder-card .card-link:focus-visible ~ .photo-slot .ig-cue{
   opacity:1;
   transform:translateX(0);
 }
