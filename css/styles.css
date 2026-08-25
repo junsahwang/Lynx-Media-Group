@@ -807,8 +807,7 @@ body.dots-live:before{display:none}
 .button:hover{transform:translateY(-2px)}
 
 /* the wave on the "Talk with us" buttons — the button's flex gap does the spacing */
-.cta-emoji{display:inline-block;font-size:1.05em;line-height:1;transform-origin:70% 80%}
-.button:hover .cta-emoji{animation:cta-wave .9s ease-in-out infinite}
+.cta-emoji{display:inline-block;font-size:1.05em;line-height:1;transform-origin:70% 80%;animation:cta-wave .9s ease-in-out infinite}
 @keyframes cta-wave{
   0%,60%,100%{transform:rotate(0deg)}
   15%{transform:rotate(14deg)}
@@ -816,7 +815,7 @@ body.dots-live:before{display:none}
   45%{transform:rotate(12deg)}
 }
 @media (prefers-reduced-motion:reduce){
-  .button:hover .cta-emoji{animation:none}
+  .cta-emoji{animation:none}
 }
 
 /* press feedback when selecting (tap / click) — JS adds the same
