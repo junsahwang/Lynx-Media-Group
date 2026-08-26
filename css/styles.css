@@ -1036,7 +1036,84 @@ body.dots-live:before{display:none}
   place-items:center;
 }
 
-/* step 1: the brand, pulsing with untapped attention */
+/* step 1: one post fills the screen, the way a real feed works. The
+   sponsored post sits on top and slides away as you scroll, revealing
+   the creator video underneath — so the frame is never empty and the
+   skip is the whole animation. Drawn rather than photographed: real
+   thumbnails read as arbitrary stock at this size. */
+.feed-device{
+  position:relative;
+  width:min(168px,46%);
+  height:min(300px,90%);
+  padding:7px;
+  border-radius:30px;
+  /* the lit-from-above treatment, the one premium note on a flat page */
+  background:linear-gradient(155deg,#2e2b25,#131210 78%);
+  box-shadow:0 18px 40px rgba(28,27,24,.26),inset 0 1px 0 rgba(255,255,255,.16);
+}
+.feed-screen{
+  position:relative;
+  height:100%;
+  border-radius:24px;
+  overflow:hidden;
+  background:var(--surface);
+}
+.fcard{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(160deg,#efece7,#ddd9d1);
+}
+/* two bars stand in for a caption without inventing copy */
+.fcard i{
+  position:absolute;
+  left:13px;
+  height:6px;
+  border-radius:3px;
+  background:rgba(20,20,22,.17);
+}
+.fcard i:nth-of-type(1){bottom:26px;width:60%}
+.fcard i:nth-of-type(2){bottom:14px;width:35%}
+.fplay{
+  position:relative;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:rgba(20,20,22,.45);
+}
+.fplay:after{
+  content:"";
+  position:absolute;
+  left:14px;
+  top:10px;
+  border-left:10px solid #fff;
+  border-top:7px solid transparent;
+  border-bottom:7px solid transparent;
+}
+/* the sponsored post: flatter, and on its way out of frame */
+.fcard.is-ad{
+  z-index:2;
+  background:repeating-linear-gradient(135deg,#f4f2ef,#f4f2ef 8px,#e8e5e0 8px,#e8e5e0 16px);
+  transform:translateX(calc(var(--p,0) * 116%)) rotate(calc(var(--p,0) * 9deg));
+  opacity:calc(1 - var(--p,0) * .4);
+}
+.fchip{
+  position:absolute;
+  top:12px;
+  left:12px;
+  padding:4px 9px;
+  border-radius:var(--r-pill);
+  background:rgba(20,20,22,.5);
+  color:#fff;
+  font-size:.55rem;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+/* step 2 keeps the brand node */
 .brand-node{
   width:118px;height:118px;
   display:flex;
@@ -1058,7 +1135,7 @@ body.dots-live:before{display:none}
 }
 .brand-node svg{width:22px;height:22px;fill:#fff}
 .brand-node span{opacity:.92}
-.stage-brand i,.stage-audition i{
+.stage-audition i{
   position:absolute;
   left:50%;top:50%;
   width:118px;height:118px;
@@ -1067,9 +1144,9 @@ body.dots-live:before{display:none}
   border-radius:26px;
   opacity:0;
 }
-.play .stage-brand i,.hiw-step.play .stage-audition i{animation:hiw-ring 2.4s ease-out infinite}
-.stage-brand i:nth-child(2),.stage-audition i:nth-child(2){animation-delay:.8s}
-.stage-brand i:nth-child(3),.stage-audition i:nth-child(3){animation-delay:1.6s}
+.hiw-step.play .stage-audition i{animation:hiw-ring 2.4s ease-out infinite}
+.stage-audition i:nth-child(2){animation-delay:.8s}
+.stage-audition i:nth-child(3){animation-delay:1.6s}
 @keyframes hiw-ring{
   from{transform:scale(1);opacity:.65}
   to{transform:scale(2.1);opacity:0}
@@ -1078,8 +1155,9 @@ body.dots-live:before{display:none}
 /* step 2: spokes grow out from the brand and a creator lands on the
    end of each one. Spokes and avatars share the same --a angle and
    --r radius, so they always meet exactly. */
-.brand-node-sm{width:94px;height:94px;font-size:.74rem;gap:5px;border-radius:22px;z-index:2}
-.brand-node-sm svg{width:17px;height:17px}
+/* the hub is a circle like the creator avatars it connects to, and
+   carries no icon — the label alone is the whole message */
+.brand-node-sm{width:100px;height:100px;font-size:.76rem;gap:0;border-radius:50%;z-index:2;padding:0 12px}
 .stage-match{--r:clamp(105px,11vw,150px)}
 /* every stage element scrubs with the scroll: --p (set by app.js)
    runs 0→1 as the step travels the viewport, and each element starts
@@ -2259,6 +2337,9 @@ footer{
   font-size:.88rem;
   line-height:1.6;
 }
+/* this column is sized by its one short link, so a two-word heading
+   wraps and drops the link below the other columns' first row */
+.footer-col-product .footer-label{white-space:nowrap}
 .footer-label{
   margin:0 0 12px;
   color:var(--muted);
