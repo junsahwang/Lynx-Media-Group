@@ -1787,11 +1787,20 @@ body.dots-live:before{display:none}
   gap:clamp(46px,6vw,96px);
   animation:marquee 30s linear infinite;
 }
+/* each logo links out to the client's site — the strip holds still while
+   the pointer is on it (or a logo has keyboard focus) so it can be clicked.
+   :focus-visible, not :focus-within: a mouse click also focuses the link,
+   and that focus would keep the strip frozen after the pointer leaves */
+@media (hover:hover){
+  .trusted-marquee:hover .trusted-row{animation-play-state:paused}
+}
+.trusted-marquee:has(:focus-visible) .trusted-row{animation-play-state:paused}
 .tlogo{
   display:inline-flex;
   align-items:center;
   gap:12px;
   white-space:nowrap;
+  text-decoration:none;
 }
 .tl-full{
   display:block;
