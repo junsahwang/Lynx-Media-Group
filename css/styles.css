@@ -1754,6 +1754,8 @@ body.dots-live:before{display:none}
   letter-spacing:.12em;
   text-transform:uppercase;
 }
+/* founder cards: the CEO/CTO line sits right under "Co-founder" as one label */
+.role-label:has(+ .role-title){margin-bottom:0}
 
 /* =========================================================
    Demos
