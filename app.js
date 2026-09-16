@@ -1009,3 +1009,11 @@ if (demoVideos.length) {
   }
 }
 
+/* The how-it-works explainer autoplays on load — muted, since browsers block
+   autoplay with sound. Reduced-motion visitors get the poster and play button. */
+const explainerVideo = document.querySelector(".hiw-video video[autoplay]");
+if (explainerVideo && reduceMotion) {
+  explainerVideo.removeAttribute("autoplay");
+  explainerVideo.pause();
+}
+

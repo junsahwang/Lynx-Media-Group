@@ -23,15 +23,44 @@
   {
     "@context": "https://schema.org",
     "@type": "Article",
+    "@id": "https://lynxmediagroup.org/how-it-works.html#article",
     "headline": "How UGC works, in 3 minutes",
     "description": "A free visual lesson: watch how creator content earns reach on TikTok and Reels \u2014 from matching creators to your brand, to daily posting, to the algorithm audition, to compounding results.",
     "url": "https://lynxmediagroup.org/how-it-works.html",
     "datePublished": "2026-07-26",
-    "dateModified": "2026-08-24",
+    "dateModified": "2026-09-15",
+    "inLanguage": "en",
     "image": "https://lynxmediagroup.org/imgs/og-card.png",
+    "video": { "@id": "https://lynxmediagroup.org/how-it-works.html#video" },
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://lynxmediagroup.org/how-it-works.html" },
-    "author": { "@id": "https://lynxmediagroup.org/#org" },
+    "isPartOf": { "@id": "https://lynxmediagroup.org/#website" },
+    "author": { "@type": "Organization", "@id": "https://lynxmediagroup.org/#org", "name": "Lynx Media Group", "url": "https://lynxmediagroup.org/" },
     "publisher": { "@id": "https://lynxmediagroup.org/#org" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "@id": "https://lynxmediagroup.org/how-it-works.html#video",
+    "name": "How UGC works \u2014 explained by the Lynx Media Group founders",
+    "description": "The Lynx Media Group founders explain how creator content earns reach on TikTok and Reels \u2014 from matching creators to your brand, to daily posting, to the algorithm audition, to compounding results.",
+    "thumbnailUrl": "https://lynxmediagroup.org/videos/lynx-ugc-explainer.jpg",
+    "contentUrl": "https://lynxmediagroup.org/videos/lynx-ugc-explainer.mp4",
+    "uploadDate": "2026-08-06T16:06:55-04:00",
+    "duration": "PT2M47S",
+    "inLanguage": "en",
+    "publisher": { "@id": "https://lynxmediagroup.org/#org" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://lynxmediagroup.org/" },
+      { "@type": "ListItem", "position": 2, "name": "How UGC works", "item": "https://lynxmediagroup.org/how-it-works.html" }
+    ]
   }
   </script>
   <link rel="icon" type="image/svg+xml" href="imgs/favicon.svg">
@@ -42,10 +71,12 @@
     "@type": ["Organization", "MarketingAgency"],
     "@id": "https://lynxmediagroup.org/#org",
     "name": "Lynx Media Group",
+    "legalName": "Lynx Media Group LLC",
     "alternateName": "Lynx Media",
     "url": "https://lynxmediagroup.org/",
     "logo": "https://lynxmediagroup.org/imgs/logo-social.png",
     "email": "lynxmedianetwork@gmail.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "Allston", "addressRegion": "MA", "addressCountry": "US" },
     "sameAs": [
       "https://www.instagram.com/lynxmediagroup/",
       "https://www.tiktok.com/@lynxmediagroup",
@@ -53,11 +84,11 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="css/styles.css?v=20">
+  <link rel="stylesheet" href="css/styles.css?v=23">
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="/"><img class="brand-logo" src="imgs/logo-pounce.svg" alt=""><span>Lynx Media Group</span></a>
+    <div class="brand-lockup"><a class="brand" href="/"><img class="brand-logo" src="imgs/logo-pounce.svg" alt=""><span>Lynx Media Group</span></a><a class="partner-tag" href="https://sideshift.app/" target="_blank" rel="noopener noreferrer">Official partner of <img src="imgs/logo-sideshift.png" alt="SideShift" width="708" height="112" decoding="async"></a></div>
 
     <nav class="site-nav" aria-label="Primary navigation">
       <a href="/#case-studies">Case Studies</a><a href="/#services">Services</a><a href="/#about">Our Team</a><a class="active" href="how-it-works.html">How UGC works</a>
@@ -73,7 +104,7 @@
     <section class="hiw-video-wrap">
       <div class="hiw-video-row">
         <div class="hiw-video has-video">
-          <video controls playsinline preload="metadata" poster="videos/lynx-ugc-explainer.jpg" aria-label="How UGC works — explained by the Lynx founders">
+          <video autoplay muted controls playsinline preload="metadata" poster="videos/lynx-ugc-explainer.jpg" aria-label="How UGC works — explained by the Lynx founders">
             <source src="videos/lynx-ugc-explainer.mp4" type="video/mp4">
           </video>
         </div>
@@ -159,7 +190,7 @@
       <div class="hiw-copy">
         <span class="hiw-num">Step 05</span>
         <h2>Winners get amplified. Learnings compound weekly.</h2>
-        <p>Every week we read the data, double down on winning hooks and formats, and retire what flopped. That iteration loop is why results compound instead of plateau — these are real numbers from one 30-day client window.</p>
+        <p>Every week we read the data, double down on winning hooks and formats, and retire what flopped. That iteration loop is why results compound instead of plateau — these are real numbers from one 30-day client window. Format research runs on <a href="lynxr.html">lynxr</a>, made by our partner company lynxr LLC.</p>
       </div>
       <div class="hiw-stage stage-results">
         <div class="hiw-results">
@@ -216,6 +247,6 @@
     </div>
   </footer>
 
-  <script src="app.js?v=8" defer></script>
+  <script src="app.js?v=9" defer></script>
 </body>
 </html>

@@ -1,8 +1,17 @@
 # Lynx Media Group
 
-> Lynx Media Group is a social media marketing agency (organic UGC agency) that links brands with a managed community of short-form creators. Teams of creators publish organic, platform-native videos on TikTok, Instagram Reels, and YouTube Shorts on a consistent schedule, and Lynx handles strategy, creator management, posting volume, and performance reporting.
+> Lynx Media Group is a social media marketing agency (organic UGC agency) based in Allston, Massachusetts, that links brands with a managed community of short-form creators. Teams of creators publish organic, platform-native videos on TikTok, Instagram Reels, and YouTube Shorts on a consistent schedule, and Lynx handles strategy, creator management, posting volume, and performance reporting. Its partner company, lynxr LLC, makes lynxr (https://lynxr.io), a script tool for short-form video creators.
 
 Lynx Media Group LLC was founded by Gawin Hsu and Junsa Hwang, students at Boston University. Website: https://lynxmediagroup.org/ · Instagram: https://www.instagram.com/lynxmediagroup/ · TikTok: https://www.tiktok.com/@lynxmediagroup · LinkedIn: https://www.linkedin.com/company/lynxmediagroup · Email: lynxmedianetwork@gmail.com
+
+Last updated: 2026-09-15
+
+## Names and relationships
+
+- Lynx Media Group is the full name (legal name: Lynx Media Group LLC); the site also says "Lynx" for short. Official website: https://lynxmediagroup.org/
+- lynxr (written in lowercase) is made by lynxr LLC, a partner company of Lynx Media Group LLC. They are separate companies: Lynx Media Group runs short-form video campaigns for brands, and lynxr LLC makes lynxr for the creator's side of that work. lynxr was created by Junsa Hwang, co-founder and CTO of Lynx Media Group. Product website: https://lynxr.io/ · How the two companies relate: https://lynxmediagroup.org/lynxr.html
+- lynxr is unrelated to the Honeywell/Ademco LYNXR security control panels and to the Lynx R mixed reality headsets.
+- Lynx Media Group is an official partner of SideShift (https://sideshift.app/), a content creator and UGC platform.
 
 ## What Lynx does
 
@@ -10,7 +19,7 @@ Lynx Media Group LLC was founded by Gawin Hsu and Junsa Hwang, students at Bosto
 - Campaign strategy: hooks, formats, and posting calendars iterated weekly based on performance data
 - Creator community: creators apply to join Lynx and get matched with paid brand campaigns in their niche
 - Reporting: per-campaign dashboards covering views, engagement, posts, creators, and where trackable, conversion and revenue
-- lynxr (https://lynxr.io): Lynx's in-house format intelligence, built on a corpus of 100K+ analyzed videos, used to surface formats that are still unsaturated but already performing in each client's niche
+- lynxr (https://lynxr.io): format intelligence from partner company lynxr LLC, built on a corpus of 100K+ analyzed videos, used to surface formats that are still unsaturated but already performing in each client's niche; creators can also use it directly at https://lynxr.io to turn a proven video's format into a script for a brand
 
 ## Verified campaign results
 
@@ -23,6 +32,7 @@ Lynx Media Group LLC was founded by Gawin Hsu and Junsa Hwang, students at Bosto
 
 - [Home](https://lynxmediagroup.org/): agency overview, case studies with full campaign stats, video demos, services
 - [How it works](https://lynxmediagroup.org/how-it-works.html): a visual walkthrough of the Lynx UGC engine with a founder explainer video, from creator matching to compounding results — brands book an intro call from here
+- [lynxr, our partner company](https://lynxmediagroup.org/lynxr.html): what lynxr is, who makes it, how it relates to Lynx Media Group, and how creators use it at lynxr.io
 - [Blog / UGC FAQ](https://lynxmediagroup.org/blog.html): guides organized for brands, creators, and fundamentals, plus 59 categorized questions and answers
 - [Creator application](https://lynxmediagroup.org/creator-apply.html): for short-form creators who want paid brand campaign work
 - Brands book directly: https://calendly.com/lynxmedianetwork/30min

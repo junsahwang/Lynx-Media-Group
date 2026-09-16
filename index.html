@@ -34,10 +34,12 @@
         "@id": "https://lynxmediagroup.org/#org",
         "name": "Lynx Media Group",
         "legalName": "Lynx Media Group LLC",
+        "alternateName": "Lynx Media",
         "url": "https://lynxmediagroup.org/",
         "logo": "https://lynxmediagroup.org/imgs/logo-social.png",
         "image": "https://lynxmediagroup.org/imgs/og-card.png",
         "email": "lynxmedianetwork@gmail.com",
+        "address": { "@type": "PostalAddress", "addressLocality": "Allston", "addressRegion": "MA", "addressCountry": "US" },
         "description": "Lynx Media Group is a social media marketing agency helping brands grow through creator partnerships, organic UGC content, social media strategy, and promotional campaigns.",
         "slogan": "The lynx brands and creators need to make an impact.",
         "areaServed": "Worldwide",
@@ -73,7 +75,6 @@
           "https://www.linkedin.com/company/lynxmediagroup",
           "https://www.tiktok.com/@lynxmediagroup"
         ],
-        "owns": { "@id": "https://lynxr.io/#app" },
         "founder": [
           {
             "@type": "Person",
@@ -98,15 +99,25 @@
         ]
       },
       {
-        "@type": "SoftwareApplication",
-        "@id": "https://lynxr.io/#app",
+        "@type": "Organization",
+        "@id": "https://lynxr.io/#organization",
         "name": "lynxr",
-        "url": "https://lynxr.io",
+        "legalName": "lynxr LLC",
+        "url": "https://lynxr.io/",
+        "email": "lynxrnetwork@gmail.com",
+        "description": "lynxr LLC makes lynxr, your content creator buddy: paste a TikTok or Instagram video and it writes that video's format as a script for the brand you make content for. lynxr LLC is a partner company of Lynx Media Group, the short-form video agency."
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://lynxr.io/#lynxr",
+        "name": "lynxr",
+        "url": "https://lynxr.io/",
         "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web",
-        "description": "Format intelligence for short-form video. lynxr analyses a corpus of 100K+ videos to surface formats that are still unsaturated but already performing in a given niche, and powers campaign strategy at Lynx Media Group.",
+        "operatingSystem": "Any modern web browser",
+        "description": "lynxr turns a short-form video into a script. You send it a public link to a TikTok or Instagram video; it watches the video, transcribes what is said, works out the format underneath — the hook, the beats, the order they come in — and rewrites that format as a script for the company you are making content for.",
         "author": { "@id": "https://lynxmediagroup.org/#junsa" },
-        "publisher": { "@id": "https://lynxmediagroup.org/#org" }
+        "creator": { "@id": "https://lynxr.io/#organization" },
+        "publisher": { "@id": "https://lynxr.io/#organization" }
       },
       {
         "@type": "WebSite",
@@ -124,15 +135,18 @@
   <link rel="preload" href="videos/hero-2.jpg" as="image" media="(min-width:1025px)">
   <link rel="preload" href="videos/hero-3.jpg" as="image" media="(min-width:1025px)">
   <link rel="preload" href="videos/hero-4.jpg" as="image" media="(min-width:1025px)">
-  <link rel="stylesheet" href="css/styles.css?v=20">
+  <link rel="stylesheet" href="css/styles.css?v=23">
 </head>
 
 <body>
   <header class="site-header">
-    <a class="brand" href="/">
-      <img class="brand-logo" src="imgs/logo-pounce.svg" alt="Lynx Media Group">
-      <span>Lynx Media Group</span>
-    </a>
+    <div class="brand-lockup">
+      <a class="brand" href="/">
+        <img class="brand-logo" src="imgs/logo-pounce.svg" alt="Lynx Media Group">
+        <span>Lynx Media Group</span>
+      </a>
+      <a class="partner-tag" href="https://sideshift.app/" target="_blank" rel="noopener noreferrer">Official partner of <img src="imgs/logo-sideshift.png" alt="SideShift" width="708" height="112" decoding="async"></a>
+    </div>
 
     <nav class="site-nav">
       <a href="#case-studies">Case Studies</a>
@@ -167,7 +181,7 @@
       <div class="hero-social" aria-hidden="true">
         <span class="social-chip chip-like">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-          <span class="chip-count" data-count="128400">128.4K</span>
+          <span class="chip-count" data-count="617300">617.3K</span>
         </span>
         <span class="social-chip chip-comment">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5c0 4.14-4.03 7.5-9 7.5-1.06 0-2.08-.15-3.02-.43L4 20l1.13-3.4C3.8 15.28 3 13.47 3 11.5 3 7.36 7.03 4 12 4s9 3.36 9 7.5z"/></svg>
@@ -227,6 +241,9 @@
           </a>
           <a class="tlogo tlogo-oncourse" href="https://getoncourse.ai/" target="_blank" rel="noopener noreferrer">
             <img class="tl-full" src="imgs/logo-oncourse.svg" alt="OnCourse AI" width="2439" height="369" loading="lazy" decoding="async">
+          </a>
+          <a class="tlogo tlogo-sideshift" href="https://sideshift.app/" target="_blank" rel="noopener noreferrer">
+            <img class="tl-full" src="imgs/logo-sideshift.png" alt="SideShift" width="708" height="112" loading="lazy" decoding="async">
           </a>
         </div>
       </div>
@@ -420,7 +437,8 @@
       <div class="section-heading">
         <h3 class="eyebrow">About us</h3>
         <h2>Lynx leads brands to exposure</h2>
-        <p>Lynx Media Group is built around one idea: linking businesses, creators, and audiences through content that feels organic, intentional, and made for the platforms people actually use.</p>
+        <p>Lynx Media Group, based in Allston, Massachusetts, is built around one idea: linking businesses, creators, and audiences through content that feels organic, intentional, and made for the platforms people actually use.</p>
+        <p>Our campaign strategy runs on <a href="lynxr.html">lynxr</a>, made by our partner company lynxr LLC &mdash; and creators can use it directly at <a href="https://lynxr.io/" target="_blank" rel="noopener noreferrer">lynxr.io</a>.</p>
       </div>
 
       <div class="founder-grid">
@@ -496,6 +514,6 @@
     </div>
   </footer>
 
-  <script src="app.js?v=8" defer></script>
+  <script src="app.js?v=9" defer></script>
 </body>
 </html>

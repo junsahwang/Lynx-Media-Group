@@ -231,6 +231,36 @@ h1,h2,h3,p{margin-top:0}
 .is-scrolled .brand-logo{transform:scale(.92)}
 .brand:hover .brand-logo{transform:rotate(-4deg) scale(1.06)}
 
+/* "Official partner of SideShift" tucked under the wordmark — its own link
+   (links can't nest), placed absolutely so the bar keeps its height */
+.brand-lockup{position:relative;display:flex;align-items:center}
+.brand-lockup .brand>span{position:relative;top:-6px}
+.partner-tag{
+  position:absolute;
+  left:44px;
+  top:calc(50% + 4px);
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  color:var(--muted);
+  font-size:.66rem;
+  font-weight:600;
+  line-height:1;
+  letter-spacing:.01em;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:color var(--t-fast) var(--ease-smooth);
+}
+.partner-tag img{
+  display:block;
+  height:10px;
+  width:auto;
+  opacity:.85;
+  transition:opacity var(--t-fast) var(--ease-smooth);
+}
+.partner-tag:hover{color:var(--ink)}
+.partner-tag:hover img{opacity:1}
+
 /* nav links sit dead-centre in the bar, logo left, Apply pill right */
 .site-nav{
   position:absolute;
@@ -872,6 +902,17 @@ body.dots-live:before{display:none}
 .guide-body li{margin-bottom:6px}
 .guide-body a{color:inherit;font-weight:600}
 .guide-lede{font-size:1.05rem}
+/* article byline under the H1: hub link, author, last-updated date.
+   p.guide-meta is (0,2,1) and sits after .apply-hero p:not(.eyebrow), so it wins */
+.apply-hero p.guide-meta{margin:14px 0 0;max-width:none;color:var(--muted);font-size:.86rem;line-height:1.5}
+.apply-hero p.guide-meta a{color:inherit;font-weight:600;text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line-strong)}
+/* visible FAQ panel closing a guide; mirrors the page's FAQPage JSON-LD word for word */
+.guide-faq h3{margin:22px 0 8px;font-size:clamp(1.02rem,1.8vw,1.14rem);line-height:1.35;letter-spacing:-.01em;color:var(--ink)}
+.guide-faq h2 + h3{margin-top:4px}
+.guide-faq p:last-child{margin-bottom:0}
+/* in-copy links on the homepage About heading and the how-it-works steps */
+.section-heading p a,.hiw-copy p a{color:inherit;font-weight:600;text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line-strong)}
+.section-heading p + p{margin-top:12px}
 
 /* =========================================================
    How-it-works walkthrough — each step animates when scrolled
@@ -1787,7 +1828,8 @@ body.dots-live:before{display:none}
   align-items:center;
   width:max-content;
   gap:clamp(46px,6vw,96px);
-  animation:marquee 30s linear infinite;
+  /* ~90px/s with six logos — lengthen this when a logo is added */
+  animation:marquee 38s linear infinite;
 }
 /* each logo links out to the client's site — the strip holds still while
    the pointer is on it (or a logo has keyboard focus) so it can be clicked.
