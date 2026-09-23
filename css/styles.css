@@ -243,7 +243,7 @@ h1,h2,h3,p{margin-top:0}
   align-items:center;
   gap:5px;
   color:var(--muted);
-  font-size:.66rem;
+  font-size:.74rem;
   font-weight:600;
   line-height:1;
   letter-spacing:.01em;
@@ -251,15 +251,38 @@ h1,h2,h3,p{margin-top:0}
   white-space:nowrap;
   transition:color var(--t-fast) var(--ease-smooth);
 }
-.partner-tag img{
-  display:block;
-  height:10px;
-  width:auto;
-  opacity:.85;
-  transition:opacity var(--t-fast) var(--ease-smooth);
+.partner-tag-mark{width:17px;height:17px;flex:none}
+.partner-tag-name{
+  color:var(--ink-soft);
+  font-size:.88rem;
+  font-weight:700;
+  letter-spacing:-.01em;
 }
 .partner-tag:hover{color:var(--ink)}
-.partner-tag:hover img{opacity:1}
+.partner-tag:hover .partner-tag-name{color:var(--ink)}
+
+/* THE WAVE. lynxr's own gesture is the top-right arm waving, so that rect in
+   the mask moves and the mark itself stays put. A CSS transform replaces the
+   rect's transform attribute, so the resting 45deg is restated here and in
+   every keyframe */
+.partner-tag .lxr-arm{
+  transform-box:view-box;
+  transform-origin:60px 62px;
+  transform:rotate(45deg);
+}
+.partner-tag:hover .lxr-arm{animation:lxr-wave 1.1s var(--ease-smooth)}
+@keyframes lxr-wave{
+  0%{transform:rotate(45deg)}
+  14%{transform:rotate(20deg)}
+  30%{transform:rotate(60deg)}
+  46%{transform:rotate(24deg)}
+  62%{transform:rotate(58deg)}
+  78%{transform:rotate(30deg)}
+  100%{transform:rotate(45deg)}
+}
+@media (prefers-reduced-motion:reduce){
+  .partner-tag:hover .lxr-arm{animation:none}
+}
 
 /* nav links sit dead-centre in the bar, logo left, Apply pill right */
 .site-nav{
@@ -479,6 +502,38 @@ body.dots-live:before{display:none}
   margin-top:clamp(26px,4vh,40px);
 }
 .hero-actions .button{pointer-events:auto}
+
+/* the partner credit in the first screen: a quiet pill under the CTA, so it
+   lands in the same glance as the headline without crowding it. .hero-copy is
+   pointer-events:none, so this opts back in the way the CTA above does */
+.hero-partner{
+  pointer-events:auto;
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  margin-top:clamp(20px,2.6vh,30px);
+  padding:9px 18px;
+  border:1px solid var(--line);
+  border-radius:var(--r-pill);
+  background:rgba(255,255,255,.66);
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+  color:var(--muted);
+  font-size:.8rem;
+  font-weight:600;
+  white-space:nowrap;
+  text-decoration:none;
+  transition:color var(--t-fast) var(--ease-smooth),border-color var(--t-fast) var(--ease-smooth),transform var(--t-fast) var(--ease-spring);
+}
+.hero-partner img{
+  display:block;
+  height:13px;
+  width:auto;
+  opacity:.9;
+  transition:opacity var(--t-fast) var(--ease-smooth);
+}
+.hero-partner:hover{color:var(--ink);border-color:var(--line-strong);transform:translateY(-1px)}
+.hero-partner:hover img{opacity:1}
 
 /* the hero's single CTA — bigger than a standard button, red as the
    only saturated element on screen, with a radiating pulse so the eye
@@ -2613,6 +2668,7 @@ footer{
   .site-nav{gap:16px;font-size:.9rem}
   .nav-cta{padding:9px 15px;font-size:.84rem}
 }
+
 
 /* header collapses into a menu */
 @media (max-width:900px){
